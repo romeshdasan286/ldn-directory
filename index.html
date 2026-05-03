@@ -3,962 +3,1604 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LDN DIRECTORY — London Community Events</title>
-<meta name="description" content="Daily, weekly and monthly community events across London. Theatre, markets, festivals, art, wellness, fitness, eco and more.">
+<title>LDN.DIRECTORY — London Community Events</title>
+<meta name="description" content="Daily, weekly and monthly community events across London zones 2–4. Theatre, markets, festivals, art, wellness, fitness, eco and more.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --black: #0a0a0a;
-    --white: #fafaf5;
-    --cream: #f2efe6;
-    --acid: #d4ff00;
-    --hot: #ff2d55;
-    --electric: #0047ff;
-    --orange: #ff6b00;
-    --teal: #00c9b1;
-    --lilac: #c8b4ff;
-    --grid: #e8e4d8;
-    --text: #1a1a1a;
-    --muted: #6b6b6b;
-  }
+/* =====================================================
+   DESIGN TOKENS — Mochi-inspired monochrome palette
+   ===================================================== */
+:root {
+  --bg:           #F5F5F0;
+  --surface:      #FFFFFF;
+  --surface-2:    #F0F0EB;
+  --border:       #E2E2DC;
+  --border-strong:#BBBBB5;
+  --ink:          #111111;
+  --ink-mid:      #555550;
+  --ink-light:    #999992;
+  --ticker-bg:    #111111;
+  --ticker-fg:    #FFFFFF;
+  --focus-ring:   2px solid #111111;
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  --cat-theatre:   #111;
+  --cat-markets:   #333;
+  --cat-festivals: #222;
+  --cat-art:       #1A1A1A;
+  --cat-create:    #2A2A2A;
+  --cat-wellness:  #111;
+  --cat-fitness:   #333;
+  --cat-eco:       #222;
+  --cat-community: #1A1A1A;
+  --cat-kids:      #2A2A2A;
+}
 
-  html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    overflow-x: hidden;
-    cursor: crosshair;
-  }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+  font-size: 15px;
+  line-height: 1.6;
+}
 
-  a { color: inherit; text-decoration: none; }
-  button { cursor: pointer; font-family: inherit; border: none; background: none; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; }
+:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+:focus:not(:focus-visible) { outline: none; }
 
-  /* SKIP LINK */
-  .skip-link {
-    position: absolute;
-    top: -100%;
-    left: 1rem;
-    background: var(--acid);
-    color: var(--black);
-    padding: 0.5rem 1rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    z-index: 9999;
-    transition: top 0.2s;
-  }
-  .skip-link:focus { top: 1rem; }
+/* ===== SKIP LINK ===== */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--ink);
+  color: var(--surface);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1rem;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 1rem; }
 
-  /* TICKER */
-  .ticker {
-    background: var(--black);
-    color: var(--acid);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    padding: 0.4rem 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .ticker-inner {
-    display: inline-block;
-    animation: ticker 30s linear infinite;
-  }
-  .ticker-inner span { margin: 0 3rem; }
-  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* ===== TICKER ===== */
+.ticker {
+  background: var(--ticker-bg);
+  color: var(--ticker-fg);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  padding: 0.45rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+}
+.ticker:hover .ticker-inner { animation-play-state: paused; }
+.ticker-inner {
+  display: inline-block;
+  animation: ticker-scroll 40s linear infinite;
+}
+.ticker-inner span { margin: 0 2rem; }
+.ticker-sep { color: #555; margin: 0 0.5rem; }
+@keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ticker-inner { animation: none; } }
 
-  /* HEADER */
-  header {
-    background: var(--cream);
-    border-bottom: 2px solid var(--black);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.8rem 2rem;
-    border-bottom: 1px solid var(--grid);
-  }
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.8rem;
-    letter-spacing: 0.05em;
-    line-height: 1;
-    color: var(--black);
-  }
-  .logo span { color: var(--hot); }
-  .logo-sub {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.3em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-top: -0.2rem;
-  }
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .btn-submit {
-    background: var(--black);
-    color: var(--acid);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    padding: 0.6rem 1.2rem;
-    border: 2px solid var(--black);
-    text-transform: uppercase;
-    transition: all 0.15s;
-  }
-  .btn-submit:hover { background: var(--acid); color: var(--black); }
-  .bookmark-count {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem;
-  }
-  .bookmark-count .dot {
-    width: 18px; height: 18px;
-    background: var(--hot);
-    color: white;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.6rem;
-    font-weight: 700;
-  }
+/* ===== HEADER ===== */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 1px 0 var(--border);
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  height: 60px;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+}
+.logo-wrap { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
+/* Mochi-style pixel art logo mark */
+.logo-pixel {
+  width: 28px; height: 28px; flex-shrink: 0;
+}
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  line-height: 1;
+}
+.logo-sub {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  margin-top: 2px;
+  display: none;
+}
+.search-form {
+  display: flex;
+  align-items: stretch;
+  background: var(--bg);
+  border: 1.5px solid var(--border-strong);
+  flex: 0 1 300px;
+  transition: border-color 0.2s;
+}
+.search-form:focus-within { border-color: var(--ink); }
+.search-form label {
+  display: flex;
+  align-items: center;
+  padding: 0 0.6rem;
+  color: var(--ink-mid);
+  flex-shrink: 0;
+}
+.search-form input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  width: 100%;
+  padding: 0.5rem 0.25rem;
+}
+.search-form input::placeholder { color: var(--ink-light); }
+.search-btn {
+  background: var(--ink);
+  color: var(--surface);
+  border: none;
+  padding: 0 0.9rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.search-btn:hover { background: #333; }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.btn-saved {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-mid);
+  padding: 0.4rem 0.7rem;
+  border: 1.5px solid var(--border);
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.btn-saved:hover { border-color: var(--ink); color: var(--ink); }
+.btn-saved .badge {
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 0.58rem;
+  font-weight: 700;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.btn-submit-event {
+  background: var(--ink);
+  color: var(--surface);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid var(--ink);
+  text-transform: uppercase;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-submit-event:hover { background: #333; }
 
-  /* NAV CATEGORIES */
-  nav.cat-nav {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    padding: 0 2rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  nav.cat-nav::-webkit-scrollbar { display: none; }
-  .cat-btn {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.75rem 1.2rem;
-    border-right: 1px solid var(--grid);
-    white-space: nowrap;
-    transition: all 0.15s;
-    position: relative;
-    color: var(--muted);
-  }
-  .cat-btn::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    background: transparent;
-    transition: background 0.15s;
-  }
-  .cat-btn:hover { color: var(--black); }
-  .cat-btn:hover::after { background: var(--hot); }
-  .cat-btn.active { color: var(--black); }
-  .cat-btn.active::after { background: var(--hot); }
-  .cat-icon { margin-right: 0.4rem; font-size: 0.9rem; }
+/* ===== CATEGORY NAV ===== */
+.cat-nav {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0 1rem;
+  height: 52px;
+  gap: 0;
+}
+.cat-nav::-webkit-scrollbar { display: none; }
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  height: 52px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  white-space: nowrap;
+  border-right: 1px solid var(--border);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: none;
+  border-top: none;
+  border-left: none;
+}
+.cat-pill:hover { color: var(--ink); background: var(--bg); border-bottom-color: var(--border-strong); }
+.cat-pill.active { color: var(--ink); border-bottom-color: var(--ink); }
+.cat-pill-icon {
+  width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
 
-  /* HERO */
-  .hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 380px;
-    border-bottom: 2px solid var(--black);
-  }
-  .hero-text {
-    padding: 3rem 2rem;
-    background: var(--black);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .hero-headline {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3.5rem, 7vw, 6rem);
-    color: var(--white);
-    line-height: 0.95;
-    letter-spacing: 0.02em;
-  }
-  .hero-headline .accent { color: var(--acid); }
-  .hero-sub {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
-    color: var(--teal);
-    text-transform: uppercase;
-    margin-top: 1.5rem;
-  }
-  .hero-stats {
-    display: flex;
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  .stat-item { }
-  .stat-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    color: var(--acid);
-    line-height: 1;
-  }
-  .stat-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .hero-visual {
-    background: var(--electric);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .hero-grid-art {
-    position: absolute;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 40px),
-      repeating-linear-gradient(90deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 40px);
-  }
-  .hero-big-text {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 12rem;
-    color: rgba(255,255,255,0.08);
-    line-height: 1;
-    position: absolute;
-    letter-spacing: -0.05em;
-  }
-  .hero-pill {
-    background: var(--acid);
-    color: var(--black);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    padding: 0.5rem 1rem;
-    text-transform: uppercase;
-    position: relative;
-    z-index: 1;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+/* ===== HERO ===== */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-bottom: 1px solid var(--border);
+  min-height: 300px;
+}
+.hero-text {
+  padding: 2.5rem 1.5rem;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px;
+  background: var(--ink);
+  border-radius: 50%;
+  animation: pulse-dot 2.5s ease-in-out infinite;
+}
+@keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.hero-headline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.hero-headline .outline {
+  -webkit-text-stroke: 2px var(--ink);
+  color: transparent;
+}
+.hero-desc {
+  font-size: 0.88rem;
+  color: var(--ink-mid);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-top: 1rem;
+}
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.btn-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ink);
+  color: var(--surface);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.15em;
+  padding: 0.7rem 1.6rem;
+  border: 2px solid var(--ink);
+  transition: all 0.15s;
+  box-shadow: 3px 3px 0 var(--border-strong);
+}
+.btn-hero-cta:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--border-strong); }
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: var(--ink-mid);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.2rem;
+  border: 1.5px solid var(--border-strong);
+  transition: all 0.15s;
+}
+.btn-hero-secondary:hover { border-color: var(--ink); color: var(--ink); }
+.hero-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.stat-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.85rem 1.2rem;
+  text-align: center;
+  box-shadow: 2px 2px 0 var(--border);
+  min-width: 80px;
+}
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--ink);
+  line-height: 1;
+  display: block;
+}
+.stat-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-top: 3px;
+}
 
-  /* FILTERS + SEARCH */
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    border-bottom: 1px solid var(--grid);
-    flex-wrap: wrap;
-    background: var(--white);
-  }
-  .search-wrap {
-    flex: 1;
-    min-width: 200px;
-    position: relative;
-  }
-  .search-wrap input {
-    width: 100%;
-    border: 1.5px solid var(--black);
-    background: transparent;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    padding: 0.6rem 1rem 0.6rem 2.2rem;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .search-wrap input:focus { border-color: var(--electric); }
-  .search-icon {
-    position: absolute;
-    left: 0.7rem; top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.85rem;
-    pointer-events: none;
-  }
-  .filter-select {
-    border: 1.5px solid var(--black);
-    background: transparent;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    padding: 0.6rem 0.8rem;
-    outline: none;
-    cursor: pointer;
-  }
-  .filter-select:focus { border-color: var(--electric); }
-  .result-count {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    margin-left: auto;
-  }
+/* Hero visual panel — replace .hero-image background-image with your photo URL */
+.hero-visual {
+  position: relative;
+  min-height: 260px;
+  overflow: hidden;
+  /* HERO IMAGE SLOT: To use a real photo, add:
+     background-image: url('your-photo.jpg');
+     background-size: cover;
+     background-position: center;
+     Then remove or hide the .hero-svg element inside */
+  background: var(--surface-2);
+}
+.hero-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.hero-date-pill {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.8rem;
+  color: var(--ink);
+  z-index: 2;
+  box-shadow: 2px 2px 0 var(--border);
+}
 
-  /* EVENT GRID */
-  main { padding: 2rem; }
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.filter-bar-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  flex-shrink: 0;
+  display: none;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border: 1.5px solid var(--border);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--surface);
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.filter-chip:hover { border-color: var(--ink); color: var(--ink); }
+.filter-chip.active { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.filter-sep { width: 1px; height: 22px; background: var(--border); margin: 0 0.2rem; flex-shrink: 0; }
+.view-toggle { margin-left: auto; display: flex; gap: 0.25rem; flex-shrink: 0; }
+.view-btn {
+  width: 32px; height: 32px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--ink-light);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.12s;
+  padding: 0;
+}
+.view-btn:hover, .view-btn.active { border-color: var(--ink); color: var(--ink); background: var(--bg); }
 
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--grid);
-  }
+/* ===== DATE TABS ===== */
+.date-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1rem;
+}
+.date-tabs::-webkit-scrollbar { display: none; }
+.date-tab {
+  padding: 0.85rem 1.2rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  color: var(--ink-light);
+  white-space: nowrap;
+  border: none;
+  background: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+}
+.date-tab:hover { color: var(--ink); background: var(--surface-2); }
+.date-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
 
-  .event-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 0;
-    border: 1.5px solid var(--black);
-  }
+/* ===== SEARCH ROW ===== */
+.search-row {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.search-row-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+}
+.search-row-icon {
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-light);
+  pointer-events: none;
+}
+.search-row-input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  padding: 0.5rem 0.75rem 0.5rem 2rem;
+  outline: none;
+  color: var(--ink);
+  transition: border-color 0.15s;
+}
+.search-row-input:focus { border-color: var(--ink); }
+.search-row-input::placeholder { color: var(--ink-light); }
+.filter-select {
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.5rem 0.7rem;
+  outline: none;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.filter-select:focus { border-color: var(--ink); }
+.result-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--ink-light);
+  letter-spacing: 0.05em;
+  margin-left: auto;
+  white-space: nowrap;
+}
 
-  .event-card {
-    border-right: 1.5px solid var(--black);
-    border-bottom: 1.5px solid var(--black);
-    padding: 1.4rem;
-    background: var(--white);
-    transition: background 0.15s;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  .event-card:hover { background: var(--cream); }
-  .event-card:nth-child(3n) { border-right: none; }
+/* ===== LAYOUT ===== */
+.main-wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+}
 
-  .card-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 0.5rem;
-  }
-  .cat-tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.5rem;
-    font-weight: 700;
-  }
-  .tag-theatre { background: var(--lilac); color: #3d1a8a; }
-  .tag-markets { background: var(--teal); color: #003d37; }
-  .tag-festivals { background: var(--orange); color: #5a1e00; }
-  .tag-art { background: #ffd6e0; color: #7a0020; }
-  .tag-create { background: #d4edda; color: #155724; }
-  .tag-wellness { background: #cce5ff; color: #004085; }
-  .tag-fitness { background: #fff3cd; color: #856404; }
-  .tag-eco { background: #d1e7dd; color: #0a3622; }
+/* ===== SIDEBAR ===== */
+.sidebar {
+  display: none;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 113px;
+  max-height: calc(100vh - 113px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.sidebar-section {
+  padding: 1.2rem 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-light);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+.borough-list { display: flex; flex-direction: column; gap: 1px; }
+.borough-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  color: var(--ink-mid);
+  transition: all 0.12s;
+  border: 1px solid transparent;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+.borough-item:hover { background: var(--bg); color: var(--ink); }
+.borough-item.active { background: var(--ink); color: var(--surface); }
+.borough-item.active .borough-count { color: rgba(255,255,255,0.7); }
+.borough-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-light);
+}
+.radius-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  color: var(--ink);
+  line-height: 1;
+}
+.radius-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+.radius-slider {
+  width: 100%;
+  accent-color: var(--ink);
+  margin: 0.6rem 0 0.3rem;
+  cursor: pointer;
+}
 
-  .card-bookmark {
-    background: none;
-    border: 1.5px solid var(--grid);
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.9rem;
-    transition: all 0.15s;
-    flex-shrink: 0;
-  }
-  .card-bookmark:hover { border-color: var(--hot); }
-  .card-bookmark.saved { background: var(--hot); border-color: var(--hot); }
-  .card-bookmark.saved svg path { fill: white; }
+/* ===== MAIN CONTENT ===== */
+main {
+  padding: 1.25rem 1rem;
+  background: var(--bg);
+  min-width: 0;
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.section-count {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-light);
+  letter-spacing: 0.08em;
+}
 
-  .card-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.3;
-    color: var(--black);
-  }
+/* ===== FEATURED ROW ===== */
+.featured-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  margin-bottom: 1.5rem;
+}
 
-  .card-venue {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
+/* ===== EVENT CARDS ===== */
+.event-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  cursor: pointer;
+}
+.event-card:hover {
+  border-color: var(--ink);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+  z-index: 2;
+}
+.event-card.featured { min-height: 340px; }
+.event-card.tall { min-height: 260px; }
 
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: auto;
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--grid);
-  }
-  .meta-item {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-  .meta-icon { font-size: 0.75rem; }
+/* Card visual block (image area) */
+.card-visual {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.event-card.featured .card-visual { height: 200px; }
+.event-card.tall .card-visual    { height: 140px; }
+.events-grid .card-visual        { height: 110px; }
 
-  .card-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  .btn-cal {
-    flex: 1;
-    border: 1.5px solid var(--black);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.45rem 0.6rem;
-    background: transparent;
-    transition: all 0.15s;
-  }
-  .btn-cal:hover { background: var(--black); color: var(--white); }
-  .btn-more {
-    border: 1.5px solid var(--electric);
-    color: var(--electric);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.45rem 0.6rem;
-    background: transparent;
-    transition: all 0.15s;
-  }
-  .btn-more:hover { background: var(--electric); color: white; }
+/* Greyscale category visuals */
+.vis-theatre   { background: linear-gradient(135deg, #EFEFED 0%, #DDDDD9 100%); }
+.vis-markets   { background: linear-gradient(135deg, #EAECE8 0%, #D8DDD5 100%); }
+.vis-festivals { background: linear-gradient(135deg, #E8EAEC 0%, #D5D9DE 100%); }
+.vis-art       { background: linear-gradient(135deg, #EDECEA 0%, #DCDAD5 100%); }
+.vis-create    { background: linear-gradient(135deg, #ECECEC 0%, #DADADA 100%); }
+.vis-wellness  { background: linear-gradient(135deg, #EAECED 0%, #D6DBDE 100%); }
+.vis-fitness   { background: linear-gradient(135deg, #EDEDEA 0%, #DDDDD8 100%); }
+.vis-eco       { background: linear-gradient(135deg, #E8EDEB 0%, #D3DCD8 100%); }
+.vis-community { background: linear-gradient(135deg, #EBEBED 0%, #D8D8DE 100%); }
 
-  .price-badge {
-    position: absolute;
-    top: 1.4rem;
-    right: 3.5rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-  }
-  .price-badge.free { color: var(--teal); }
+/* Large category letters as visual bg */
+.card-cat-letter {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  color: rgba(0,0,0,0.06);
+  letter-spacing: 0.05em;
+  position: absolute;
+  right: 0.5rem;
+  bottom: -0.5rem;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.card-cat-badge {
+  position: absolute;
+  top: 0.6rem; left: 0.6rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  padding: 0.2rem 0.55rem;
+  z-index: 2;
+  color: var(--surface);
+  text-transform: uppercase;
+}
+.badge-bg { background: var(--ink); }
+.card-save {
+  position: absolute;
+  top: 0.5rem; right: 0.5rem;
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.92);
+  border: 1.5px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 3;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.card-save:hover { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.card-save.saved { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.card-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+.card-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--ink-mid);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+}
+.event-card.featured .card-title { font-size: 1.5rem; }
+.card-desc {
+  font-size: 0.78rem;
+  color: var(--ink-mid);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.card-location {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--ink-light);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.card-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  color: var(--ink);
+}
+.price-free { color: var(--ink-mid); }
+.card-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+.btn-cal {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.5rem;
+  background: transparent;
+  color: var(--ink-mid);
+  transition: all 0.12s;
+}
+.btn-cal:hover { border-color: var(--ink); color: var(--ink); }
+.btn-more {
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.6rem;
+  background: transparent;
+  transition: all 0.12s;
+}
+.btn-more:hover { background: var(--ink); color: var(--surface); }
 
-  /* FEATURED STRIP */
-  .featured-strip {
-    background: var(--black);
-    padding: 1.5rem 2rem;
-    border-top: 2px solid var(--black);
-    border-bottom: 2px solid var(--black);
-    margin-bottom: 2rem;
-    overflow-x: auto;
-  }
-  .featured-strip-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.25em;
-    color: var(--hot);
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-  .featured-row {
-    display: flex;
-    gap: 1rem;
-    min-width: max-content;
-  }
-  .featured-card {
-    background: var(--cream);
-    border: 1.5px solid #333;
-    padding: 1.2rem;
-    width: 260px;
-    flex-shrink: 0;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
-  .featured-card:hover { border-color: var(--acid); }
-  .featured-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--acid);
-    margin-bottom: 0.4rem;
-  }
-  .featured-title {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    font-size: 0.9rem;
-    line-height: 1.3;
-    color: var(--black);
-    margin-bottom: 0.3rem;
-  }
-  .featured-venue {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--muted);
-  }
+/* ===== EVENTS GRID ===== */
+.events-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  margin-bottom: 2rem;
+}
 
-  /* BOOKMARKS PANEL */
-  .bookmarks-panel {
-    position: fixed;
-    top: 0; right: 0; bottom: 0;
-    width: 360px;
-    background: var(--cream);
-    border-left: 2px solid var(--black);
-    z-index: 200;
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    overflow-y: auto;
-  }
-  .bookmarks-panel.open { transform: translateX(0); }
-  .panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 1.5rem;
-    border-bottom: 2px solid var(--black);
-    background: var(--black);
-  }
-  .panel-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    color: var(--acid);
-    letter-spacing: 0.05em;
-  }
-  .panel-close {
-    color: var(--white);
-    font-size: 1.2rem;
-    padding: 0.3rem;
-  }
-  .panel-close:hover { color: var(--acid); }
-  .panel-body { padding: 1.5rem; }
-  .panel-empty {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--muted);
-    text-align: center;
-    padding: 3rem 0;
-    line-height: 1.8;
-  }
-  .bookmark-item {
-    border: 1.5px solid var(--black);
-    padding: 1rem;
-    margin-bottom: 0.75rem;
-    background: var(--white);
-    position: relative;
-  }
-  .bookmark-item-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 0.3rem;
-  }
-  .bookmark-item-meta {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-  }
-  .bookmark-remove {
-    position: absolute;
-    top: 0.75rem; right: 0.75rem;
-    color: var(--hot);
-    font-size: 0.8rem;
-  }
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 199;
-    display: none;
-  }
-  .overlay.show { display: block; }
+/* ===== BOROUGH SECTION ===== */
+.borough-section {
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--border);
+  margin-top: 0.5rem;
+}
+.borough-grid-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  color: var(--ink);
+}
+.borough-grid-title span { -webkit-text-stroke: 1.5px var(--ink); color: transparent; }
+.borough-cards {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 2px;
+}
+.borough-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  display: block;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.borough-card:hover { background: var(--bg); border-color: var(--ink); }
+.borough-card:hover .bc-name { color: var(--ink); }
+.bc-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+  color: var(--ink-mid);
+  transition: color 0.12s;
+}
+.bc-events {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--ink);
+  line-height: 1;
+}
+.bc-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.52rem;
+  color: var(--ink-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 0.15rem;
+}
+.bc-tags { margin-top: 0.6rem; display: flex; gap: 0.25rem; flex-wrap: wrap; }
+.bc-dot { width: 8px; height: 8px; background: var(--ink); opacity: 0.25; }
 
-  /* MODAL */
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 300;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-  .modal-backdrop.open { display: flex; }
-  .modal {
-    background: var(--cream);
-    border: 2px solid var(--black);
-    max-width: 560px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  .modal-header {
-    background: var(--black);
-    padding: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .modal-header h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem;
-    color: var(--acid);
-    letter-spacing: 0.05em;
-  }
-  .modal-close { color: var(--white); font-size: 1.3rem; }
-  .modal-close:hover { color: var(--acid); }
-  .modal-body { padding: 1.5rem; }
-  .modal-body .event-detail-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-  }
-  .modal-body .event-detail-venue {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    margin-bottom: 1.2rem;
-  }
-  .detail-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-bottom: 1.2rem;
-  }
-  .detail-cell {
-    border: 1.5px solid var(--grid);
-    padding: 0.75rem;
-  }
-  .detail-cell-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.25rem;
-  }
-  .detail-cell-val {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-  .event-detail-desc {
-    font-size: 0.9rem;
-    line-height: 1.7;
-    color: #444;
-    margin-bottom: 1.2rem;
-  }
-  .modal-actions {
-    display: flex;
-    gap: 0.75rem;
-  }
-  .btn-primary {
-    flex: 1;
-    background: var(--black);
-    color: var(--acid);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.8rem;
-    border: 2px solid var(--black);
-    transition: all 0.15s;
-  }
-  .btn-primary:hover { background: var(--acid); color: var(--black); }
-  .btn-secondary {
-    flex: 1;
-    background: transparent;
-    color: var(--black);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.8rem;
-    border: 2px solid var(--black);
-    transition: all 0.15s;
-  }
-  .btn-secondary:hover { background: var(--electric); color: white; border-color: var(--electric); }
+/* ===== SOURCES STRIP ===== */
+.sources-strip {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 1rem;
+}
+.sources-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.source-badge {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.9rem 0.75rem 0.75rem;
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-mid);
+  transition: all 0.15s;
+  line-height: 1.5;
+}
+.source-badge:hover { border-color: var(--ink); background: var(--surface); color: var(--ink); }
+.src-icon {
+  display: block;
+  margin-bottom: 0.4rem;
+  opacity: 0.6;
+}
 
-  /* SUBMIT FORM MODAL */
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  .form-group label {
-    display: block;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.4rem;
-  }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    border: 1.5px solid var(--black);
-    background: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    padding: 0.7rem 0.9rem;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .form-group textarea { resize: vertical; min-height: 80px; }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus { border-color: var(--electric); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .form-note {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    margin-bottom: 1rem;
-    padding: 0.75rem;
-    border: 1px solid var(--grid);
-    background: var(--cream);
-    line-height: 1.7;
-  }
+/* ===== NEWSLETTER ===== */
+.newsletter {
+  background: var(--ink);
+  padding: 3rem 1rem;
+  border-top: 2px solid var(--ink);
+}
+.newsletter-inner {
+  max-width: 580px;
+  margin: 0 auto;
+  text-align: center;
+}
+.newsletter-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 0.75rem;
+}
+.newsletter-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  letter-spacing: 0.05em;
+  color: var(--surface);
+  line-height: 0.95;
+  margin-bottom: 0.75rem;
+}
+.newsletter-desc {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+.newsletter-form {
+  display: flex;
+  gap: 0;
+  max-width: 420px;
+  margin: 0 auto;
+}
+.newsletter-input {
+  flex: 1;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-right: none;
+  background: rgba(255,255,255,0.05);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  color: var(--surface);
+  transition: border-color 0.15s;
+}
+.newsletter-input:focus { border-color: rgba(255,255,255,0.5); }
+.newsletter-input::placeholder { color: rgba(255,255,255,0.3); }
+.newsletter-btn {
+  background: var(--surface);
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.2rem;
+  border: 1.5px solid var(--surface);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.newsletter-btn:hover { background: var(--bg); }
+.newsletter-note {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.25);
+  margin-top: 0.75rem;
+  letter-spacing: 0.04em;
+}
+.newsletter-success { display: none; color: rgba(255,255,255,0.8); font-family: 'Space Mono', monospace; font-size: 0.75rem; text-align: center; padding: 0.75rem; }
 
-  /* FOOTER */
-  footer {
-    background: var(--black);
-    padding: 3rem 2rem 2rem;
-    margin-top: 4rem;
-    border-top: 2px solid var(--black);
-  }
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 2rem;
-    margin-bottom: 2rem;
-  }
-  .footer-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    color: var(--acid);
-    letter-spacing: 0.05em;
-    margin-bottom: 0.5rem;
-  }
-  .footer-tagline {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    line-height: 1.8;
-  }
-  .footer-col-title {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--acid);
-    margin-bottom: 1rem;
-  }
-  .footer-links { list-style: none; }
-  .footer-links li {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    transition: color 0.15s;
-  }
-  .footer-links li:hover { color: var(--white); }
-  .footer-bottom {
-    border-top: 1px solid #222;
-    padding-top: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .footer-copy {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    color: #444;
-    letter-spacing: 0.05em;
-  }
+/* ===== FOOTER ===== */
+footer {
+  background: var(--ink);
+  padding: 3rem 1rem 1.5rem;
+  border-top: 1px solid #222;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 2.5rem;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  color: var(--surface);
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.footer-desc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.9;
+  max-width: 280px;
+}
+.footer-col-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 0.9rem;
+}
+.footer-links { display: flex; flex-direction: column; gap: 0.5rem; }
+.footer-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  transition: color 0.12s;
+  letter-spacing: 0.04em;
+}
+.footer-links a:hover { color: var(--surface); }
+.footer-bottom {
+  border-top: 1px solid #1F1F1F;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.footer-pixel { opacity: 0.15; }
 
-  /* NO RESULTS */
-  .no-results {
-    padding: 4rem 2rem;
-    text-align: center;
-    grid-column: 1 / -1;
-  }
-  .no-results-head {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3rem;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-  }
-  .no-results p {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-  }
+/* ===== BOOKMARKS PANEL ===== */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 299;
+  display: none;
+  backdrop-filter: blur(2px);
+}
+.overlay.show { display: block; }
+.bookmarks-panel {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 340px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  z-index: 300;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto;
+}
+.bookmarks-panel.open { transform: translateX(0); }
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--ink);
+  position: sticky; top: 0; z-index: 1;
+}
+.panel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.15em;
+  color: var(--surface);
+}
+.panel-close {
+  color: rgba(255,255,255,0.5);
+  font-size: 1.1rem;
+  padding: 0.3rem;
+  transition: color 0.12s;
+}
+.panel-close:hover { color: var(--surface); }
+.panel-body { padding: 1.25rem; }
+.panel-empty {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--ink-light);
+  text-align: center;
+  padding: 3rem 0;
+  line-height: 2;
+}
+.bookmark-item {
+  border: 1px solid var(--border);
+  padding: 0.9rem;
+  margin-bottom: 0.6rem;
+  background: var(--bg);
+  position: relative;
+  transition: border-color 0.12s;
+}
+.bookmark-item:hover { border-color: var(--ink); }
+.bookmark-item-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  padding-right: 1.5rem;
+}
+.bookmark-item-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--ink-light);
+}
+.bookmark-remove {
+  position: absolute;
+  top: 0.6rem; right: 0.6rem;
+  color: var(--ink-light);
+  font-size: 0.75rem;
+  padding: 0.2rem;
+  transition: color 0.12s;
+}
+.bookmark-remove:hover { color: var(--ink); }
 
-  /* RECURRENCE BADGE */
-  .recurrence-badge {
-    position: absolute;
-    bottom: 1.4rem;
-    right: 1.4rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.15rem 0.4rem;
-    background: var(--cream);
-    border: 1px solid var(--grid);
-    color: var(--muted);
-  }
+/* ===== MODALS ===== */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 400;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  backdrop-filter: blur(3px);
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  max-width: 540px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal-header {
+  background: var(--ink);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0;
+}
+.modal-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.1em;
+  color: var(--surface);
+}
+.modal-close { color: rgba(255,255,255,0.5); font-size: 1.1rem; transition: color 0.12s; }
+.modal-close:hover { color: var(--surface); }
+.modal-body { padding: 1.5rem; }
+.event-detail-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+  line-height: 1.05;
+  margin-bottom: 0.4rem;
+}
+.event-detail-venue {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--ink-light);
+  margin-bottom: 1.25rem;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.detail-cell { border: 1px solid var(--border); padding: 0.75rem; background: var(--bg); }
+.detail-cell-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 0.2rem;
+}
+.detail-cell-val {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+.event-detail-desc {
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: var(--ink-mid);
+  margin-bottom: 1.25rem;
+}
+.modal-actions { display: flex; gap: 0.6rem; }
+.btn-primary {
+  flex: 1;
+  background: var(--ink);
+  color: var(--surface);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  border: 1.5px solid var(--ink);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.btn-primary:hover { background: #333; }
+.btn-secondary-modal {
+  flex: 1;
+  background: transparent;
+  color: var(--ink);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.8rem;
+  border: 1.5px solid var(--border-strong);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.btn-secondary-modal:hover { border-color: var(--ink); }
 
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-visual { min-height: 180px; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .event-grid { grid-template-columns: 1fr; }
-    .event-card:nth-child(3n) { border-right: 1.5px solid var(--black); }
-    .header-top { padding: 0.8rem 1rem; }
-    main { padding: 1rem; }
-    .form-row { grid-template-columns: 1fr; }
-    .modal-actions { flex-direction: column; }
-  }
+/* Submit form */
+.form-note {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--ink-mid);
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+.form-row { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+.form-group { margin-bottom: 0.75rem; }
+.form-group label {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 0.35rem;
+}
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  padding: 0.65rem 0.85rem;
+  outline: none;
+  color: var(--ink);
+  transition: border-color 0.15s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--ink); }
+.form-group textarea { resize: vertical; min-height: 80px; }
+
+/* No results */
+.no-results {
+  padding: 4rem 1rem;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+.no-results-head {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+.no-results p { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--ink-light); }
+
+/* =====================================================
+   RESPONSIVE — TABLET 640px+
+   ===================================================== */
+@media (min-width: 640px) {
+  .header-top { padding: 0 1.5rem; }
+  .logo-sub { display: block; }
+  .hero { grid-template-columns: 1fr 1fr; min-height: 400px; }
+  .hero-visual { min-height: auto; }
+  .filter-bar-label { display: block; }
+  .form-row { grid-template-columns: 1fr 1fr; }
+  .featured-row { grid-template-columns: 2fr 1fr; }
+  .featured-row .event-card.featured { grid-row: span 2; }
+  .events-grid { grid-template-columns: repeat(2, 1fr); }
+  .borough-cards { grid-template-columns: repeat(3, 1fr); }
+  .sources-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+  .modal-actions { flex-direction: row; }
+}
+
+/* =====================================================
+   RESPONSIVE — DESKTOP 1024px+
+   ===================================================== */
+@media (min-width: 1024px) {
+  .header-top { padding: 0 2rem; }
+  .search-form { flex: 0 1 360px; }
+  .hero-text { padding: 3.5rem 3rem; }
+  .main-wrap { grid-template-columns: 220px 1fr; }
+  .sidebar { display: block; }
+  .main { padding: 1.5rem 2rem; }
+  .events-grid { grid-template-columns: repeat(3, 1fr); }
+  .featured-row { grid-template-columns: 2fr 1fr 1fr; }
+  .borough-cards { grid-template-columns: repeat(5, 1fr); }
+  .sources-grid { grid-template-columns: repeat(6, 1fr); }
+  .filter-bar { padding: 0.75rem 2rem; }
+  .search-row { padding: 0.75rem 2rem; }
+  .date-tabs { padding: 0 2rem; }
+  main { padding: 1.5rem 2rem; }
+  .borough-section { padding: 2rem 0 0; }
+  .sources-strip { padding: 3rem 2rem; }
+}
+
+@media (min-width: 1280px) {
+  .events-grid { grid-template-columns: repeat(4, 1fr); }
+}
 </style>
 </head>
 <body>
 
-<a href="#main" class="skip-link">Skip to main content</a>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- TICKER -->
-<div class="ticker" role="marquee" aria-label="Live event updates">
-  <div class="ticker-inner" aria-hidden="true">
-    <span>★ CRYSTAL PALACE MARKET — THIS SUNDAY</span>
-    <span>★ OPEN STUDIOS: BRENTFORD ART TRAIL — ALL WEEKEND</span>
-    <span>★ TOOTING RUNNERS CLUB — EVERY THURSDAY 7PM</span>
-    <span>★ ECSTATIC DANCE PECKHAM — SATURDAY 10AM</span>
-    <span>★ DULWICH FESTIVAL — ONGOING MAY</span>
-    <span>★ FINSBURY PARK THEATRE — SEE LISTINGS</span>
-    <span>★ DEPTFORD LITTER PICK — SUNDAY 9AM</span>
-    <span>★ CRYSTAL PALACE MARKET — THIS SUNDAY</span>
-    <span>★ OPEN STUDIOS: BRENTFORD ART TRAIL — ALL WEEKEND</span>
-    <span>★ TOOTING RUNNERS CLUB — EVERY THURSDAY 7PM</span>
-    <span>★ ECSTATIC DANCE PECKHAM — SATURDAY 10AM</span>
-    <span>★ DULWICH FESTIVAL — ONGOING MAY</span>
-    <span>★ FINSBURY PARK THEATRE — SEE LISTINGS</span>
-    <span>★ DEPTFORD LITTER PICK — SUNDAY 9AM</span>
-  </div>
+<!-- ===== TICKER ===== -->
+<div class="ticker" role="marquee" aria-label="Today's London events">
+  <div class="ticker-inner" id="ticker-inner" aria-hidden="true"></div>
 </div>
 
-<!-- HEADER -->
-<header>
+<!-- ===== HEADER ===== -->
+<header role="banner">
   <div class="header-top">
-    <div>
-      <div class="logo">LDN<span>.</span>DIRECTORY</div>
-      <div class="logo-sub">Community events across zones 2–4</div>
+    <div class="logo-wrap">
+      <!-- Mochi-style pixel art logomark -->
+      <svg class="logo-pixel" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="0" y="0" width="4" height="4" fill="#111"/>
+        <rect x="8" y="0" width="4" height="4" fill="#111"/>
+        <rect x="12" y="0" width="8" height="4" fill="#111"/>
+        <rect x="24" y="0" width="4" height="4" fill="#111"/>
+        <rect x="0" y="4" width="4" height="4" fill="#111"/>
+        <rect x="12" y="4" width="4" height="4" fill="#111"/>
+        <rect x="24" y="4" width="4" height="4" fill="#111"/>
+        <rect x="0" y="8" width="4" height="4" fill="#111"/>
+        <rect x="8" y="8" width="8" height="4" fill="#111"/>
+        <rect x="20" y="8" width="8" height="4" fill="#111"/>
+        <rect x="0" y="12" width="4" height="4" fill="#111"/>
+        <rect x="12" y="12" width="4" height="4" fill="#111"/>
+        <rect x="0" y="16" width="4" height="4" fill="#111"/>
+        <rect x="8" y="16" width="4" height="4" fill="#111"/>
+        <rect x="16" y="16" width="4" height="4" fill="#111"/>
+        <rect x="24" y="16" width="4" height="4" fill="#111"/>
+        <rect x="0" y="20" width="16" height="4" fill="#111"/>
+        <rect x="20" y="20" width="4" height="4" fill="#111"/>
+        <rect x="0" y="24" width="4" height="4" fill="#111"/>
+        <rect x="8" y="24" width="4" height="4" fill="#111"/>
+        <rect x="16" y="24" width="4" height="4" fill="#111"/>
+        <rect x="24" y="24" width="4" height="4" fill="#111"/>
+      </svg>
+      <div>
+        <div class="logo">LDN<span style="opacity:0.35">.</span>DIRECTORY</div>
+        <div class="logo-sub">Community events · Zones 2–4</div>
+      </div>
     </div>
+
+    <form class="search-form" role="search" action="#" method="get" onsubmit="return handleSearchSubmit(event)">
+      <label for="site-search">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="sr-only">Search</span>
+      </label>
+      <input type="search" id="site-search" name="q" placeholder="Search events, venues, areas…" autocomplete="off" oninput="handleSearch(this.value)">
+      <button class="search-btn" type="submit">Go</button>
+    </form>
+
     <div class="header-actions">
-      <button class="bookmark-count" onclick="togglePanel()" aria-label="View saved events">
-        <div class="dot" id="bm-count">0</div>
-        SAVED
+      <button class="btn-saved" onclick="togglePanel()" aria-label="View saved events">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 2h9v10L6.5 9.5 2 12V2z" stroke="currentColor" stroke-width="1.3"/></svg>
+        <span class="badge" id="bm-count">0</span>
+        <span>Saved</span>
       </button>
-      <button class="btn-submit" onclick="openSubmit()" aria-haspopup="dialog">
-        + Submit Event
-      </button>
+      <button class="btn-submit-event" onclick="openSubmit()" aria-haspopup="dialog">+ Submit</button>
     </div>
   </div>
-  <nav class="cat-nav" aria-label="Event categories">
-    <button class="cat-btn active" onclick="filterCat('all')" data-cat="all">
-      <span class="cat-icon" aria-hidden="true">◎</span>All Events
+
+  <!-- Category Nav -->
+  <nav class="cat-nav" aria-label="Event categories" role="navigation">
+    <button class="cat-pill active" onclick="filterCat('all')" data-cat="all" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="7" r="2.5" fill="currentColor"/></svg></span>All
     </button>
-    <button class="cat-btn" onclick="filterCat('theatre')" data-cat="theatre">
-      <span class="cat-icon" aria-hidden="true">🎭</span>Theatre
+    <button class="cat-pill" onclick="filterCat('theatre')" data-cat="theatre" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="8" rx="0.5" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="2" x2="5" y2="10" stroke="currentColor" stroke-width="1.2"/><line x1="9" y1="2" x2="9" y2="10" stroke="currentColor" stroke-width="1.2"/><line x1="2" y1="12" x2="12" y2="12" stroke="currentColor" stroke-width="1.2"/></svg></span>Theatre
     </button>
-    <button class="cat-btn" onclick="filterCat('markets')" data-cat="markets">
-      <span class="cat-icon" aria-hidden="true">🧺</span>Markets
+    <button class="cat-pill" onclick="filterCat('markets')" data-cat="markets" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 5h10l-1 6H3L2 5z" stroke="currentColor" stroke-width="1.2"/><path d="M5 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2"/></svg></span>Markets
     </button>
-    <button class="cat-btn" onclick="filterCat('festivals')" data-cat="festivals">
-      <span class="cat-icon" aria-hidden="true">🎪</span>Festivals
+    <button class="cat-pill" onclick="filterCat('festivals')" data-cat="festivals" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="3" y1="2" x2="3" y2="12" stroke="currentColor" stroke-width="1.3"/><path d="M3 3l7 2-7 2" fill="currentColor" stroke="currentColor" stroke-width="0.5"/></svg></span>Festivals
     </button>
-    <button class="cat-btn" onclick="filterCat('art')" data-cat="art">
-      <span class="cat-icon" aria-hidden="true">🖼</span>Art
+    <button class="cat-pill" onclick="filterCat('art')" data-cat="art" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" stroke="currentColor" stroke-width="1.2"/><rect x="4" y="4" width="6" height="6" stroke="currentColor" stroke-width="1"/></svg></span>Art
     </button>
-    <button class="cat-btn" onclick="filterCat('create')" data-cat="create">
-      <span class="cat-icon" aria-hidden="true">🏺</span>Create
+    <button class="cat-pill" onclick="filterCat('create')" data-cat="create" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><line x1="3" y1="11" x2="11" y2="3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2 12l1.5-3 1.5 1.5L2 12z" fill="currentColor"/></svg></span>Create
     </button>
-    <button class="cat-btn" onclick="filterCat('wellness')" data-cat="wellness">
-      <span class="cat-icon" aria-hidden="true">🌀</span>Wellness
+    <button class="cat-pill" onclick="filterCat('wellness')" data-cat="wellness" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="2" x2="7" y2="12" stroke="currentColor" stroke-width="1"/><line x1="2" y1="7" x2="12" y2="7" stroke="currentColor" stroke-width="1"/></svg></span>Wellness
     </button>
-    <button class="cat-btn" onclick="filterCat('fitness')" data-cat="fitness">
-      <span class="cat-icon" aria-hidden="true">🏃</span>Fitness
+    <button class="cat-pill" onclick="filterCat('fitness')" data-cat="fitness" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="9" cy="3" r="1.5" fill="currentColor"/><path d="M6 5l3-1 1.5 3-2 1.5-1 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M4 8.5l2-1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>Fitness
     </button>
-    <button class="cat-btn" onclick="filterCat('eco')" data-cat="eco">
-      <span class="cat-icon" aria-hidden="true">🌿</span>Eco
+    <button class="cat-pill" onclick="filterCat('eco')" data-cat="eco" type="button">
+      <span class="cat-pill-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12C7 12 3 9 3 5.5a4 4 0 018 0C11 9 7 12 7 12z" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="8" x2="7" y2="13" stroke="currentColor" stroke-width="1.2"/></svg></span>Eco
     </button>
   </nav>
 </header>
 
-<!-- HERO -->
-<section class="hero" aria-label="Welcome">
+<!-- ===== HERO ===== -->
+<section class="hero" aria-labelledby="hero-heading">
   <div class="hero-text">
     <div>
-      <div class="hero-headline">
-        YOUR<br>LONDON<br><span class="accent">LIVES HERE</span>
+      <p class="hero-eyebrow"><span class="eyebrow-dot"></span> What's on in your borough</p>
+      <h1 class="hero-headline" id="hero-heading">
+        YOUR<br>LONDON<br><span class="outline">LIVES HERE</span>
+      </h1>
+      <p class="hero-desc">Every market stall, car boot sunrise, theatre curtain-up, breathwork session and community gathering across London zones 2–4 — aggregated daily.</p>
+      <div class="hero-actions">
+        <a class="btn-hero-cta" href="#main-content">Explore today →</a>
+        <a class="btn-hero-secondary" href="#borough-section">Browse boroughs</a>
       </div>
-      <div class="hero-sub">Daily · Weekly · Monthly · Always free to browse</div>
     </div>
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-num" id="total-count">48</div>
-        <div class="stat-label">Events listed</div>
+    <div class="hero-stats" aria-label="Site statistics">
+      <div class="stat-box">
+        <span class="stat-num" id="total-count">48</span>
+        <span class="stat-label">Events listed</span>
       </div>
-      <div class="stat-item">
-        <div class="stat-num">8</div>
-        <div class="stat-label">Categories</div>
+      <div class="stat-box">
+        <span class="stat-num">Z2–4</span>
+        <span class="stat-label">Zones covered</span>
       </div>
-      <div class="stat-item">
-        <div class="stat-num">Z2–4</div>
-        <div class="stat-label">Zones covered</div>
+      <div class="stat-box">
+        <span class="stat-num">FREE</span>
+        <span class="stat-label">To browse</span>
       </div>
     </div>
   </div>
+
+  <!-- Hero visual — London SVG illustration (replace background-image in .hero-visual to use a real photo) -->
   <div class="hero-visual" aria-hidden="true">
-    <div class="hero-grid-art"></div>
-    <div class="hero-big-text">LDN</div>
-    <div class="hero-pill">↓ Scroll to explore</div>
+    <svg class="hero-svg" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <pattern id="hero-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#E2E2DC" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="600" height="420" fill="#F0F0EB"/>
+      <rect width="600" height="420" fill="url(#hero-grid)"/>
+      <!-- Thames -->
+      <rect x="0" y="360" width="600" height="60" fill="#E5E5E0"/>
+      <line x1="0" y1="360" x2="600" y2="360" stroke="#CCCCCC" stroke-width="1"/>
+      <!-- Tower Bridge towers -->
+      <rect x="52" y="242" width="18" height="118" fill="#222"/>
+      <rect x="44" y="238" width="34" height="14" fill="#222"/>
+      <rect x="48" y="220" width="26" height="20" fill="#333"/>
+      <rect x="122" y="242" width="18" height="118" fill="#222"/>
+      <rect x="114" y="238" width="34" height="14" fill="#222"/>
+      <rect x="118" y="220" width="26" height="20" fill="#333"/>
+      <!-- Bridge road deck -->
+      <rect x="52" y="318" width="88" height="8" fill="#555"/>
+      <!-- Suspension cables -->
+      <line x1="61" y1="238" x2="0" y2="326" stroke="#111" stroke-width="1.5"/>
+      <line x1="61" y1="238" x2="131" y2="326" stroke="#111" stroke-width="1.5"/>
+      <line x1="131" y1="238" x2="61" y2="326" stroke="#111" stroke-width="1.5"/>
+      <line x1="131" y1="238" x2="192" y2="326" stroke="#111" stroke-width="1.5"/>
+      <line x1="27" y1="278" x2="27" y2="326" stroke="#555" stroke-width="0.7"/>
+      <line x1="44" y1="260" x2="44" y2="318" stroke="#555" stroke-width="0.7"/>
+      <line x1="95" y1="252" x2="95" y2="322" stroke="#555" stroke-width="0.7"/>
+      <line x1="148" y1="262" x2="148" y2="326" stroke="#555" stroke-width="0.7"/>
+      <line x1="172" y1="278" x2="172" y2="328" stroke="#555" stroke-width="0.7"/>
+      <!-- St Paul's Dome (mid) -->
+      <rect x="210" y="282" width="56" height="78" fill="#AAAAAA"/>
+      <ellipse cx="238" cy="280" rx="22" ry="16" fill="#999"/>
+      <rect x="234" y="260" width="8" height="22" fill="#999"/>
+      <rect x="230" y="268" width="16" height="10" fill="#888"/>
+      <line x1="238" y1="250" x2="238" y2="262" stroke="#777" stroke-width="1.5"/>
+      <line x1="234" y1="254" x2="242" y2="254" stroke="#777" stroke-width="1.5"/>
+      <!-- The Shard -->
+      <polygon points="340,18 368,360 312,360" fill="#1A1A1A"/>
+      <polygon points="340,18 360,360 340,360" fill="#2A2A2A" opacity="0.5"/>
+      <line x1="326" y1="80" x2="358" y2="300" stroke="#F0F0EB" stroke-width="3.5" opacity="0.12"/>
+      <line x1="334" y1="55" x2="362" y2="250" stroke="#F0F0EB" stroke-width="1.5" opacity="0.08"/>
+      <!-- London Eye circle -->
+      <circle cx="476" cy="212" r="112" fill="none" stroke="#111" stroke-width="2.5"/>
+      <!-- Hub -->
+      <circle cx="476" cy="212" r="9" fill="#111"/>
+      <circle cx="476" cy="212" r="5" fill="#F0F0EB"/>
+      <!-- Spokes -->
+      <line x1="476" y1="100" x2="476" y2="324" stroke="#111" stroke-width="1.5"/>
+      <line x1="364" y1="212" x2="588" y2="212" stroke="#111" stroke-width="1.5"/>
+      <line x1="397" y1="133" x2="555" y2="291" stroke="#111" stroke-width="1"/>
+      <line x1="555" y1="133" x2="397" y2="291" stroke="#111" stroke-width="1"/>
+      <line x1="364" y1="156" x2="588" y2="268" stroke="#111" stroke-width="0.7"/>
+      <line x1="588" y1="156" x2="364" y2="268" stroke="#111" stroke-width="0.7"/>
+      <!-- Gondoles -->
+      <circle cx="476" cy="100" r="7" fill="#111"/>
+      <circle cx="532" cy="116" r="7" fill="#111"/>
+      <circle cx="573" cy="157" r="7" fill="#111"/>
+      <circle cx="588" cy="212" r="7" fill="#111"/>
+      <circle cx="573" cy="267" r="7" fill="#111"/>
+      <circle cx="532" cy="308" r="7" fill="#111"/>
+      <circle cx="476" cy="324" r="7" fill="#111"/>
+      <circle cx="420" cy="308" r="7" fill="#111"/>
+      <circle cx="379" cy="267" r="7" fill="#111"/>
+      <circle cx="364" cy="212" r="7" fill="#111"/>
+      <circle cx="379" cy="157" r="7" fill="#111"/>
+      <circle cx="420" cy="116" r="7" fill="#111"/>
+      <!-- Support structure -->
+      <line x1="440" y1="324" x2="440" y2="360" stroke="#111" stroke-width="3.5"/>
+      <line x1="512" y1="324" x2="512" y2="360" stroke="#111" stroke-width="3.5"/>
+      <rect x="424" y="354" width="104" height="6" fill="#111"/>
+      <!-- Foreground buildings (small) -->
+      <rect x="160" y="308" width="36" height="52" fill="#888"/>
+      <rect x="164" y="298" width="28" height="12" fill="#777"/>
+      <rect x="168" y="286" width="20" height="14" fill="#888"/>
+    </svg>
+    <div class="hero-date-pill" id="hero-date"></div>
   </div>
 </section>
 
-<!-- FEATURED -->
-<div class="featured-strip" aria-label="Featured events this week">
-  <div class="featured-strip-label">★ Featured this week</div>
-  <div class="featured-row" id="featured-row"></div>
+<!-- ===== FILTER BAR ===== -->
+<div class="filter-bar" role="group" aria-label="Quick filters" id="filter-bar">
+  <span class="filter-bar-label">Filter</span>
+  <button class="filter-chip active" aria-pressed="true" type="button" data-filter="all">All</button>
+  <button class="filter-chip" aria-pressed="false" type="button" data-filter="theatre">Theatre</button>
+  <button class="filter-chip" aria-pressed="false" type="button" data-filter="markets">Markets</button>
+  <button class="filter-chip" aria-pressed="false" type="button" data-filter="festivals">Festivals</button>
+  <button class="filter-chip" aria-pressed="false" type="button" data-filter="art">Open Studios</button>
+  <button class="filter-chip" aria-pressed="false" type="button" data-filter="wellness">Wellness</button>
+  <span class="filter-sep" aria-hidden="true"></span>
+  <button class="filter-chip" aria-pressed="false" type="button" data-filter="free">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><circle cx="5" cy="5" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5h3M5 3.5v3" stroke="currentColor" stroke-width="1.2"/></svg>
+    Free only
+  </button>
+  <div class="view-toggle" role="group" aria-label="View style">
+    <button class="view-btn active" aria-pressed="true" aria-label="Grid view" type="button">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="7" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="7" width="5" height="5" stroke="currentColor" stroke-width="1.2"/><rect x="7" y="7" width="5" height="5" stroke="currentColor" stroke-width="1.2"/></svg>
+    </button>
+    <button class="view-btn" aria-pressed="false" aria-label="List view" type="button">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><line x1="1" y1="3.5" x2="12" y2="3.5" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="6.5" x2="12" y2="6.5" stroke="currentColor" stroke-width="1.2"/><line x1="1" y1="9.5" x2="12" y2="9.5" stroke="currentColor" stroke-width="1.2"/></svg>
+    </button>
+  </div>
 </div>
 
-<!-- TOOLBAR -->
-<div class="toolbar" role="search">
-  <div class="search-wrap">
-    <span class="search-icon" aria-hidden="true">⌕</span>
-    <input type="search" id="search-input" placeholder="Search events, venues, areas..." aria-label="Search events" oninput="handleSearch()">
+<!-- ===== DATE TABS ===== -->
+<div role="tablist" aria-label="Filter by time period" class="date-tabs">
+  <button role="tab" class="date-tab active" aria-selected="true" type="button">Today</button>
+  <button role="tab" class="date-tab" aria-selected="false" type="button">Tomorrow</button>
+  <button role="tab" class="date-tab" aria-selected="false" type="button">This Weekend</button>
+  <button role="tab" class="date-tab" aria-selected="false" type="button">This Week</button>
+  <button role="tab" class="date-tab" aria-selected="false" type="button">This Month</button>
+</div>
+
+<!-- ===== SEARCH ROW ===== -->
+<div class="search-row" role="search">
+  <div class="search-row-input-wrap">
+    <span class="search-row-icon" aria-hidden="true">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="#999" stroke-width="1.2"/><line x1="9" y1="9" x2="12" y2="12" stroke="#999" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </span>
+    <input class="search-row-input" type="search" id="search-input" placeholder="Search events, venues, areas…" aria-label="Search events" oninput="handleSearch(this.value)">
   </div>
   <select class="filter-select" id="freq-filter" onchange="applyFilters()" aria-label="Filter by frequency">
     <option value="all">All dates</option>
@@ -981,238 +1623,295 @@
   <div class="result-count" id="result-count" aria-live="polite"></div>
 </div>
 
-<!-- MAIN CONTENT -->
-<main id="main">
-  <div class="section-label" id="section-label">All events</div>
-  <div class="event-grid" id="event-grid" role="list" aria-label="Community events"></div>
-</main>
+<!-- ===== MAIN LAYOUT ===== -->
+<div class="main-wrap">
 
-<!-- BOOKMARKS PANEL -->
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Filters">
+    <div class="sidebar-section">
+      <h2 class="sidebar-title" id="borough-filter-heading">Borough</h2>
+      <div class="borough-list" role="group" aria-labelledby="borough-filter-heading">
+        <button class="borough-item active" aria-pressed="true" type="button" onclick="filterBorough('all',this)"><span>All London</span><span class="borough-count">847</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('southwark',this)"><span>Southwark</span><span class="borough-count">64</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('lambeth',this)"><span>Lambeth</span><span class="borough-count">58</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('hackney',this)"><span>Hackney</span><span class="borough-count">72</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('tower-hamlets',this)"><span>Tower Hamlets</span><span class="borough-count">49</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('islington',this)"><span>Islington</span><span class="borough-count">45</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('camden',this)"><span>Camden</span><span class="borough-count">67</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('lewisham',this)"><span>Lewisham</span><span class="borough-count">41</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('wandsworth',this)"><span>Wandsworth</span><span class="borough-count">35</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('greenwich',this)"><span>Greenwich</span><span class="borough-count">42</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('bromley',this)"><span>Bromley</span><span class="borough-count">38</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterBorough('croydon',this)"><span>Croydon</span><span class="borough-count">29</span></button>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <h2 class="sidebar-title" id="radius-heading">Radius</h2>
+      <div class="radius-val" id="radius-display" aria-live="polite">5 mi</div>
+      <label for="radius-slider" class="radius-label">from my location</label>
+      <input type="range" id="radius-slider" class="radius-slider" min="1" max="20" value="5" aria-valuemin="1" aria-valuemax="20" aria-valuenow="5">
+    </div>
+    <div class="sidebar-section">
+      <h2 class="sidebar-title" id="cat-filter-heading">Category</h2>
+      <div class="borough-list" role="group" aria-labelledby="cat-filter-heading">
+        <button class="borough-item active" aria-pressed="true" type="button" onclick="filterCatSidebar('all',this)">All <span class="borough-count">48</span></button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterCatSidebar('theatre',this)">Theatre</button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterCatSidebar('markets',this)">Markets</button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterCatSidebar('festivals',this)">Festivals</button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterCatSidebar('art',this)">Art</button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterCatSidebar('create',this)">Create</button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterCatSidebar('wellness',this)">Wellness</button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterCatSidebar('fitness',this)">Fitness</button>
+        <button class="borough-item" aria-pressed="false" type="button" onclick="filterCatSidebar('eco',this)">Eco</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main id="main-content" tabindex="-1">
+    <div class="section-header">
+      <h2 class="section-title" id="section-label">All Events</h2>
+      <span class="section-count" id="section-count" aria-live="polite"></span>
+    </div>
+
+    <!-- Featured row -->
+    <div class="featured-row" id="featured-row" aria-label="Featured events"></div>
+
+    <!-- Events grid -->
+    <div class="events-grid" id="event-grid" role="list" aria-label="Community events"></div>
+
+    <!-- Borough section -->
+    <section class="borough-section" id="borough-section" aria-labelledby="borough-heading">
+      <h2 class="borough-grid-title" id="borough-heading">Browse by <span>Borough</span></h2>
+      <div class="borough-cards" role="list">
+        <a href="#" class="borough-card" role="listitem" aria-label="Hackney — 72 events"><div class="bc-name">Hackney</div><div class="bc-events">72</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.5"></span><span class="bc-dot" style="opacity:.35"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Lambeth — 58 events"><div class="bc-name">Lambeth</div><div class="bc-events">58</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.45"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Southwark — 64 events"><div class="bc-name">Southwark</div><div class="bc-events">64</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.5"></span><span class="bc-dot" style="opacity:.3"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Camden — 67 events"><div class="bc-name">Camden</div><div class="bc-events">67</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.6"></span><span class="bc-dot" style="opacity:.35"></span><span class="bc-dot" style="opacity:.25"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Tower Hamlets — 49 events"><div class="bc-name">Tower Hamlets</div><div class="bc-events">49</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.5"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Islington — 45 events"><div class="bc-name">Islington</div><div class="bc-events">45</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.4"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Lewisham — 41 events"><div class="bc-name">Lewisham</div><div class="bc-events">41</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.5"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Greenwich — 42 events"><div class="bc-name">Greenwich</div><div class="bc-events">42</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.4"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Wandsworth — 35 events"><div class="bc-name">Wandsworth</div><div class="bc-events">35</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.45"></span></div></a>
+        <a href="#" class="borough-card" role="listitem" aria-label="Bromley — 38 events"><div class="bc-name">Bromley</div><div class="bc-events">38</div><div class="bc-label">Events This Week</div><div class="bc-tags" aria-hidden="true"><span class="bc-dot"></span><span class="bc-dot" style="opacity:.5"></span></div></a>
+      </div>
+    </section>
+  </main>
+</div><!-- end .main-wrap -->
+
+<!-- ===== SOURCES STRIP ===== -->
+<section class="sources-strip" aria-labelledby="sources-heading">
+  <h2 class="sources-title" id="sources-heading">Data Sources — Updated Daily</h2>
+  <div class="sources-grid">
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="1" stroke="currentColor" stroke-width="1.2"/><line x1="6" y1="7" x2="14" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="6" y1="10" x2="14" y2="10" stroke="currentColor" stroke-width="1.2"/><line x1="6" y1="13" x2="10" y2="13" stroke="currentColor" stroke-width="1.2"/></svg></span>32 Borough Council Feeds</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="0.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 5V4a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="10" r="1.5" fill="currentColor"/></svg></span>Eventbrite API</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4h12v8H4z" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="4" x2="7" y2="12" stroke="currentColor" stroke-width="1.2"/><line x1="13" y1="4" x2="13" y2="12" stroke="currentColor" stroke-width="1.2"/><line x1="4" y1="16" x2="16" y2="16" stroke="currentColor" stroke-width="1.2"/></svg></span>London Theatre</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.2"/></svg></span>Meetup API</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" stroke="currentColor" stroke-width="1.2"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.2"/></svg></span>Time Out London</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="10" rx="0.5" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="6" x2="7" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="6" x2="13" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="17" y2="10" stroke="currentColor" stroke-width="1.2"/></svg></span>Ticketmaster</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3C6 3 3 7 3 11s7 7 7 7 7-3 7-7-3-8-7-8z" stroke="currentColor" stroke-width="1.2"/><path d="M7 9l1.5 4 1.5-2 1.5 2L13 9" stroke="currentColor" stroke-width="1.2"/></svg></span>London Farmers Markets</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.2"/><line x1="10" y1="3" x2="10" y2="17" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="10" x2="17" y2="10" stroke="currentColor" stroke-width="1.2"/></svg></span>Car Boot Junction</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" stroke="currentColor" stroke-width="1.2"/><rect x="6" y="6" width="8" height="8" stroke="currentColor" stroke-width="1"/></svg></span>Open House London</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="9" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M10 14v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="18" x2="13" y2="18" stroke="currentColor" stroke-width="1.2"/></svg></span>Visit London</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.8 5.5H17l-4.6 3.4 1.8 5.5L10 14l-4.2 3.4 1.8-5.5L3 8.5h5.2z" stroke="currentColor" stroke-width="1.2"/></svg></span>Google Places API</div>
+    <div class="source-badge"><span class="src-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M3 8h14" stroke="currentColor" stroke-width="1.2"/><path d="M8 4V8" stroke="currentColor" stroke-width="1.2"/></svg></span>Facebook Events API</div>
+  </div>
+</section>
+
+<!-- ===== NEWSLETTER ===== -->
+<section class="newsletter" aria-labelledby="newsletter-heading">
+  <div class="newsletter-inner">
+    <p class="newsletter-eyebrow">// Stay in the loop //</p>
+    <h2 class="newsletter-title" id="newsletter-heading">NEVER MISS<br>A THING</h2>
+    <p class="newsletter-desc">Weekly digest of the best community events across London zones 2–4, curated every Sunday morning.</p>
+    <form class="newsletter-form" action="https://formspree.io/f/meenedpl" method="POST" id="newsletter-form">
+      <input class="newsletter-input" type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
+      <button class="newsletter-btn" type="submit">Subscribe</button>
+    </form>
+    <p class="newsletter-note">No spam. Unsubscribe anytime. Used only to understand our readership.</p>
+    <p class="newsletter-success" id="newsletter-success">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-right:6px"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Subscribed! See you Sunday.
+    </p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer role="contentinfo">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <svg width="22" height="22" viewBox="0 0 28 28" fill="none" class="footer-pixel" aria-hidden="true">
+          <rect x="0" y="0" width="4" height="4" fill="#fff"/><rect x="8" y="0" width="4" height="4" fill="#fff"/><rect x="12" y="0" width="8" height="4" fill="#fff"/><rect x="24" y="0" width="4" height="4" fill="#fff"/><rect x="0" y="4" width="4" height="4" fill="#fff"/><rect x="12" y="4" width="4" height="4" fill="#fff"/><rect x="24" y="4" width="4" height="4" fill="#fff"/><rect x="0" y="8" width="4" height="4" fill="#fff"/><rect x="8" y="8" width="8" height="4" fill="#fff"/><rect x="20" y="8" width="8" height="4" fill="#fff"/><rect x="0" y="20" width="16" height="4" fill="#fff"/><rect x="24" y="20" width="4" height="4" fill="#fff"/>
+        </svg>
+        LDN.DIRECTORY
+      </div>
+      <p class="footer-desc">Aggregating London's community life — markets, theatre, car boots, festivals, wellness and more — across zones 2–4. Updated daily from official borough feeds and event APIs.</p>
+    </div>
+    <nav aria-label="Discover events">
+      <div class="footer-col-title">Discover</div>
+      <div class="footer-links">
+        <a href="#">Events This Week</a>
+        <a href="#">Free Events</a>
+        <a href="#">Family Friendly</a>
+        <a href="#">Open Air</a>
+        <a href="#">Late Night</a>
+        <a href="#">New This Month</a>
+      </div>
+    </nav>
+    <nav aria-label="Categories">
+      <div class="footer-col-title">Categories</div>
+      <div class="footer-links">
+        <a href="#">Theatre</a>
+        <a href="#">Markets &amp; Fairs</a>
+        <a href="#">Car Boot Sales</a>
+        <a href="#">Festivals</a>
+        <a href="#">Art &amp; Studios</a>
+        <a href="#">Wellness</a>
+        <a href="#">Fitness</a>
+      </div>
+    </nav>
+    <nav aria-label="Boroughs">
+      <div class="footer-col-title">Boroughs</div>
+      <div class="footer-links">
+        <a href="#">All Boroughs</a>
+        <a href="#">Inner London</a>
+        <a href="#">South London</a>
+        <a href="#">East London</a>
+        <a href="#">North London</a>
+        <a href="#">West London</a>
+      </div>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 LDN.DIRECTORY — Community data for London</span>
+    <span>32 Boroughs · 12 APIs · Daily Updates</span>
+    <span>Built in London</span>
+  </div>
+</footer>
+
+<!-- ===== OVERLAYS & PANELS ===== -->
 <div class="overlay" id="overlay" onclick="togglePanel()"></div>
-<aside class="bookmarks-panel" id="bm-panel" aria-label="Saved events" role="complementary">
+
+<aside class="bookmarks-panel" id="bm-panel" aria-label="Saved events" role="complementary" tabindex="-1">
   <div class="panel-header">
-    <div class="panel-title">SAVED</div>
-    <button class="panel-close" onclick="togglePanel()" aria-label="Close saved events">✕</button>
+    <div class="panel-title">Saved Events</div>
+    <button class="panel-close" onclick="togglePanel()" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="3" y1="3" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="3" x2="3" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
   </div>
   <div class="panel-body" id="panel-body"></div>
 </aside>
 
-<!-- EVENT DETAIL MODAL -->
+<!-- ===== EVENT DETAIL MODAL ===== -->
 <div class="modal-backdrop" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="modal-event-title">
   <div class="modal">
     <div class="modal-header">
       <h2>Event Details</h2>
-      <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="3" y1="3" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="3" x2="3" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
     </div>
     <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
 
-<!-- SUBMIT EVENT MODAL -->
+<!-- ===== SUBMIT EVENT MODAL ===== -->
 <div class="modal-backdrop" id="submit-modal" role="dialog" aria-modal="true" aria-labelledby="submit-title">
   <div class="modal">
     <div class="modal-header">
       <h2 id="submit-title">Submit an Event</h2>
-      <button class="modal-close" onclick="closeSubmit()" aria-label="Close">✕</button>
+      <button class="modal-close" onclick="closeSubmit()" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="3" y1="3" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="3" x2="3" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
     </div>
     <div class="modal-body">
-      <div class="form-note">
-        Your submission will be reviewed and added within 48 hours. Events must be in London zones 2–4 and open to the community.
-      </div>
-      <!-- Replace ACTION with your Formspree endpoint e.g. https://formspree.io/f/XXXXXXXX -->
+      <div class="form-note">Your submission will be reviewed and listed within 48hrs. Events must be in London zones 2–4 and open to the community.</div>
       <form action="https://formspree.io/f/xvzlzldp" method="POST" id="submit-form">
         <div class="form-row">
-          <div class="form-group">
-            <label for="f-name">Event name *</label>
-            <input type="text" id="f-name" name="event_name" required placeholder="e.g. Crystal Palace Car Boot">
-          </div>
-          <div class="form-group">
-            <label for="f-cat">Category *</label>
-            <select id="f-cat" name="category" required>
-              <option value="">Select...</option>
-              <option>Theatre</option>
-              <option>Markets</option>
-              <option>Festivals</option>
-              <option>Art</option>
-              <option>Create</option>
-              <option>Wellness</option>
-              <option>Fitness</option>
-              <option>Eco</option>
-            </select>
-          </div>
+          <div class="form-group"><label for="f-name">Event name *</label><input type="text" id="f-name" name="event_name" required placeholder="e.g. Crystal Palace Car Boot"></div>
+          <div class="form-group"><label for="f-cat">Category *</label><select id="f-cat" name="category" required><option value="">Select…</option><option>Theatre</option><option>Markets</option><option>Festivals</option><option>Art</option><option>Create</option><option>Wellness</option><option>Fitness</option><option>Eco</option></select></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label for="f-venue">Venue name *</label>
-            <input type="text" id="f-venue" name="venue" required placeholder="e.g. Finsbury Park Theatre">
-          </div>
-          <div class="form-group">
-            <label for="f-area">Area / Borough *</label>
-            <input type="text" id="f-area" name="area" required placeholder="e.g. Crystal Palace, SE19">
-          </div>
+          <div class="form-group"><label for="f-venue">Venue *</label><input type="text" id="f-venue" name="venue" required placeholder="e.g. Finsbury Park Theatre"></div>
+          <div class="form-group"><label for="f-area">Area / Borough *</label><input type="text" id="f-area" name="area" required placeholder="e.g. Crystal Palace, SE19"></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label for="f-date">Date / Frequency *</label>
-            <input type="text" id="f-date" name="date" required placeholder="e.g. Every Sunday or 15 Jun 2025">
-          </div>
-          <div class="form-group">
-            <label for="f-time">Time</label>
-            <input type="text" id="f-time" name="time" placeholder="e.g. 10am – 2pm">
-          </div>
+          <div class="form-group"><label for="f-date">Date / Frequency *</label><input type="text" id="f-date" name="date" required placeholder="e.g. Every Sunday or 15 Jun 2025"></div>
+          <div class="form-group"><label for="f-time">Time</label><input type="text" id="f-time" name="time" placeholder="e.g. 10am – 2pm"></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label for="f-price">Price</label>
-            <input type="text" id="f-price" name="price" placeholder="e.g. Free or £5">
-          </div>
-          <div class="form-group">
-            <label for="f-link">Event URL</label>
-            <input type="url" id="f-link" name="url" placeholder="https://...">
-          </div>
+          <div class="form-group"><label for="f-price">Price</label><input type="text" id="f-price" name="price" placeholder="e.g. Free or £5"></div>
+          <div class="form-group"><label for="f-link">Event URL</label><input type="url" id="f-link" name="url" placeholder="https://…"></div>
         </div>
-        <div class="form-group">
-          <label for="f-desc">Description</label>
-          <textarea id="f-desc" name="description" placeholder="Tell us about the event in 1–2 sentences..."></textarea>
-        </div>
-        <div class="form-group">
-          <label for="f-email">Your email (for confirmation)</label>
-          <input type="email" id="f-email" name="_replyto" placeholder="hello@example.com">
-        </div>
-        <input type="hidden" name="_subject" value="New LDN Directory Event Submission">
-        <div class="modal-actions">
-          <button type="submit" class="btn-primary">Submit Event →</button>
-          <button type="button" class="btn-secondary" onclick="closeSubmit()">Cancel</button>
-        </div>
+        <div class="form-group"><label for="f-desc">Description</label><textarea id="f-desc" name="description" placeholder="Tell us about the event in 1–2 sentences…"></textarea></div>
+        <div class="form-group"><label for="f-contact">Your name / contact</label><input type="text" id="f-contact" name="contact" placeholder="For follow-up questions"></div>
+        <button class="btn-primary" type="submit" style="width:100%;margin-top:0.5rem">Submit Event →</button>
       </form>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div>
-      <div class="footer-logo">LDN.DIRECTORY</div>
-      <div class="footer-tagline">
-        Community events across London zones 2–4.<br>
-        Theatre · Markets · Festivals · Art · Create<br>
-        Wellness · Fitness · Eco<br><br>
-        Updated daily. Always free.
-      </div>
-    </div>
-    <div>
-      <div class="footer-col-title">Explore</div>
-      <ul class="footer-links">
-        <li onclick="filterCat('theatre')">Theatre</li>
-        <li onclick="filterCat('markets')">Markets</li>
-        <li onclick="filterCat('festivals')">Festivals</li>
-        <li onclick="filterCat('art')">Art</li>
-        <li onclick="filterCat('create')">Create</li>
-        <li onclick="filterCat('wellness')">Wellness</li>
-        <li onclick="filterCat('fitness')">Fitness</li>
-        <li onclick="filterCat('eco')">Eco</li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">Areas</div>
-      <ul class="footer-links">
-        <li>South London</li>
-        <li>North London</li>
-        <li>East London</li>
-        <li>West London</li>
-        <li>Zone 2</li>
-        <li>Zone 3</li>
-        <li>Zone 4</li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-col-title">About</div>
-      <ul class="footer-links">
-        <li onclick="openSubmit()">Submit an event</li>
-        <li>About LDN Directory</li>
-        <li>Data sources</li>
-        <li>Accessibility</li>
-        <li>Privacy policy</li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">© 2025 LDN DIRECTORY — Built for London communities</div>
-    <div class="footer-copy">Data: Eventbrite · Meetup · Visit London · Borough sites · Farmers' Market · Car Boot Junction</div>
-  </div>
-</footer>
-
 <script>
 // =====================
-// EVENT DATABASE
+// EVENTS DATA
 // =====================
 const EVENTS = [
   // THEATRE
-  { id: 1, cat: 'theatre', title: 'The Convert', venue: 'Almeida Theatre', area: 'Islington', zone: 'north', date: 'Until 7 Jun', time: '7:30pm', price: '£10–£42', free: false, recurrence: 'weekly', featured: true, desc: 'Danai Gurira\'s gripping drama set in colonial Rhodesia. A young woman\'s crisis of faith and identity. Powerful ensemble work at one of London\'s finest studio theatres.' },
-  { id: 2, cat: 'theatre', title: 'Late Night Comedy Lab', venue: 'King\'s Head Theatre', area: 'Islington', zone: 'north', date: 'Every Friday', time: '9pm', price: '£8', free: false, recurrence: 'weekly', featured: false, desc: 'New material nights from emerging stand-up and sketch comedians in London\'s oldest pub theatre. Pay what you can on the door.' },
-  { id: 3, cat: 'theatre', title: 'Community Playreading', venue: 'Finsbury Park Theatre', area: 'Finsbury Park', zone: 'north', date: 'Every Monday', time: '7pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Open to all — join the weekly script reading group exploring new and classic works. No experience needed, scripts provided.' },
-  { id: 4, cat: 'theatre', title: 'Sunday Matinée: Brecht', venue: 'Almeida Theatre', area: 'Islington', zone: 'north', date: 'Every Sunday', time: '3pm', price: '£15', free: false, recurrence: 'weekly', featured: false, desc: 'Afternoon performances of classic Brecht works, with post-show discussion with the creative team.' },
+  { id:1, cat:'theatre', title:'The Ferryman', venue:'Brixton House', area:'Brixton', zone:'south', date:'Tue–Sat', time:'7:30pm', sortHour:19.5, price:'£16–£30', free:false, recurrence:'weekly', featured:true, desc:'Jez Butterworth\'s epic family drama set in Northern Ireland. Intimate staging in Brixton House\'s main theatre.' },
+  { id:2, cat:'theatre', title:'Bold Tendencies Theatre Night', venue:'Bold Tendencies, Peckham', area:'Peckham', zone:'south', date:'Every Friday', time:'8pm', sortHour:20, price:'£10', free:false, recurrence:'weekly', featured:false, desc:'Site-specific performances on the top floors of the Peckham car park. Part installation, part theatre, part experience.' },
+  { id:3, cat:'theatre', title:'The Yard: New Writing', venue:'The Yard Theatre', area:'Hackney Wick', zone:'east', date:'Runs Jun', time:'7:30pm', sortHour:19.5, price:'£12', free:false, recurrence:'monthly', featured:false, desc:'Platform programme for emerging theatre makers. Short works in progress in a unique warehouse space.' },
+  { id:4, cat:'theatre', title:'Bush Theatre Sunday Matinee', venue:'Bush Theatre', area:'Shepherd\'s Bush', zone:'west', date:'Every Sunday', time:'3pm', sortHour:15, price:'£14', free:false, recurrence:'weekly', featured:false, desc:'Sunday matinee programme at one of London\'s most celebrated new writing houses.' },
+  { id:5, cat:'theatre', title:'Hackney Empire Comedy Night', venue:'Hackney Empire', area:'Hackney', zone:'east', date:'Monthly – 1st Friday', time:'8pm', sortHour:20, price:'£15', free:false, recurrence:'monthly', featured:false, desc:'Monthly comedy showcase at the magnificent Hackney Empire. Four acts, one night. Book in advance.' },
+  { id:6, cat:'theatre', title:'New Writing Festival', venue:'King\'s Head Theatre', area:'Islington', zone:'north', date:'1–8 Jun', time:'7:30pm', sortHour:19.5, price:'£10', free:false, recurrence:'monthly', featured:false, desc:'Week-long festival of new plays by emerging writers. Five world premieres across eight days.' },
 
   // MARKETS
-  { id: 5, cat: 'markets', title: 'Crystal Palace Car Boot', venue: 'Crystal Palace Athletics Stadium', area: 'Crystal Palace', zone: 'south', date: 'Every Sunday', time: '7am – 2pm', price: '£1 entry', free: false, recurrence: 'weekly', featured: true, desc: 'One of London\'s most beloved car boots. Hundreds of stalls, vintage finds, records, homewares and street food. Go early for the best picks.' },
-  { id: 6, cat: 'markets', title: 'Wimbledon Farmers\' Market', venue: 'Wimbledon Park Primary School', area: 'Wimbledon', zone: 'south', date: 'Every Saturday', time: '9am – 1pm', price: 'Free entry', free: true, recurrence: 'weekly', featured: false, desc: 'London Farmers\' Markets certified. Fresh produce direct from farms within 100 miles of the M25. Meat, cheese, veg, bread, plants.' },
-  { id: 7, cat: 'markets', title: 'Battersea Boot Sale', venue: 'Battersea Arts Centre', area: 'Battersea', zone: 'south', date: '1st & 3rd Sunday', time: '8am – 2pm', price: '50p entry', free: false, recurrence: 'monthly', featured: false, desc: 'Curated car boot meets flea market in the grand surroundings of the BAC. Mix of antiques, vintage clothing, art and curiosities.' },
-  { id: 8, cat: 'markets', title: 'Brockley Flea Market', venue: 'Hob Mavis, Brockley', area: 'Brockley', zone: 'south', date: 'Monthly – last Sunday', time: '10am – 4pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'South East London\'s indie flea market. Independent traders, vintage fashion, records, ceramics and zines.' },
-  { id: 9, cat: 'markets', title: 'Streatham Farmers\' Market', venue: 'Streatham High Road', area: 'Streatham', zone: 'south', date: 'Every Saturday', time: '9am – 2pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'LFM-certified weekly market. Seasonal veg, artisan bread, free-range eggs, honey, and more from local and regional growers.' },
+  { id:7, cat:'markets', title:'Crystal Palace Food Market', venue:'Haynes Lane, SE19', area:'Crystal Palace', zone:'south', date:'Every Saturday', time:'10am – 3pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:true, desc:'Brilliant weekly market with street food, artisan producers, fresh veg, baked goods and more. One of south London\'s best.' },
+  { id:8, cat:'markets', title:'Brockley Market', venue:'Lewisham College, SE4', area:'Brockley', zone:'south', date:'Every Saturday', time:'10am – 2pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Award-winning street food and artisan produce market. Hot food, preserves, bread, cheese, vegetables and plants.' },
+  { id:9, cat:'markets', title:'Walthamstow Market', venue:'Hoe Street, E17', area:'Walthamstow', zone:'east', date:'Mon–Sat', time:'8am – 5pm', sortHour:8, price:'Free', free:true, recurrence:'daily', featured:false, desc:'Europe\'s longest outdoor market. Fresh produce, fabrics, electronics, food — a genuine slice of East London life.' },
+  { id:10, cat:'markets', title:'Herne Hill Market', venue:'Railton Road, SE24', area:'Herne Hill', zone:'south', date:'Every Sunday', time:'10am – 2pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Weekly community market with fresh produce, artisan food, vintage and crafts. Thriving local institution.' },
+  { id:11, cat:'markets', title:'Netil Market', venue:'Westgate Street, E8', area:'London Fields', zone:'east', date:'Every Saturday', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Independent makers, vintage clothing, street food and resident café in a converted garage in London Fields.' },
 
   // FESTIVALS
-  { id: 10, cat: 'festivals', title: 'Dulwich Festival', venue: 'Various venues, Dulwich', area: 'Dulwich', zone: 'south', date: 'Ongoing May', time: 'Various', price: 'Free–£15', free: false, recurrence: 'monthly', featured: true, desc: 'Annual community arts festival across Dulwich village. Open studios, live music, children\'s events, theatre and street performance throughout May.' },
-  { id: 11, cat: 'festivals', title: 'Wandsworth Arts Fringe', venue: 'Various, Wandsworth', area: 'Wandsworth', zone: 'south', date: '16–25 May', time: 'Various', price: 'Free–£12', free: false, recurrence: 'monthly', featured: false, desc: 'Borough-wide arts festival celebrating independent creative talent in Wandsworth. 200+ events across 10 days.' },
-  { id: 12, cat: 'festivals', title: 'Ealing Summer Festival', venue: 'Walpole Park, Ealing', area: 'Ealing', zone: 'west', date: '14 Jun', time: '12pm – 9pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Free all-day community festival in Walpole Park. Live music, food stalls, fairground rides, local stallholders.' },
-  { id: 13, cat: 'festivals', title: 'Lewisham People\'s Day', venue: 'Mountsfield Park', area: 'Catford', zone: 'south', date: '5 Jul', time: '12pm – 8pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'One of London\'s biggest free community festivals. Live music, dance, food, crafts, funfair and more for 10,000+ attendees.' },
+  { id:12, cat:'festivals', title:'Dulwich Festival', venue:'Various, Dulwich', area:'Dulwich', zone:'south', date:'Ongoing May', time:'Various', sortHour:11, price:'Free–£15', free:false, recurrence:'monthly', featured:true, desc:'South London\'s beloved arts festival spanning two weeks. Open studios, music, talks, community events across Dulwich.' },
+  { id:13, cat:'festivals', title:'Brockley Max', venue:'Various, Brockley', area:'Brockley', zone:'south', date:'6–15 Jun', time:'Various', sortHour:12, price:'Free–£10', free:false, recurrence:'monthly', featured:false, desc:'Brockley\'s arts and music festival — ten days of gigs, exhibitions, comedy and workshops across the neighbourhood.' },
+  { id:14, cat:'festivals', title:'Herne Hill Free Festival', venue:'Brockwell Park', area:'Herne Hill', zone:'south', date:'First Sunday Jun', time:'12pm – 8pm', sortHour:12, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Free outdoor festival in Brockwell Park. Live music, community stalls, food and entertainment.' },
 
   // ART
-  { id: 14, cat: 'art', title: 'Brentford Open Studios', venue: 'Various studios, Brentford', area: 'Brentford', zone: 'west', date: '24–25 May', time: '11am – 6pm', price: 'Free', free: true, recurrence: 'monthly', featured: true, desc: 'Over 40 artists open their studios across Brentford. Painting, sculpture, ceramics, printmaking, photography. Buy direct from the maker.' },
-  { id: 15, cat: 'art', title: 'Brixton Art Trail', venue: 'Various venues, Brixton', area: 'Brixton', zone: 'south', date: '7–8 Jun', time: '11am – 5pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Self-guided walking trail connecting artists\' studios, pop-up galleries and community spaces across Brixton and Stockwell.' },
-  { id: 16, cat: 'art', title: 'Highgate Open Studios', venue: 'Various, Highgate', area: 'Highgate', zone: 'north', date: '14–15 Jun', time: '11am – 6pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Annual open studios across Highgate village. Works spanning oil painting, ceramics, illustration and mixed media.' },
-  { id: 17, cat: 'art', title: 'Peckham 24', venue: 'Various, Peckham', area: 'Peckham', zone: 'south', date: '21–22 Jun', time: 'All hours', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: '24-hour art event across Peckham studios and warehouses. Performance, video, installation and painting from emerging artists.' },
+  { id:15, cat:'art', title:'Camberwell Art Trail', venue:'Various, Camberwell', area:'Camberwell', zone:'south', date:'28–29 Jun', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:true, desc:'Weekend open studios across Camberwell. 60+ artists open their doors in one of London\'s most creative neighbourhoods.' },
+  { id:16, cat:'art', title:'Hackney Open Studios', venue:'Various, Hackney', area:'Hackney', zone:'east', date:'7–8 Jun', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'80+ artists open their studios across Hackney. One of London\'s most anticipated open studio weekends.' },
+  { id:17, cat:'art', title:'Brentford Art Trail', venue:'Various, Brentford', area:'Brentford', zone:'west', date:'All Weekend', time:'11am – 5pm', sortHour:11, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Weekend open studios across Brentford. Artists from painters to sculptors, all welcome.' },
+  { id:18, cat:'art', title:'Peckham 24', venue:'Various, Peckham', area:'Peckham', zone:'south', date:'Jun 7–8', time:'All day', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'24-hour art marathon across Peckham. Exhibitions, pop-ups, performances and street art.' },
 
   // CREATE
-  { id: 18, cat: 'create', title: 'Wheel Throwing for Beginners', venue: 'Brentford Pottery Studio', area: 'Brentford', zone: 'west', date: 'Every Wednesday', time: '6:30pm – 9pm', price: '£45', free: false, recurrence: 'weekly', featured: true, desc: 'Learn to throw on the wheel in a relaxed, social studio environment. All clay and tools provided. Max 8 students per session.' },
-  { id: 19, cat: 'create', title: 'Life Drawing: Drop-In', venue: 'Brixton Art Studios', area: 'Brixton', zone: 'south', date: 'Every Tuesday', time: '7pm – 9pm', price: '£12', free: false, recurrence: 'weekly', featured: false, desc: 'Open life drawing sessions with a live model. No booking required, all abilities welcome. Bring your own materials or buy at the door.' },
-  { id: 20, cat: 'create', title: 'Screenprint Workshop', venue: 'Paper Tiger, Peckham', area: 'Peckham', zone: 'south', date: 'Monthly – 1st Saturday', time: '10am – 2pm', price: '£55', free: false, recurrence: 'monthly', featured: false, desc: 'Hands-on screen printing workshop. Design your own print to take home. Suitable for beginners and intermediates. Book in advance.' },
-  { id: 21, cat: 'create', title: 'Watercolour Mondays', venue: 'Artspace Peckham', area: 'Peckham', zone: 'south', date: 'Every Monday', time: '6pm – 8pm', price: '£15', free: false, recurrence: 'weekly', featured: false, desc: 'Weekly watercolour painting class for beginners and improvers. Guided by working illustrator. Materials available to buy.' },
+  { id:19, cat:'create', title:'Life Drawing: Drop-In', venue:'Brixton Art Studios', area:'Brixton', zone:'south', date:'Every Tuesday', time:'7pm – 9pm', sortHour:19, price:'£12', free:false, recurrence:'weekly', featured:false, desc:'Open life drawing sessions with a live model. No booking required, all abilities welcome.' },
+  { id:20, cat:'create', title:'Screenprint Workshop', venue:'Paper Tiger, Peckham', area:'Peckham', zone:'south', date:'Monthly – 1st Saturday', time:'10am – 2pm', sortHour:10, price:'£55', free:false, recurrence:'monthly', featured:false, desc:'Hands-on screen printing workshop. Design your own print to take home.' },
+  { id:21, cat:'create', title:'Watercolour Mondays', venue:'Artspace Peckham', area:'Peckham', zone:'south', date:'Every Monday', time:'6pm – 8pm', sortHour:18, price:'£15', free:false, recurrence:'weekly', featured:false, desc:'Weekly watercolour class for beginners and improvers. Materials available to buy.' },
+  { id:22, cat:'create', title:'Riso Print Workshop', venue:'Peckham Print Studios', area:'Peckham', zone:'south', date:'Monthly – 3rd Saturday', time:'11am – 3pm', sortHour:11, price:'£40', free:false, recurrence:'monthly', featured:false, desc:'Learn Risograph printing — zines, posters, book covers. All materials included. Take home 10 prints.' },
+  { id:23, cat:'create', title:'Darkroom Photography', venue:'Aperture Hackney', area:'Hackney', zone:'east', date:'Monthly – 2nd Saturday', time:'10am – 4pm', sortHour:10, price:'£60', free:false, recurrence:'monthly', featured:false, desc:'Full day darkroom workshop — shoot on film and develop your own prints. Max 6 participants.' },
 
   // WELLNESS
-  { id: 22, cat: 'wellness', title: 'Ecstatic Dance Peckham', venue: 'Bussey Building', area: 'Peckham', zone: 'south', date: 'Every Saturday', time: '10am – 1pm', price: '£12', free: false, recurrence: 'weekly', featured: true, desc: 'Freeform conscious dance — no steps, no phones, no alcohol. DJ-led journey through world rhythms. Welcome to all bodies, abilities and experience levels.' },
-  { id: 23, cat: 'wellness', title: 'Sound Bath: Beckenham', venue: 'Beckenham Place Mansion', area: 'Beckenham', zone: 'south', date: '2nd & 4th Sunday', time: '2pm – 3:30pm', price: '£18', free: false, recurrence: 'weekly', featured: false, desc: 'Immersive group sound healing with crystal singing bowls and gongs in the stunning Beckenham Place mansion. Mats provided.' },
-  { id: 24, cat: 'wellness', title: 'Reformer Pilates: Battersea', venue: 'Pilates Works, Battersea', area: 'Battersea', zone: 'south', date: 'Daily', time: 'Various slots', price: '£24', free: false, recurrence: 'daily', featured: false, desc: 'Small-group reformer Pilates for all abilities. Studios overlooking Battersea Park. First class 50% off for new clients.' },
-  { id: 25, cat: 'wellness', title: 'Yoga in the Park', venue: 'Brockwell Park', area: 'Herne Hill', zone: 'south', date: 'Every Sunday', time: '9am – 10am', price: 'Free (donations)', free: true, recurrence: 'weekly', featured: false, desc: 'Outdoor community yoga class in Brockwell Park. All levels. Bring your own mat. Suggested £3–5 donation to the teacher.' },
+  { id:24, cat:'wellness', title:'Ecstatic Dance Peckham', venue:'Bussey Building', area:'Peckham', zone:'south', date:'Every Saturday', time:'10am – 1pm', sortHour:10, price:'£12', free:false, recurrence:'weekly', featured:true, desc:'Freeform conscious dance — no steps, no phones, no alcohol. DJ-led journey through world rhythms. Welcome to all.' },
+  { id:25, cat:'wellness', title:'Sound Bath: Beckenham', venue:'Beckenham Place Mansion', area:'Beckenham', zone:'south', date:'2nd & 4th Sunday', time:'2pm – 3:30pm', sortHour:14, price:'£18', free:false, recurrence:'weekly', featured:false, desc:'Immersive group sound healing with crystal singing bowls and gongs. Mats provided.' },
+  { id:26, cat:'wellness', title:'Yoga in the Park', venue:'Brockwell Park', area:'Herne Hill', zone:'south', date:'Every Sunday', time:'9am – 10am', sortHour:9, price:'Free (donations)', free:true, recurrence:'weekly', featured:false, desc:'Outdoor community yoga class. All levels. Bring your own mat. Suggested £3–5 donation.' },
+  { id:27, cat:'wellness', title:'Kundalini Yoga: Brixton', venue:'Brixton Recreation Centre', area:'Brixton', zone:'south', date:'Every Thursday', time:'7:30pm', sortHour:19.5, price:'£10', free:false, recurrence:'weekly', featured:false, desc:'Traditional Kundalini yoga with chanting, breathing and meditation. Mats available.' },
+  { id:28, cat:'wellness', title:'Breathwork & Cold Water', venue:'Brockwell Lido', area:'Herne Hill', zone:'south', date:'Monthly – last Saturday', time:'7am – 9am', sortHour:7, price:'£25', free:false, recurrence:'monthly', featured:false, desc:'Wim Hof breathing followed by guided cold water immersion at the iconic Brockwell Lido.' },
 
   // FITNESS
-  { id: 26, cat: 'fitness', title: 'Tooting Bec Runners', venue: 'Tooting Bec Lido', area: 'Tooting', zone: 'south', date: 'Every Thursday', time: '7pm', price: 'Free', free: true, recurrence: 'weekly', featured: true, desc: 'Community run club meeting at the lido. Routes from 5K to 10K, all paces welcome. Warm-up at the lido, drinks at The Wheatsheaf after.' },
-  { id: 27, cat: 'fitness', title: 'Battersea Park Parkrun', venue: 'Battersea Park', area: 'Battersea', zone: 'south', date: 'Every Saturday', time: '9am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Free 5K timed run in Battersea Park. Register once at parkrun.org.uk, then run, jog or walk any time. Community-run event.' },
-  { id: 28, cat: 'fitness', title: 'Richmond Park Cycling Club', venue: 'Robin Hood Gate, Richmond', area: 'Richmond', zone: 'west', date: 'Every Sunday', time: '8am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Group road ride through Richmond Park. 2 pace groups: steady (15mph avg) and sportive (20mph avg). Bring a road or hybrid bike.' },
-  { id: 29, cat: 'fitness', title: 'Clapham Calisthenics', venue: 'Clapham Common outdoor gym', area: 'Clapham', zone: 'south', date: 'Every Tuesday & Saturday', time: '7am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Community bodyweight training on the outdoor bars. Coached session, all fitness levels. No equipment needed.' },
+  { id:29, cat:'fitness', title:'Tooting Bec Runners', venue:'Tooting Bec Lido', area:'Tooting', zone:'south', date:'Every Thursday', time:'7pm', sortHour:19, price:'Free', free:true, recurrence:'weekly', featured:true, desc:'Community run club meeting at the lido. Routes from 5K to 10K, all paces welcome.' },
+  { id:30, cat:'fitness', title:'Battersea Park Parkrun', venue:'Battersea Park', area:'Battersea', zone:'south', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run in Battersea Park. Register once at parkrun.org.uk.' },
+  { id:31, cat:'fitness', title:'Richmond Park Cycling Club', venue:'Robin Hood Gate', area:'Richmond', zone:'west', date:'Every Sunday', time:'8am', sortHour:8, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Group road ride through Richmond Park. Two pace groups: steady and sportive. Bring a road or hybrid bike.' },
+  { id:32, cat:'fitness', title:'Clapham Calisthenics', venue:'Clapham Common outdoor gym', area:'Clapham', zone:'south', date:'Tue & Sat', time:'7am', sortHour:7, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Community bodyweight training on the outdoor bars. Coached session, all fitness levels.' },
+  { id:33, cat:'fitness', title:'South Bank Sprint Club', venue:'Hungerford Bridge steps', area:'South Bank', zone:'south', date:'Every Wednesday', time:'6:30pm', sortHour:18.5, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'HIIT track sessions on the South Bank. Running, stairs, circuits. All paces welcome.' },
+  { id:34, cat:'fitness', title:'Hackney Marshes Running Group', venue:'Hackney Marshes', area:'Hackney', zone:'east', date:'Every Sunday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Sunday morning run across the Marshes. Long and short options. Friendly East London community.' },
 
   // ECO
-  { id: 30, cat: 'eco', title: 'Deptford Creek Litter Pick', venue: 'Deptford Creek', area: 'Deptford', zone: 'south', date: 'Monthly – 3rd Sunday', time: '10am – 12pm', price: 'Free', free: true, recurrence: 'monthly', featured: true, desc: 'Join the Deptford Creek Waterway Recovery team for a monthly litter pick along one of London\'s most biodiverse waterways. Equipment provided.' },
-  { id: 31, cat: 'eco', title: 'Chiswick Riverside Clean-Up', venue: 'Chiswick Pier', area: 'Chiswick', zone: 'west', date: 'Every 2nd Saturday', time: '9am – 11am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Thames riverside litter pick from Chiswick Pier. Part of the Thames21 initiative. Gloves and bags provided — just bring boots.' },
-  { id: 32, cat: 'eco', title: 'Clapham Common Volunteer Day', venue: 'Clapham Common', area: 'Clapham', zone: 'south', date: 'Every Sunday', time: '10am – 1pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Friends of Clapham Common — weekly volunteer morning. Litter picking, tree planting, and habitat maintenance. Refreshments provided.' },
-  { id: 33, cat: 'eco', title: 'Peckham Park Greening', venue: 'Peckham Rye Park', area: 'Peckham', zone: 'south', date: '1st Saturday monthly', time: '10am – 1pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Community rewilding project in Peckham Rye. Plant wildflowers, build bug hotels, and help restore a vital green corridor.' },
-
-  // MORE EVENTS
-  { id: 34, cat: 'theatre', title: 'New Writing Festival', venue: 'King\'s Head Theatre', area: 'Islington', zone: 'north', date: '1–8 Jun', time: '7:30pm', price: '£10', free: false, recurrence: 'monthly', featured: false, desc: 'Week-long festival of new plays by emerging writers. Five world premieres across eight days.' },
-  { id: 35, cat: 'markets', title: 'Herne Hill Market', venue: 'Railton Road, Herne Hill', area: 'Herne Hill', zone: 'south', date: 'Every Sunday', time: '10am – 2pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Weekly community market with fresh produce, artisan food, vintage and crafts. Thriving local institution on Railton Road.' },
-  { id: 36, cat: 'create', title: 'Riso Print Workshop', venue: 'Peckham Print Studios', area: 'Peckham', zone: 'south', date: 'Monthly – 3rd Saturday', time: '11am – 3pm', price: '£40', free: false, recurrence: 'monthly', featured: false, desc: 'Learn Risograph printing — zines, posters, book covers. All materials included. Take home 10 prints.' },
-  { id: 37, cat: 'wellness', title: 'Breathwork & Cold Water', venue: 'Brockwell Lido', area: 'Herne Hill', zone: 'south', date: 'Monthly – last Saturday', time: '7am – 9am', price: '£25', free: false, recurrence: 'monthly', featured: false, desc: 'Wim Hof breathing techniques followed by guided cold water immersion at the iconic Brockwell Lido. Transformative and social.' },
-  { id: 38, cat: 'fitness', title: 'South Bank Sprint Club', venue: 'Hungerford Bridge steps', area: 'South Bank', zone: 'south', date: 'Every Wednesday', time: '6:30pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'HIIT track sessions on the South Bank with views to match. Running, stairs, circuits. All paces from 5K to marathon runners.' },
-  { id: 39, cat: 'eco', title: 'Wandsworth Common Wildlife Survey', venue: 'Wandsworth Common', area: 'Wandsworth', zone: 'south', date: 'Quarterly – check website', time: '9am – 12pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Help survey birds, mammals and invertebrates on Wandsworth Common. Training provided. Part of the national biodiversity recording scheme.' },
-  { id: 40, cat: 'art', title: 'Camberwell Art Trail', venue: 'Various, Camberwell', area: 'Camberwell', zone: 'south', date: '28–29 Jun', time: '11am – 6pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Weekend open studios across Camberwell. 60+ artists open their doors in one of London\'s most creative neighbourhoods.' },
-  { id: 41, cat: 'festivals', title: 'Brockley Max', venue: 'Various, Brockley', area: 'Brockley', zone: 'south', date: '6–15 Jun', time: 'Various', price: 'Free–£10', free: false, recurrence: 'monthly', featured: false, desc: 'Brockley\'s arts and music festival, ten days of gigs, exhibitions, comedy and workshops across the neighbourhood.' },
-  { id: 42, cat: 'wellness', title: 'Kundalini Yoga: Brixton', venue: 'Brixton Recreation Centre', area: 'Brixton', zone: 'south', date: 'Every Thursday', time: '7:30pm', price: '£10', free: false, recurrence: 'weekly', featured: false, desc: 'Traditional Kundalini yoga with chanting, breathing and meditation. Suitable for beginners. Mats available.' },
-  { id: 43, cat: 'fitness', title: 'Hackney Marshes Running Group', venue: 'Hackney Marshes', area: 'Hackney', zone: 'east', date: 'Every Sunday', time: '9am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Sunday morning run across the Marshes. Long run (10–15 miles) and shorter option (5–7 miles). Friendly East London running community.' },
-  { id: 44, cat: 'eco', title: 'Lee Valley Waterway Clean-Up', venue: 'Tottenham Lock', area: 'Tottenham', zone: 'east', date: 'Monthly – 2nd Sunday', time: '10am – 1pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Canal and towpath litter picking along the beautiful Lee Valley. Canal & River Trust partnership event. All welcome.' },
-  { id: 45, cat: 'markets', title: 'Walthamstow Market', venue: 'Hoe Street, Walthamstow', area: 'Walthamstow', zone: 'east', date: 'Mon–Sat', time: '8am – 5pm', price: 'Free', free: true, recurrence: 'daily', featured: false, desc: 'Europe\'s longest outdoor market. Fresh produce, fabrics, electronics, food — a genuine slice of East London life. Daily except Sunday.' },
-  { id: 46, cat: 'art', title: 'Hackney Open Studios', venue: 'Various, Hackney', area: 'Hackney', zone: 'east', date: '7–8 Jun', time: '11am – 6pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: '80+ artists open their studios across Hackney. One of London\'s most anticipated open studio weekends.' },
-  { id: 47, cat: 'create', title: 'Darkroom Photography: Hackney', venue: 'Aperture Hackney', area: 'Hackney', zone: 'east', date: 'Monthly – 2nd Saturday', time: '10am – 4pm', price: '£60', free: false, recurrence: 'monthly', featured: false, desc: 'Full day darkroom workshop — shoot on film and develop your own prints. All chemicals and paper included. Max 6 participants.' },
-  { id: 48, cat: 'theatre', title: 'Hackney Empire Comedy Night', venue: 'Hackney Empire', area: 'Hackney', zone: 'east', date: 'Monthly – 1st Friday', time: '8pm', price: '£15', free: false, recurrence: 'monthly', featured: false, desc: 'Monthly comedy showcase at the magnificent Hackney Empire. Four acts, one night. Book in advance.' },
+  { id:35, cat:'eco', title:'Deptford Creek Litter Pick', venue:'Deptford Creek', area:'Deptford', zone:'south', date:'Monthly – 3rd Sunday', time:'10am – 12pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:true, desc:'Join the Deptford Creek Waterway Recovery team. Equipment provided. One of London\'s most biodiverse waterways.' },
+  { id:36, cat:'eco', title:'Chiswick Riverside Clean-Up', venue:'Chiswick Pier', area:'Chiswick', zone:'west', date:'Every 2nd Saturday', time:'9am – 11am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Thames riverside litter pick from Chiswick Pier. Part of the Thames21 initiative. Gloves and bags provided.' },
+  { id:37, cat:'eco', title:'Clapham Common Volunteer Day', venue:'Clapham Common', area:'Clapham', zone:'south', date:'Every Sunday', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Friends of Clapham Common — weekly volunteer morning. Litter picking, tree planting, habitat maintenance.' },
+  { id:38, cat:'eco', title:'Peckham Park Greening', venue:'Peckham Rye Park', area:'Peckham', zone:'south', date:'1st Saturday monthly', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Community rewilding project in Peckham Rye. Plant wildflowers, build bug hotels, restore green corridors.' },
+  { id:39, cat:'eco', title:'Lee Valley Waterway Clean-Up', venue:'Tottenham Lock', area:'Tottenham', zone:'east', date:'Monthly – 2nd Sunday', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Canal and towpath litter picking along the beautiful Lee Valley. Canal & River Trust partnership event.' },
+  { id:40, cat:'eco', title:'Wandsworth Common Wildlife Survey', venue:'Wandsworth Common', area:'Wandsworth', zone:'south', date:'Quarterly', time:'9am – 12pm', sortHour:9, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Help survey birds, mammals and invertebrates on Wandsworth Common. Training provided.' },
 ];
 
 // =====================
@@ -1222,32 +1921,122 @@ let currentCat = 'all';
 let bookmarks = JSON.parse(localStorage.getItem('ldn_bookmarks') || '[]');
 let filteredEvents = [...EVENTS];
 let searchTerm = '';
-let freqFilter = 'all';
-let priceFilter = 'all';
-let zoneFilter = 'all';
+let freeFilter = false;
 
 // =====================
 // INIT
 // =====================
 function init() {
-  renderFeatured();
+  setHeroDate();
+  buildTicker();
   applyFilters();
   updateBookmarkCount();
+  setupFilterBar();
+  setupDateTabs();
+  setupRadiusSlider();
+  document.getElementById('total-count').textContent = EVENTS.length;
 }
 
 // =====================
-// FEATURED
+// HERO DATE
 // =====================
-function renderFeatured() {
-  const featured = EVENTS.filter(e => e.featured);
-  const row = document.getElementById('featured-row');
-  row.innerHTML = featured.map(e => `
-    <div class="featured-card" onclick="openModal(${e.id})" role="button" tabindex="0" aria-label="${e.title} at ${e.venue}">
-      <div class="featured-label">${e.cat.toUpperCase()} · ${e.area}</div>
-      <div class="featured-title">${e.title}</div>
-      <div class="featured-venue">${e.venue} · ${e.date}</div>
-    </div>
-  `).join('');
+function setHeroDate() {
+  const now = new Date();
+  const opts = { weekday:'long', day:'numeric', month:'short' };
+  document.getElementById('hero-date').textContent = now.toLocaleDateString('en-GB', opts).toUpperCase();
+}
+
+// =====================
+// TICKER — today's events sorted earliest first
+// =====================
+function buildTicker() {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0=Sun,1=Mon...
+  const dayMap = { 0:'sunday', 1:'monday', 2:'tuesday', 3:'wednesday', 4:'thursday', 5:'friday', 6:'saturday' };
+  const todayStr = dayMap[dayOfWeek];
+
+  // Events that could plausibly run today
+  const todayEvents = EVENTS.filter(e => {
+    const d = e.date.toLowerCase();
+    if (e.recurrence === 'daily') return true;
+    if (d.includes(todayStr)) return true;
+    if (todayStr === 'saturday' && (d.includes('sat') || d.includes('weekend'))) return true;
+    if (todayStr === 'sunday' && (d.includes('sun') || d.includes('weekend'))) return true;
+    return false;
+  }).sort((a, b) => a.sortHour - b.sortHour);
+
+  // Use all events sorted by time if none match today
+  const source = todayEvents.length > 0 ? todayEvents : [...EVENTS].sort((a, b) => a.sortHour - b.sortHour);
+
+  const items = source.map(e =>
+    `<span>// ${e.time.toUpperCase()} &nbsp; ${e.title.toUpperCase()} &mdash; ${e.area.toUpperCase()}</span>`
+  ).join('');
+
+  const inner = document.getElementById('ticker-inner');
+  inner.innerHTML = items + items; // doubled for seamless loop
+}
+
+// =====================
+// FILTER BAR CHIPS
+// =====================
+function setupFilterBar() {
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const f = chip.dataset.filter;
+      if (f === 'free') {
+        freeFilter = !freeFilter;
+        chip.classList.toggle('active', freeFilter);
+        chip.setAttribute('aria-pressed', freeFilter ? 'true' : 'false');
+      } else {
+        document.querySelectorAll('.filter-chip[data-filter]:not([data-filter="free"])').forEach(c => {
+          c.classList.remove('active');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        chip.classList.add('active');
+        chip.setAttribute('aria-pressed', 'true');
+        if (f && f !== 'all') {
+          filterCat(f);
+        } else {
+          filterCat('all');
+        }
+      }
+      applyFilters();
+    });
+  });
+}
+
+// =====================
+// DATE TABS
+// =====================
+function setupDateTabs() {
+  const tabs = document.querySelectorAll('.date-tab');
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected','true');
+    });
+    tab.addEventListener('keydown', e => {
+      let ni;
+      if (e.key === 'ArrowRight') ni = (i+1) % tabs.length;
+      if (e.key === 'ArrowLeft')  ni = (i-1+tabs.length) % tabs.length;
+      if (ni !== undefined) { tabs[ni].focus(); tabs[ni].click(); }
+    });
+  });
+}
+
+// =====================
+// RADIUS SLIDER
+// =====================
+function setupRadiusSlider() {
+  const slider = document.getElementById('radius-slider');
+  const display = document.getElementById('radius-display');
+  if (slider) {
+    slider.addEventListener('input', () => {
+      display.textContent = slider.value + ' mi';
+      slider.setAttribute('aria-valuenow', slider.value);
+    });
+  }
 }
 
 // =====================
@@ -1255,28 +2044,64 @@ function renderFeatured() {
 // =====================
 function filterCat(cat) {
   currentCat = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => {
+  document.querySelectorAll('.cat-pill').forEach(b => {
     b.classList.toggle('active', b.dataset.cat === cat);
   });
   applyFilters();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function handleSearch() {
-  searchTerm = document.getElementById('search-input').value.toLowerCase();
+function filterCatSidebar(cat, btn) {
+  document.querySelectorAll('.sidebar .borough-item').forEach(b => {
+    if (b.closest('[aria-labelledby="cat-filter-heading"]')) {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed','false');
+    }
+  });
+  btn.classList.add('active');
+  btn.setAttribute('aria-pressed','true');
+  filterCat(cat);
+}
+
+function filterBorough(borough, btn) {
+  document.querySelectorAll('.sidebar .borough-item').forEach(b => {
+    if (b.closest('[aria-labelledby="borough-filter-heading"]')) {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed','false');
+    }
+  });
+  btn.classList.add('active');
+  btn.setAttribute('aria-pressed','true');
   applyFilters();
 }
 
+function handleSearch(val) {
+  searchTerm = val.toLowerCase();
+  // sync both search inputs
+  const headerInput = document.getElementById('site-search');
+  const rowInput = document.getElementById('search-input');
+  if (document.activeElement === headerInput) rowInput.value = val;
+  if (document.activeElement === rowInput) headerInput.value = val;
+  applyFilters();
+}
+
+function handleSearchSubmit(e) {
+  e.preventDefault();
+  handleSearch(document.getElementById('site-search').value);
+  document.getElementById('main-content').scrollIntoView({ behavior:'smooth' });
+  return false;
+}
+
 function applyFilters() {
-  freqFilter = document.getElementById('freq-filter').value;
-  priceFilter = document.getElementById('price-filter').value;
-  zoneFilter = document.getElementById('zone-filter').value;
+  const freqFilter = document.getElementById('freq-filter').value;
+  const priceFilter = document.getElementById('price-filter').value;
+  const zoneFilter = document.getElementById('zone-filter').value;
 
   filteredEvents = EVENTS.filter(e => {
     if (currentCat !== 'all' && e.cat !== currentCat) return false;
     if (freqFilter !== 'all' && e.recurrence !== freqFilter) return false;
     if (priceFilter === 'free' && !e.free) return false;
     if (priceFilter === 'paid' && e.free) return false;
+    if (freeFilter && !e.free) return false;
     if (zoneFilter !== 'all' && e.zone !== zoneFilter) return false;
     if (searchTerm) {
       const hay = `${e.title} ${e.venue} ${e.area} ${e.desc}`.toLowerCase();
@@ -1285,10 +2110,66 @@ function applyFilters() {
     return true;
   });
 
+  renderFeatured();
   renderGrid();
-  document.getElementById('result-count').textContent = `${filteredEvents.length} event${filteredEvents.length !== 1 ? 's' : ''} found`;
-  const catLabel = currentCat === 'all' ? 'All events' : currentCat.charAt(0).toUpperCase() + currentCat.slice(1);
+
+  const count = filteredEvents.length;
+  document.getElementById('result-count').textContent = `${count} event${count !== 1 ? 's' : ''}`;
+  const catLabel = currentCat === 'all' ? 'All Events' : currentCat.charAt(0).toUpperCase() + currentCat.slice(1);
   document.getElementById('section-label').textContent = catLabel;
+  document.getElementById('section-count').textContent = `${count} found`;
+}
+
+// =====================
+// CAT VISUAL MAP
+// =====================
+const CAT_VIS = {
+  theatre:'vis-theatre', markets:'vis-markets', festivals:'vis-festivals',
+  art:'vis-art', create:'vis-create', wellness:'vis-wellness',
+  fitness:'vis-fitness', eco:'vis-eco', community:'vis-community'
+};
+const CAT_LETTER = {
+  theatre:'TH', markets:'MK', festivals:'FT', art:'AR',
+  create:'CR', wellness:'WL', fitness:'FT', eco:'EC', community:'CM'
+};
+
+// =====================
+// RENDER FEATURED
+// =====================
+function renderFeatured() {
+  const featured = filteredEvents.filter(e => e.featured).slice(0, 3);
+  const row = document.getElementById('featured-row');
+  if (!featured.length) { row.innerHTML = ''; return; }
+  row.innerHTML = featured.map((e, i) => {
+    const saved = bookmarks.includes(e.id);
+    const cls = i === 0 ? 'event-card featured' : 'event-card tall';
+    return `
+    <article class="${cls}" role="listitem" aria-label="${e.title}">
+      <div class="card-visual ${CAT_VIS[e.cat] || ''}">
+        <span class="card-cat-letter" aria-hidden="true">${CAT_LETTER[e.cat]||e.cat.slice(0,2).toUpperCase()}</span>
+        <span class="card-cat-badge badge-bg">${e.cat.toUpperCase()}</span>
+        <button class="card-save ${saved?'saved':''}" onclick="toggleBookmark(${e.id},event)" aria-label="${saved?'Remove from saved':'Save'} ${e.title}" aria-pressed="${saved}">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h9v10L6.5 9.5 2 12V2z" stroke="currentColor" stroke-width="1.2" fill="${saved?'currentColor':'none'}"/></svg>
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="card-date">${e.date} &nbsp;·&nbsp; ${e.time}</div>
+        <div class="card-title">${e.title}</div>
+        <div class="card-desc">${e.desc}</div>
+        <div class="card-meta">
+          <span class="card-location">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><circle cx="5" cy="4" r="2" stroke="currentColor" stroke-width="1"/><path d="M5 9C5 9 2 6.5 2 4a3 3 0 016 0c0 2.5-3 5-3 5z" stroke="currentColor" stroke-width="1"/></svg>
+            ${e.venue} · ${e.area}
+          </span>
+          <span class="card-price ${e.free?'price-free':''}">${e.price}</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-cal" onclick="downloadICS(${e.id})" aria-label="Add ${e.title} to calendar">+ Calendar</button>
+          <button class="btn-more" onclick="openModal(${e.id})" aria-label="Details for ${e.title}">Details →</button>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
 }
 
 // =====================
@@ -1296,39 +2177,39 @@ function applyFilters() {
 // =====================
 function renderGrid() {
   const grid = document.getElementById('event-grid');
+  const nonFeatured = filteredEvents.filter(e => !e.featured);
   if (!filteredEvents.length) {
-    grid.innerHTML = `<div class="no-results">
-      <div class="no-results-head">Nothing found</div>
-      <p>Try a different search or category</p>
-    </div>`;
+    grid.innerHTML = `<div class="no-results"><div class="no-results-head">Nothing found</div><p>Try a different search or category</p></div>`;
     return;
   }
-  grid.innerHTML = filteredEvents.map(e => {
+  grid.innerHTML = nonFeatured.map(e => {
     const saved = bookmarks.includes(e.id);
     return `
-      <article class="event-card" role="listitem" aria-label="${e.title}">
-        <div class="card-top">
-          <span class="cat-tag tag-${e.cat}">${e.cat.toUpperCase()}</span>
-          <button class="card-bookmark ${saved ? 'saved' : ''}" onclick="toggleBookmark(${e.id}, event)" aria-label="${saved ? 'Remove from saved' : 'Save'} ${e.title}" aria-pressed="${saved}">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M2 2h10v11l-5-3-5 3V2z" stroke="${saved ? 'white' : 'currentColor'}" stroke-width="1.5" fill="${saved ? 'white' : 'none'}"/>
-            </svg>
-          </button>
-        </div>
-        <span class="price-badge ${e.free ? 'free' : ''}">${e.price}</span>
+    <article class="event-card" role="listitem" aria-label="${e.title}">
+      <div class="card-visual ${CAT_VIS[e.cat] || ''} events-grid">
+        <span class="card-cat-letter" aria-hidden="true">${CAT_LETTER[e.cat]||e.cat.slice(0,2).toUpperCase()}</span>
+        <span class="card-cat-badge badge-bg">${e.cat.toUpperCase()}</span>
+        <button class="card-save ${saved?'saved':''}" onclick="toggleBookmark(${e.id},event)" aria-label="${saved?'Remove':'Save'} ${e.title}" aria-pressed="${saved}">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 2h9v10L6.5 9.5 2 12V2z" stroke="currentColor" stroke-width="1.2" fill="${saved?'currentColor':'none'}"/></svg>
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="card-date">${e.date} · ${e.time}</div>
         <div class="card-title">${e.title}</div>
-        <div class="card-venue">${e.venue} · ${e.area}</div>
+        <div class="card-desc">${e.desc}</div>
         <div class="card-meta">
-          <span class="meta-item"><span class="meta-icon" aria-hidden="true">📅</span>${e.date}</span>
-          <span class="meta-item"><span class="meta-icon" aria-hidden="true">⏱</span>${e.time}</span>
+          <span class="card-location">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><circle cx="5" cy="4" r="2" stroke="currentColor" stroke-width="1"/><path d="M5 9C5 9 2 6.5 2 4a3 3 0 016 0c0 2.5-3 5-3 5z" stroke="currentColor" stroke-width="1"/></svg>
+            ${e.venue} · ${e.area}
+          </span>
+          <span class="card-price ${e.free?'price-free':''}">${e.price}</span>
         </div>
         <div class="card-actions">
-          <button class="btn-cal" onclick="downloadICS(${e.id})" aria-label="Add ${e.title} to calendar">+ Calendar</button>
-          <button class="btn-more" onclick="openModal(${e.id})" aria-label="More details about ${e.title}">Details →</button>
+          <button class="btn-cal" onclick="downloadICS(${e.id})">+ Cal</button>
+          <button class="btn-more" onclick="openModal(${e.id})">Details →</button>
         </div>
-        <span class="recurrence-badge">${e.recurrence}</span>
-      </article>
-    `;
+      </div>
+    </article>`;
   }).join('');
 }
 
@@ -1344,6 +2225,7 @@ function toggleBookmark(id, ev) {
   }
   localStorage.setItem('ldn_bookmarks', JSON.stringify(bookmarks));
   updateBookmarkCount();
+  renderFeatured();
   renderGrid();
   renderPanel();
 }
@@ -1358,61 +2240,52 @@ function togglePanel() {
   const isOpen = panel.classList.contains('open');
   panel.classList.toggle('open');
   overlay.classList.toggle('show');
-  if (!isOpen) {
-    renderPanel();
-    panel.focus();
-  }
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+  if (!isOpen) { renderPanel(); panel.focus(); }
 }
 
 function renderPanel() {
   const body = document.getElementById('panel-body');
   if (!bookmarks.length) {
-    body.innerHTML = `<div class="panel-empty">No saved events yet.<br><br>Hit the bookmark icon<br>on any event to save it.</div>`;
+    body.innerHTML = `<div class="panel-empty">No saved events yet.<br><br>Tap the bookmark icon<br>on any event to save it.</div>`;
     return;
   }
   const saved = EVENTS.filter(e => bookmarks.includes(e.id));
   body.innerHTML = saved.map(e => `
     <div class="bookmark-item">
-      <button class="bookmark-remove" onclick="toggleBookmark(${e.id}, event)" aria-label="Remove ${e.title} from saved">✕</button>
+      <button class="bookmark-remove" onclick="toggleBookmark(${e.id},event)" aria-label="Remove ${e.title}">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="2" y1="2" x2="10" y2="10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="10" y1="2" x2="2" y2="10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
       <div class="bookmark-item-title">${e.title}</div>
       <div class="bookmark-item-meta">${e.venue} · ${e.date}</div>
-      <div style="margin-top:0.5rem; display:flex; gap:0.5rem;">
-        <button class="btn-cal" style="font-size:0.55rem; padding:0.35rem 0.5rem;" onclick="downloadICS(${e.id})">+ Cal</button>
-        <button class="btn-more" style="font-size:0.55rem; padding:0.35rem 0.5rem;" onclick="openModal(${e.id}); togglePanel()">Details</button>
+      <div style="margin-top:0.5rem;display:flex;gap:0.4rem;">
+        <button class="btn-cal" style="font-size:0.55rem;padding:0.3rem 0.45rem;" onclick="downloadICS(${e.id})">+ Cal</button>
+        <button class="btn-more" style="font-size:0.55rem;padding:0.3rem 0.45rem;" onclick="openModal(${e.id});togglePanel()">Details</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 // =====================
-// CALENDAR .ICS DOWNLOAD
+// CALENDAR ICS
 // =====================
 function downloadICS(id) {
   const e = EVENTS.find(ev => ev.id === id);
   if (!e) return;
   const now = new Date();
-  const stamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-  const start = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-  const end = new Date(now.getTime() + 2 * 60 * 60 * 1000).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const stamp = now.toISOString().replace(/[-:.]/g,'').slice(0,15)+'Z';
   const ics = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//LDN Directory//EN',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//LDN Directory//EN',
     'BEGIN:VEVENT',
     `UID:${e.id}-${stamp}@ldndirectory.co.uk`,
-    `DTSTAMP:${stamp}`,
-    `DTSTART:${start}`,
-    `DTEND:${end}`,
+    `DTSTAMP:${stamp}`,`DTSTART:${stamp}`,`DTEND:${stamp}`,
     `SUMMARY:${e.title}`,
-    `DESCRIPTION:${e.desc.replace(/\n/g, '\\n')} | ${e.date} · ${e.time} · ${e.price}`,
-    `LOCATION:${e.venue}, ${e.area}, London`,
-    'END:VEVENT',
-    'END:VCALENDAR'
+    `DESCRIPTION:${e.desc.replace(/\n/g,'\\n')} | ${e.date} · ${e.time} · ${e.price}`,
+    `LOCATION:${e.venue}\\, ${e.area}\\, London`,
+    'END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
-  const blob = new Blob([ics], { type: 'text/calendar' });
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `${e.title.toLowerCase().replace(/\s+/g, '-')}.ics`;
+  a.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+  a.download = `${e.title.toLowerCase().replace(/\s+/g,'-')}.ics`;
   a.click();
 }
 
@@ -1424,35 +2297,22 @@ function openModal(id) {
   if (!e) return;
   const saved = bookmarks.includes(e.id);
   document.getElementById('modal-body').innerHTML = `
-    <span class="cat-tag tag-${e.cat}" style="margin-bottom:0.75rem; display:inline-block;">${e.cat.toUpperCase()}</span>
+    <span style="display:inline-block;background:var(--ink);color:#fff;font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;padding:0.2rem 0.55rem;margin-bottom:0.75rem;">${e.cat.toUpperCase()}</span>
     <div class="event-detail-title" id="modal-event-title">${e.title}</div>
     <div class="event-detail-venue">${e.venue} · ${e.area}, London</div>
     <div class="detail-grid">
-      <div class="detail-cell">
-        <div class="detail-cell-label">Date</div>
-        <div class="detail-cell-val">${e.date}</div>
-      </div>
-      <div class="detail-cell">
-        <div class="detail-cell-label">Time</div>
-        <div class="detail-cell-val">${e.time}</div>
-      </div>
-      <div class="detail-cell">
-        <div class="detail-cell-label">Price</div>
-        <div class="detail-cell-val">${e.price}</div>
-      </div>
-      <div class="detail-cell">
-        <div class="detail-cell-label">Frequency</div>
-        <div class="detail-cell-val" style="text-transform:capitalize;">${e.recurrence}</div>
-      </div>
+      <div class="detail-cell"><div class="detail-cell-label">Date</div><div class="detail-cell-val">${e.date}</div></div>
+      <div class="detail-cell"><div class="detail-cell-label">Time</div><div class="detail-cell-val">${e.time}</div></div>
+      <div class="detail-cell"><div class="detail-cell-label">Price</div><div class="detail-cell-val">${e.price}</div></div>
+      <div class="detail-cell"><div class="detail-cell-label">Frequency</div><div class="detail-cell-val" style="text-transform:capitalize">${e.recurrence}</div></div>
     </div>
     <p class="event-detail-desc">${e.desc}</p>
     <div class="modal-actions">
       <button class="btn-primary" onclick="downloadICS(${e.id})">+ Add to Calendar</button>
-      <button class="btn-secondary" onclick="toggleBookmark(${e.id}, event); document.querySelector('.btn-secondary').textContent = bookmarks.includes(${e.id}) ? '★ Saved' : '☆ Save Event'" style="transition:all 0.15s;">
-        ${saved ? '★ Saved' : '☆ Save Event'}
+      <button class="btn-secondary-modal" id="save-btn-modal" onclick="toggleBookmark(${e.id},event);document.getElementById('save-btn-modal').textContent=bookmarks.includes(${e.id})?'Saved ✓':'Save Event'">
+        ${saved ? 'Saved ✓' : 'Save Event'}
       </button>
-    </div>
-  `;
+    </div>`;
   document.getElementById('detail-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1475,20 +2335,42 @@ function closeSubmit() {
 }
 
 // Close modals on backdrop click
-document.getElementById('detail-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-document.getElementById('submit-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeSubmit();
-});
-
-// Keyboard escape
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { closeModal(); closeSubmit(); }
+['detail-modal','submit-modal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', function(e) {
+    if (e.target === this) { closeModal(); closeSubmit(); }
+  });
 });
 
-// Update total count
-document.getElementById('total-count').textContent = EVENTS.length;
+// Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeSubmit(); if (document.getElementById('bm-panel').classList.contains('open')) togglePanel(); }
+});
+
+// Newsletter form
+document.getElementById('newsletter-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('.newsletter-btn');
+  btn.textContent = 'Sending…';
+  try {
+    const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
+    if (res.ok) {
+      this.style.display = 'none';
+      document.getElementById('newsletter-success').style.display = 'block';
+    } else { btn.textContent = 'Try again'; }
+  } catch { btn.textContent = 'Try again'; }
+});
+
+// Submit event form
+document.getElementById('submit-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('[type="submit"]');
+  btn.textContent = 'Sending…';
+  try {
+    const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
+    if (res.ok) { this.innerHTML = '<p style="font-family:\'Space Mono\',monospace;font-size:0.75rem;color:var(--ink-mid);padding:1rem 0;line-height:2;">Thanks! We\'ll review and add your event within 48 hours.</p>'; }
+    else { btn.textContent = 'Try again'; }
+  } catch { btn.textContent = 'Try again'; }
+});
 
 // =====================
 // RUN
