@@ -10,25 +10,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Space+Mono:wght@400;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 /* =====================================================
-   COLOUR TOKENS — london-events1.html warm terracotta theme
+   COLOUR TOKENS — BLACK PRIMARY / MONOCHROME THEME
    ===================================================== */
-:root {
-  --cream:         #FDF6F0;
-  --blush:         #FAE8E0;
-  --peach:         #F5CEBB;
-  --salmon:        #E8896A;
-  --salmon-dark:   #C45F3A;
-  --terracotta:    #A83B1A;
-  --burgundy:      #6B1E0A;
-  --ink:           #1A0F0A;
-  --ink-mid:       #4A2E22;
-  --ink-light:     #7A5A4A;
-  --border:        #E0C4B8;
-  --border-strong: #C49080;
-  --white:         #FFFFFF;
-  --card-bg:       #FEF9F6;
+/*
+   ▓▓▓ EDIT THE COLOURS HERE ▓▓▓
+   Update any of the variables below to change the look of the site.
+   The whole UI (buttons, headings, accents, hover states, ticker, etc.)
+   reads from these tokens, so a single change cascades everywhere.
 
-  /* Map v3 dark tokens to warm palette */
+   Quick guide:
+     --cream / --bg              → main page background
+     --card-bg / --surface       → card and surface backgrounds
+     --blush / --peach           → secondary/lighter accents (off-white shades)
+     --salmon / --salmon-dark    → mid neutrals (greys)
+     --terracotta / --green      → PRIMARY accent (currently BLACK)
+     --burgundy / --green-dark   → deepest shade (shadows, borders)
+     --ink / --ink-mid / --ink-light → text colours
+     --border / --border-strong  → borders
+*/
+:root {
+  /* Monochrome / black-accent palette */
+  --cream:         #F5F4F0;   /* warm off-white background */
+  --blush:         #ECEBE6;   /* soft neutral */
+  --peach:         #D4D2CC;   /* mid neutral / shadow tone */
+  --salmon:        #8A8780;   /* warm mid-grey */
+  --salmon-dark:   #4D4A45;   /* dark warm grey */
+  --terracotta:    #000000;   /* PRIMARY BLACK (main accent) */
+  --burgundy:      #1A1A1A;   /* near-black (deep shadow) */
+  --ink:           #000000;
+  --ink-mid:       #2A2A2A;
+  --ink-light:     #6E6B66;
+  --border:        #D4D2CC;
+  --border-strong: #8A8780;
+  --white:         #FFFFFF;
+  --card-bg:       #FBFAF6;
+
+  /* Map v3 dark tokens to green palette */
   --bg:            var(--cream);
   --surface:       var(--card-bg);
   --surface-2:     var(--blush);
@@ -40,17 +57,17 @@
   --ticker-bg:     var(--terracotta);
   --ticker-fg:     var(--white);
 
-  --cat-theatre:  #8B1A4A;
-  --cat-markets:  #6B3A00;
-  --cat-festivals:#2E4A6B;
-  --cat-art:      #1A4A3A;
-  --cat-create:   #4A3500;
-  --cat-wellness: #4A1A6B;
-  --cat-fitness:  #6B0A0A;
-  --cat-eco:      #1A4A3A;
-  --cat-community:#3A4A00;
+  --cat-theatre:  #2A2A2A;
+  --cat-markets:  #2A2A2A;
+  --cat-festivals:#2A2A2A;
+  --cat-art:      #2A2A2A;
+  --cat-create:   #2A2A2A;
+  --cat-wellness: #2A2A2A;
+  --cat-fitness:  #2A2A2A;
+  --cat-eco:      #2A2A2A;
+  --cat-community:#2A2A2A;
 
-  --focus-ring: 3px solid #A83B1A;
+  --focus-ring: 3px solid #000000;
   --pixel: 2px;
 }
 
@@ -97,7 +114,8 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   border-bottom: 3px solid var(--burgundy);
 }
 .ticker:hover .ticker-inner { animation-play-state: paused; }
-.ticker-inner { display: inline-block; animation: ticker-scroll 100s linear infinite; }
+/* Slowed from 100s to 500s — every item now takes ~5s to traverse */
+.ticker-inner { display: inline-block; animation: ticker-scroll 500s linear infinite; }
 .ticker-inner span { margin: 0 60px; }
 @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .ticker-inner { animation: none; } }
@@ -107,16 +125,13 @@ header {
   background: var(--cream);
   border-bottom: 4px solid var(--terracotta);
   position: sticky; top: 0; z-index: 200;
-  box-shadow: 0 2px 12px rgba(100,40,10,0.08);
+  box-shadow: 0 2px 12px rgba(0,80,30,0.08);
 }
 .header-top {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 1rem; height: 56px; border-bottom: 1px solid var(--border); gap: 0.75rem;
 }
 .logo-wrap { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; min-width: 0; }
-
-/* Logo icon */
-.logo-pixel { width: 26px; height: 26px; flex-shrink: 0; }
 
 .logo {
   font-family: 'Bebas Neue', sans-serif;
@@ -126,30 +141,10 @@ header {
 .logo:hover { color: var(--terracotta); }
 .logo .dot { color: var(--terracotta); }
 .logo-sub {
-  font-family: 'VT323', monospace; font-size: 13px;
+  font-family: 'Space Mono', monospace; font-size: 11px;
   letter-spacing: 3px; color: var(--ink-light);
   text-transform: uppercase; margin-top: 2px; display: none;
 }
-.search-form {
-  display: none; /* hidden on mobile */
-  align-items: stretch;
-  background: var(--white); border: 2px solid var(--border-strong);
-  flex: 0 1 300px; transition: border-color 0.2s, box-shadow 0.2s;
-}
-.search-form:focus-within { border-color: var(--terracotta); box-shadow: 0 0 0 3px rgba(168,59,26,0.2); }
-.search-form label { display: flex; align-items: center; padding: 0 10px; color: var(--terracotta); flex-shrink: 0; font-size: 18px; }
-.search-form input {
-  background: none; border: none; outline: none; color: var(--ink);
-  font-family: 'Courier Prime', monospace; font-size: 13px; width: 100%; padding: 10px 4px;
-}
-.search-form input::placeholder { color: var(--ink-light); }
-.search-btn {
-  background: var(--terracotta); color: var(--white); border: none;
-  padding: 0 16px; font-family: 'Space Mono', monospace; font-size: 11px;
-  font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-  cursor: pointer; transition: background 0.15s; white-space: nowrap;
-}
-.search-btn:hover { background: var(--burgundy); }
 .header-actions { display: flex; align-items: center; gap: 0.3rem; flex-shrink: 0; }
 .btn-saved {
   display: flex; align-items: center; gap: 0.3rem;
@@ -165,13 +160,6 @@ header {
 }
 /* Hide "Saved" text on mobile, show only icon + count */
 .btn-saved .btn-saved-label { display: none; }
-.btn-submit-event {
-  background: var(--terracotta); color: var(--white);
-  font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px; font-weight: 700;
-  padding: 7px 10px; border: 2px solid var(--terracotta);
-  text-transform: uppercase; transition: all 0.15s; white-space: nowrap;
-}
-.btn-submit-event:hover { background: var(--burgundy); border-color: var(--burgundy); }
 
 /* ===== CATEGORY NAV ===== */
 .cat-nav {
@@ -214,12 +202,13 @@ header {
   content: '';
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 15% 60%, rgba(232,137,106,0.18) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 20%, rgba(168,59,26,0.08) 0%, transparent 55%);
+    radial-gradient(ellipse at 15% 60%, rgba(0,0,0,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 20%, rgba(0,0,0,0.04) 0%, transparent 55%);
   pointer-events: none;
 }
+/* Pixelation removed: switched VT323 to Space Mono for a clean look */
 .hero-eyebrow {
-  font-family: 'VT323', monospace; font-size: 22px;
+  font-family: 'Space Mono', monospace; font-size: 13px; font-weight: 700;
   letter-spacing: 4px; color: var(--terracotta); text-transform: uppercase;
   display: flex; align-items: center; gap: 8px; margin-bottom: 14px; position: relative;
 }
@@ -232,8 +221,10 @@ header {
   line-height: 0.9; letter-spacing: -1px; color: var(--ink);
   position: relative;
 }
+/* Pixelation/outline stroke removed — solid colour */
 .hero-headline .outline {
-  -webkit-text-stroke: 2.5px var(--terracotta); color: transparent;
+  -webkit-text-stroke: 0;
+  color: var(--terracotta);
 }
 .hero-desc {
   font-family: 'Courier Prime', monospace; font-size: 15px;
@@ -268,9 +259,10 @@ header {
   padding: 16px 22px; text-align: center;
   box-shadow: 3px 3px 0 var(--peach); min-width: 80px;
 }
+/* Pixelation removed: VT323 → Bebas Neue (clean display font) */
 .stat-num {
-  font-family: 'VT323', monospace; font-size: 52px;
-  color: var(--terracotta); line-height: 1; display: block;
+  font-family: 'Bebas Neue', sans-serif; font-size: 44px; font-weight: 400;
+  color: var(--terracotta); line-height: 1; display: block; letter-spacing: 1px;
 }
 .stat-label {
   font-family: 'Space Mono', monospace; font-size: 10px;
@@ -289,11 +281,12 @@ header {
   width: 100%; height: 100%; position: absolute; inset: 0;
   display: block; opacity: 0.9;
 }
+/* Pixelation removed on hero date pill */
 .hero-date-pill {
   position: absolute; top: 1rem; right: 1rem;
   background: var(--terracotta); border: 2px solid var(--burgundy);
-  font-family: 'VT323', monospace; font-size: 18px;
-  letter-spacing: 3px; text-transform: uppercase;
+  font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
   padding: 8px 16px; color: var(--white); z-index: 2;
   box-shadow: 3px 3px 0 var(--burgundy);
 }
@@ -314,17 +307,17 @@ header {
 .date-tab:hover { color: var(--terracotta); background: var(--blush); }
 .date-tab.active { color: var(--terracotta); border-bottom-color: var(--terracotta); }
 
-/* ===== SEARCH ROW ===== */
+/* ===== SEARCH ROW (filters section under hero) ===== */
 .search-row {
   background: var(--white); border-bottom: 2px solid var(--border);
   padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
 }
-.search-row-input-wrap { position: relative; flex: 1; min-width: 180px; }
+.search-row-input-wrap { position: relative; flex: 1; min-width: 220px; }
 .search-row-icon { position: absolute; left: 0.6rem; top: 50%; transform: translateY(-50%); color: var(--ink-light); pointer-events: none; }
 .search-row-input {
   width: 100%; border: 2px solid var(--border); background: var(--cream);
   font-family: 'Courier Prime', monospace; font-size: 14px;
-  padding: 0.5rem 0.75rem 0.5rem 2rem; outline: none; color: var(--ink); transition: border-color 0.15s;
+  padding: 0.55rem 0.75rem 0.55rem 2rem; outline: none; color: var(--ink); transition: border-color 0.15s;
 }
 .search-row-input:focus { border-color: var(--terracotta); }
 .search-row-input::placeholder { color: var(--ink-light); }
@@ -363,7 +356,8 @@ header {
 .borough-item.active { background: var(--terracotta); color: var(--white); border-color: var(--terracotta); }
 .borough-item.active .borough-count { color: var(--white); }
 .borough-count { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--ink-light); }
-.radius-val { font-family: 'VT323', monospace; font-size: 42px; color: var(--terracotta); line-height: 1; }
+/* Pixelation removed on radius value (was VT323 pixel font) */
+.radius-val { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--terracotta); line-height: 1; letter-spacing: 1px; }
 .radius-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-light); }
 .radius-slider { width: 100%; accent-color: var(--terracotta); margin: 0.6rem 0 0.3rem; cursor: pointer; }
 
@@ -396,32 +390,40 @@ main { padding: 1.25rem 1rem; background: var(--cream); min-width: 0; }
 .event-card.featured { min-height: 340px; }
 .event-card.tall { min-height: 260px; }
 
-/* Card visual block */
+/* Card visual block — emoji centred */
 .card-visual {
   position: relative; overflow: hidden; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
+  width: 100%; text-align: center;
 }
 .event-card.featured .card-visual { height: 200px; }
 .event-card.tall .card-visual    { height: 140px; }
 .events-grid .card-visual        { height: 110px; }
-.vis-theatre   { background: linear-gradient(135deg, #F5E6EE 0%, #EBC8D9 100%); }
-.vis-markets   { background: linear-gradient(135deg, #F5EEE0 0%, #EBD9B8 100%); }
-.vis-festivals { background: linear-gradient(135deg, #E0E8F5 0%, #B8C8EB 100%); }
-.vis-art       { background: linear-gradient(135deg, #E0F0EA 0%, #B8DEC8 100%); }
-.vis-create    { background: linear-gradient(135deg, #F0EBE0 0%, #DDD0B8 100%); }
-.vis-wellness  { background: linear-gradient(135deg, #E8F0EE 0%, #C8DDD8 100%); }
-.vis-fitness   { background: linear-gradient(135deg, #F5E8E8 0%, #EBC8C8 100%); }
-.vis-eco       { background: linear-gradient(135deg, #E0F0EA 0%, #B8DEC8 100%); }
-/* Category visuals — warm gradient tones matching london-events1 */
-.vis-theatre   { background: linear-gradient(135deg, #F5E6EE 0%, #EBC8D9 100%); }
-.vis-markets   { background: linear-gradient(135deg, #F5EEE0 0%, #EBD9B8 100%); }
-.vis-festivals { background: linear-gradient(135deg, #E0E8F5 0%, #B8C8EB 100%); }
-.vis-art       { background: linear-gradient(135deg, #E0F0EA 0%, #B8DEC8 100%); }
-.vis-create    { background: linear-gradient(135deg, #F0EBE0 0%, #DDD0B8 100%); }
-.vis-wellness  { background: linear-gradient(135deg, #E8F0EE 0%, #C8DDD8 100%); }
-.vis-fitness   { background: linear-gradient(135deg, #F5E8E8 0%, #EBC8C8 100%); }
-.vis-eco       { background: linear-gradient(135deg, #E0F0EA 0%, #B8DEC8 100%); }
-.vis-community { background: linear-gradient(135deg, #EEF0E0 0%, #D8DDB8 100%); }
+/* Emoji wrapper — guarantees centred placement on every card */
+.card-emoji {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%; line-height: 1; text-align: center;
+  position: relative; z-index: 1;
+}
+/* Subtle monochrome washes — used as fallback when no image is available */
+.vis-theatre   { background: linear-gradient(135deg, #EEEDE8 0%, #D4D2CC 100%); }
+.vis-markets   { background: linear-gradient(135deg, #ECEBE6 0%, #D2D0CA 100%); }
+.vis-festivals { background: linear-gradient(135deg, #EEEDE8 0%, #D4D2CC 100%); }
+.vis-art       { background: linear-gradient(135deg, #ECEBE6 0%, #D2D0CA 100%); }
+.vis-create    { background: linear-gradient(135deg, #EEEDE8 0%, #D4D2CC 100%); }
+.vis-wellness  { background: linear-gradient(135deg, #ECEBE6 0%, #D2D0CA 100%); }
+.vis-fitness   { background: linear-gradient(135deg, #EEEDE8 0%, #D4D2CC 100%); }
+.vis-eco       { background: linear-gradient(135deg, #ECEBE6 0%, #D2D0CA 100%); }
+.vis-community { background: linear-gradient(135deg, #EEEDE8 0%, #D4D2CC 100%); }
+
+/* When a card has a real image, image fills the visual block and emoji hides */
+.card-visual.has-image .card-emoji { display: none; }
+.card-visual .card-img { width: 100%; height: 100%; position: absolute; inset: 0; object-fit: cover; z-index: 0; }
+.card-visual.has-image::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.45) 100%);
+  z-index: 1; pointer-events: none;
+}
 
 .card-cat-badge {
   position: absolute; top: 0.6rem; left: 0.6rem;
@@ -494,7 +496,7 @@ main { padding: 1.25rem 1rem; background: var(--cream); min-width: 0; }
   font-family: 'Bebas Neue', sans-serif; font-size: 36px;
   letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1rem; color: var(--ink);
 }
-.borough-grid-title span { -webkit-text-stroke: 2px var(--terracotta); color: transparent; }
+.borough-grid-title span { color: var(--terracotta); }
 .borough-cards { display: grid; grid-template-columns: repeat(2,1fr); gap: 2px; }
 .borough-card {
   background: var(--card-bg); border: 2px solid var(--border);
@@ -503,7 +505,8 @@ main { padding: 1.25rem 1rem; background: var(--cream); min-width: 0; }
 .borough-card:hover { background: var(--blush); border-color: var(--terracotta); }
 .borough-card:hover .bc-name { color: var(--terracotta); }
 .bc-name { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 0.5rem; color: var(--ink-mid); transition: color 0.12s; text-transform: uppercase; }
-.bc-events { font-family: 'VT323', monospace; font-size: 52px; color: var(--terracotta); line-height: 1; }
+/* Pixelation removed: VT323 → Bebas Neue */
+.bc-events { font-family: 'Bebas Neue', sans-serif; font-size: 44px; color: var(--terracotta); line-height: 1; letter-spacing: 1px; }
 .bc-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--ink-light); letter-spacing: 1px; text-transform: uppercase; margin-top: 0.15rem; }
 .bc-tags { margin-top: 0.6rem; display: flex; gap: 0.25rem; flex-wrap: wrap; }
 .bc-dot { width: 8px; height: 8px; background: var(--terracotta); opacity: 0.4; border-radius: 50%; }
@@ -568,7 +571,7 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
 }
 
 /* ===== BOOKMARKS PANEL ===== */
-.overlay { position: fixed; inset: 0; background: rgba(26,15,10,0.6); z-index: 299; display: none; backdrop-filter: blur(2px); }
+.overlay { position: fixed; inset: 0; background: rgba(10,30,10,0.6); z-index: 299; display: none; backdrop-filter: blur(2px); }
 .overlay.show { display: block; }
 .bookmarks-panel {
   position: fixed; top: 0; right: 0; bottom: 0; width: 340px;
@@ -599,7 +602,7 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
 
 /* ===== MODALS ===== */
 .modal-backdrop {
-  position: fixed; inset: 0; background: rgba(26,15,10,0.75);
+  position: fixed; inset: 0; background: rgba(10,30,10,0.75);
   z-index: 400; display: none; align-items: center; justify-content: center;
   padding: 1rem; backdrop-filter: blur(3px);
 }
@@ -662,12 +665,9 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
 @media (min-width: 640px) {
   .header-top { padding: 0 1.5rem; height: 64px; gap: 1rem; }
   .logo { font-size: 40px; }
-  .logo-pixel { width: 30px; height: 30px; }
   .logo-sub { display: block; }
-  .search-form { display: flex; }
   .btn-saved-label { display: inline !important; }
   .btn-saved { padding: 8px 12px; font-size: 11px; gap: 0.4rem; }
-  .btn-submit-event { font-size: 11px; padding: 8px 14px; }
   .form-row { grid-template-columns: 1fr 1fr; }
   .featured-row { grid-template-columns: 2fr 1fr; }
   .featured-row .event-card.featured { grid-row: span 2; }
@@ -684,8 +684,6 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
 @media (min-width: 1024px) {
   .header-top { padding: 0 2rem; height: 68px; }
   .logo { font-size: 44px; letter-spacing: 4px; }
-  .logo-pixel { width: 32px; height: 32px; }
-  .search-form { flex: 0 1 360px; }
   .hero-text { padding: 3.5rem 3rem; }
   .main-wrap { grid-template-columns: 220px 1fr; }
   .sidebar { display: block; }
@@ -720,31 +718,11 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
 <header role="banner">
   <div class="header-top">
     <div class="logo-wrap">
-      <!-- Terracotta logomark -->
-      <svg class="logo-pixel" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="16" cy="16" r="14" fill="#A83B1A"/>
-        <circle cx="16" cy="16" r="9" fill="#FDF6F0"/>
-        <circle cx="16" cy="16" r="5" fill="#A83B1A"/>
-        <circle cx="16" cy="16" r="2" fill="#6B1E0A"/>
-      </svg>
       <div>
         <div class="logo">FOUND<span class="dot">-</span>LDN</div>
         <div class="logo-sub">Community events · London</div>
       </div>
     </div>
-
-    <form class="search-form" role="search" action="#" method="get" onsubmit="return handleSearchSubmit(event)">
-      <label for="site-search">
-        <!-- Clean search icon -->
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.5"/>
-          <line x1="10" y1="10" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        <span class="sr-only">Search</span>
-      </label>
-      <input type="search" id="site-search" name="q" placeholder="Search events, venues…" autocomplete="off" oninput="handleSearch(this.value)">
-      <button class="search-btn" type="submit">GO</button>
-    </form>
 
     <div class="header-actions">
       <button class="btn-saved" onclick="togglePanel()" aria-label="View saved events">
@@ -755,7 +733,6 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
         <span class="badge" id="bm-count">0</span>
         <span class="btn-saved-label">Saved</span>
       </button>
-      <button class="btn-submit-event" onclick="openSubmit()" aria-haspopup="dialog">+ Submit</button>
     </div>
   </div>
 
@@ -787,6 +764,9 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
     </button>
     <button class="cat-pill" onclick="filterCat('eco')" data-cat="eco" type="button">
       <span class="cat-pill-icon">🌱</span>Eco
+    </button>
+    <button class="cat-pill" onclick="filterCat('music')" data-cat="music" type="button">
+      <span class="cat-pill-icon">🎵</span>Music
     </button>
   </nav>
 </header>
@@ -825,11 +805,11 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
   <button class="date-tab" role="tab" aria-selected="false" data-range="free" onclick="filterByDate('free',this)">FREE ONLY</button>
 </div>
 
-<!-- ===== SEARCH ROW ===== -->
+<!-- ===== SEARCH + FILTERS (under hero) ===== -->
 <div class="search-row">
   <div class="search-row-input-wrap">
     <span class="search-row-icon" aria-hidden="true">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.5"/><line x1="8" y1="8" x2="11" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="currentColor" stroke-width="1.5"/><line x1="9.5" y1="9.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </span>
     <input class="search-row-input" id="search-input" type="search" placeholder="Search events, venues, areas…" oninput="handleSearch(this.value)" aria-label="Search events">
   </div>
@@ -1089,75 +1069,108 @@ footer { background: var(--ink); padding: 3rem 1rem 1.5rem; border-top: 2px soli
 
 <script>
 // =====================
-// EVENTS DATA — padel and tennis → fitness cat
+// EVENTS DATA
 // =====================
 const EVENTS = [
   // THEATRE
-  { id:1,  cat:'theatre', title:'The Ferryman', venue:'Brixton House', area:'Brixton', zone:'south', date:'Tue–Sat', time:'7:30pm', sortHour:19.5, price:'£16–£30', free:false, recurrence:'weekly', featured:true, desc:"Jez Butterworth's epic family drama set in Northern Ireland. Intimate staging in Brixton House's main theatre.", link:'https://www.brixtonhouse.co.uk/whats-on' },
-  { id:2,  cat:'theatre', title:'Bold Tendencies Theatre Night', venue:'Bold Tendencies, Peckham', area:'Peckham', zone:'south', date:'Every Friday', time:'8pm', sortHour:20, price:'£10', free:false, recurrence:'weekly', featured:false, desc:'Site-specific performances on the top floors of the Peckham car park. Part installation, part theatre, part experience.', link:'https://boldtendencies.com' },
-  { id:3,  cat:'theatre', title:'The Yard: New Writing', venue:'The Yard Theatre', area:'Hackney Wick', zone:'east', date:'Runs Jun', time:'7:30pm', sortHour:19.5, price:'£12', free:false, recurrence:'monthly', featured:false, desc:'Platform programme for emerging theatre makers. Short works in progress in a unique warehouse space.', link:'https://theyardtheatre.co.uk' },
-  { id:4,  cat:'theatre', title:'Bush Theatre Sunday Matinee', venue:'Bush Theatre', area:"Shepherd's Bush", zone:'west', date:'Every Sunday', time:'3pm', sortHour:15, price:'£14', free:false, recurrence:'weekly', featured:false, desc:"Sunday matinee programme at one of London's most celebrated new writing houses.", link:'https://www.bushtheatre.co.uk' },
-  { id:5,  cat:'theatre', title:'Hackney Empire Comedy Night', venue:'Hackney Empire', area:'Hackney', zone:'east', date:'Monthly – 1st Friday', time:'8pm', sortHour:20, price:'£15', free:false, recurrence:'monthly', featured:false, desc:'Monthly comedy showcase at the magnificent Hackney Empire. Four acts, one night. Book in advance.', link:'https://www.hackneyempire.co.uk' },
-  { id:6,  cat:'theatre', title:'New Writing Festival', venue:"King's Head Theatre", area:'Islington', zone:'north', date:'1–8 Jun', time:'7:30pm', sortHour:19.5, price:'£10', free:false, recurrence:'monthly', featured:false, desc:'Week-long festival of new plays by emerging writers. Five world premieres across eight days.', link:'https://kingsheadtheatre.com' },
+  { id:1,  cat:'theatre', title:'The Ferryman', venue:'Brixton House', area:'Brixton', zone:'south', date:'Tue–Sat', time:'7:30pm', sortHour:19.5, price:'£16–£30', free:false, recurrence:'weekly', featured:true, desc:"Jez Butterworth's epic family drama set in Northern Ireland. Intimate staging in Brixton House's main theatre.", link:'https://www.brixtonhouse.co.uk/whats-on', image:'https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&q=80&auto=format&fit=crop' },
+  { id:2,  cat:'theatre', title:'Bold Tendencies Theatre Night', venue:'Bold Tendencies, Peckham', area:'Peckham', zone:'south', date:'Every Friday', time:'8pm', sortHour:20, price:'£10', free:false, recurrence:'weekly', featured:false, desc:'Site-specific performances on the top floors of the Peckham car park. Part installation, part theatre, part experience.', link:'https://boldtendencies.com', image:'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800&q=80&auto=format&fit=crop' },
+  { id:3,  cat:'theatre', title:'The Yard: New Writing', venue:'The Yard Theatre', area:'Hackney Wick', zone:'east', date:'Runs Jun', time:'7:30pm', sortHour:19.5, price:'£12', free:false, recurrence:'monthly', featured:false, desc:'Platform programme for emerging theatre makers. Short works in progress in a unique warehouse space.', link:'https://theyardtheatre.co.uk', image:'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=800&q=80&auto=format&fit=crop' },
+  { id:4,  cat:'theatre', title:'Bush Theatre Sunday Matinee', venue:'Bush Theatre', area:"Shepherd's Bush", zone:'west', date:'Every Sunday', time:'3pm', sortHour:15, price:'£14', free:false, recurrence:'weekly', featured:false, desc:"Sunday matinee programme at one of London's most celebrated new writing houses.", link:'https://www.bushtheatre.co.uk', image:'https://images.unsplash.com/photo-1499364615650-ec38552f4f34?w=800&q=80&auto=format&fit=crop' },
+  { id:5,  cat:'theatre', title:'Hackney Empire Comedy Night', venue:'Hackney Empire', area:'Hackney', zone:'east', date:'Monthly – 1st Friday', time:'8pm', sortHour:20, price:'£15', free:false, recurrence:'monthly', featured:false, desc:'Monthly comedy showcase at the magnificent Hackney Empire. Four acts, one night. Book in advance.', link:'https://www.hackneyempire.co.uk', image:'https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=800&q=80&auto=format&fit=crop' },
+  { id:6,  cat:'theatre', title:'New Writing Festival', venue:"King's Head Theatre", area:'Islington', zone:'north', date:'1–8 Jun', time:'7:30pm', sortHour:19.5, price:'£10', free:false, recurrence:'monthly', featured:false, desc:'Week-long festival of new plays by emerging writers. Five world premieres across eight days.', link:'https://kingsheadtheatre.com', image:'https://images.unsplash.com/photo-1576098295259-3483cd44a59f?w=800&q=80&auto=format&fit=crop' },
 
   // MARKETS
-  { id:7,  cat:'markets', title:'Crystal Palace Food Market', venue:'Haynes Lane, SE19', area:'Crystal Palace', zone:'south', date:'Every Saturday', time:'10am – 3pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:true, desc:"Brilliant weekly market with street food, artisan producers, fresh veg, baked goods and more. One of south London's best.", link:'https://www.cpfoodmarket.com' },
-  { id:8,  cat:'markets', title:'Brockley Market', venue:'Lewisham College, SE4', area:'Brockley', zone:'south', date:'Every Saturday', time:'10am – 2pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Award-winning street food and artisan produce market. Hot food, preserves, bread, cheese, vegetables and plants.', link:'https://brockleymarket.com' },
-  { id:9,  cat:'markets', title:'Walthamstow Market', venue:'Hoe Street, E17', area:'Walthamstow', zone:'east', date:'Mon–Sat', time:'8am – 5pm', sortHour:8, price:'Free', free:true, recurrence:'daily', featured:false, desc:"Europe's longest outdoor market. Fresh produce, fabrics, electronics, food — a genuine slice of East London life.", link:'https://www.enjoy-walthamforest.co.uk' },
-  { id:10, cat:'markets', title:'Herne Hill Market', venue:'Railton Road, SE24', area:'Herne Hill', zone:'south', date:'Every Sunday', time:'10am – 2pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Weekly community market with fresh produce, artisan food, vintage and crafts. Thriving local institution.', link:'https://hernehillmarket.co.uk' },
-  { id:11, cat:'markets', title:'Netil Market', venue:'Westgate Street, E8', area:'London Fields', zone:'east', date:'Every Saturday', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Independent makers, vintage clothing, street food and resident café in a converted garage in London Fields.', link:'https://netilmarket.com' },
+  { id:7,  cat:'markets', title:'Crystal Palace Food Market', venue:'Haynes Lane, SE19', area:'Crystal Palace', zone:'south', date:'Every Saturday', time:'10am – 3pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:true, desc:"Brilliant weekly market with street food, artisan producers, fresh veg, baked goods and more. One of south London's best.", link:'https://www.cpfoodmarket.com', image:'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80&auto=format&fit=crop' },
+  { id:8,  cat:'markets', title:'Brockley Market', venue:'Lewisham College, SE4', area:'Brockley', zone:'south', date:'Every Saturday', time:'10am – 2pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Award-winning street food and artisan produce market. Hot food, preserves, bread, cheese, vegetables and plants.', link:'https://brockleymarket.com', image:'https://images.unsplash.com/photo-1513125370-3460ebe3401b?w=800&q=80&auto=format&fit=crop' },
+  { id:9,  cat:'markets', title:'Walthamstow Market', venue:'Hoe Street, E17', area:'Walthamstow', zone:'east', date:'Mon–Sat', time:'8am – 5pm', sortHour:8, price:'Free', free:true, recurrence:'daily', featured:false, desc:"Europe's longest outdoor market. Fresh produce, fabrics, electronics, food — a genuine slice of East London life.", link:'https://www.enjoy-walthamforest.co.uk', image:'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&q=80&auto=format&fit=crop' },
+  { id:10, cat:'markets', title:'Herne Hill Market', venue:'Railton Road, SE24', area:'Herne Hill', zone:'south', date:'Every Sunday', time:'10am – 2pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Weekly community market with fresh produce, artisan food, vintage and crafts. Thriving local institution.', link:'https://hernehillmarket.co.uk', image:'https://images.unsplash.com/photo-1573246123716-6b1782bfc499?w=800&q=80&auto=format&fit=crop' },
+  { id:11, cat:'markets', title:'Netil Market', venue:'Westgate Street, E8', area:'London Fields', zone:'east', date:'Every Saturday', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Independent makers, vintage clothing, street food and resident café in a converted garage in London Fields.', link:'https://netilmarket.com', image:'https://images.unsplash.com/photo-1506610654-064fbba4780c?w=800&q=80&auto=format&fit=crop' },
 
   // FESTIVALS
-  { id:12, cat:'festivals', title:'Dulwich Festival', venue:'Various, Dulwich', area:'Dulwich', zone:'south', date:'Ongoing May', time:'Various', sortHour:11, price:'Free–£15', free:false, recurrence:'monthly', featured:true, desc:"South London's beloved arts festival spanning two weeks. Open studios, music, talks, community events across Dulwich.", link:'https://www.dulwichfestival.co.uk' },
-  { id:13, cat:'festivals', title:'Brockley Max', venue:'Various, Brockley', area:'Brockley', zone:'south', date:'6–15 Jun', time:'Various', sortHour:12, price:'Free–£10', free:false, recurrence:'monthly', featured:false, desc:"Brockley's arts and music festival — ten days of gigs, exhibitions, comedy and workshops across the neighbourhood.", link:'https://brockleymax.com' },
-  { id:14, cat:'festivals', title:'Herne Hill Free Festival', venue:'Brockwell Park', area:'Herne Hill', zone:'south', date:'First Sunday Jun', time:'12pm – 8pm', sortHour:12, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Free outdoor festival in Brockwell Park. Live music, community stalls, food and entertainment.', link:'https://hernehillfestival.co.uk' },
+  { id:12, cat:'festivals', title:'Dulwich Festival', venue:'Various, Dulwich', area:'Dulwich', zone:'south', date:'Ongoing May', time:'Various', sortHour:11, price:'Free–£15', free:false, recurrence:'monthly', featured:true, desc:"South London's beloved arts festival spanning two weeks. Open studios, music, talks, community events across Dulwich.", link:'https://www.dulwichfestival.co.uk', image:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80&auto=format&fit=crop' },
+  { id:13, cat:'festivals', title:'Brockley Max', venue:'Various, Brockley', area:'Brockley', zone:'south', date:'6–15 Jun', time:'Various', sortHour:12, price:'Free–£10', free:false, recurrence:'monthly', featured:false, desc:"Brockley's arts and music festival — ten days of gigs, exhibitions, comedy and workshops across the neighbourhood.", link:'https://brockleymax.com', image:'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=800&q=80&auto=format&fit=crop' },
+  { id:14, cat:'festivals', title:'Herne Hill Free Festival', venue:'Brockwell Park', area:'Herne Hill', zone:'south', date:'First Sunday Jun', time:'12pm – 8pm', sortHour:12, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Free outdoor festival in Brockwell Park. Live music, community stalls, food and entertainment.', link:'https://hernehillfestival.co.uk', image:'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&q=80&auto=format&fit=crop' },
 
   // ART
-  { id:15, cat:'art', title:'Camberwell Art Trail', venue:'Various, Camberwell', area:'Camberwell', zone:'south', date:'28–29 Jun', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:true, desc:'Weekend open studios across Camberwell. 60+ artists open their doors in one of London\'s most creative neighbourhoods.', link:'https://www.camberwellartstrail.com' },
-  { id:16, cat:'art', title:'Hackney Open Studios', venue:'Various, Hackney', area:'Hackney', zone:'east', date:'7–8 Jun', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:false, desc:"80+ artists open their studios across Hackney. One of London's most anticipated open studio weekends.", link:'https://hackney-wicked.co.uk' },
-  { id:17, cat:'art', title:'Brentford Art Trail', venue:'Various, Brentford', area:'Brentford', zone:'west', date:'All Weekend', time:'11am – 5pm', sortHour:11, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Weekend open studios across Brentford. Artists from painters to sculptors, all welcome.', link:'https://brentfordarttrail.co.uk' },
-  { id:18, cat:'art', title:'Peckham 24', venue:'Various, Peckham', area:'Peckham', zone:'south', date:'Jun 7–8', time:'All day', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'24-hour art marathon across Peckham. Exhibitions, pop-ups, performances and street art.', link:'https://peckham24.com' },
+  { id:15, cat:'art', title:'Camberwell Art Trail', venue:'Various, Camberwell', area:'Camberwell', zone:'south', date:'28–29 Jun', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:true, desc:'Weekend open studios across Camberwell. 60+ artists open their doors in one of London\'s most creative neighbourhoods.', link:'https://www.camberwellartstrail.com', image:'https://images.unsplash.com/photo-1577083552431-6e5fd01988a5?w=800&q=80&auto=format&fit=crop' },
+  { id:16, cat:'art', title:'Hackney Open Studios', venue:'Various, Hackney', area:'Hackney', zone:'east', date:'7–8 Jun', time:'11am – 6pm', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:false, desc:"80+ artists open their studios across Hackney. One of London's most anticipated open studio weekends.", link:'https://hackney-wicked.co.uk', image:'https://images.unsplash.com/photo-1531913764164-f85c52d7e6b1?w=800&q=80&auto=format&fit=crop' },
+  { id:17, cat:'art', title:'Brentford Art Trail', venue:'Various, Brentford', area:'Brentford', zone:'west', date:'All Weekend', time:'11am – 5pm', sortHour:11, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Weekend open studios across Brentford. Artists from painters to sculptors, all welcome.', link:'https://brentfordarttrail.co.uk', image:'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=800&q=80&auto=format&fit=crop' },
+  { id:18, cat:'art', title:'Peckham 24', venue:'Various, Peckham', area:'Peckham', zone:'south', date:'Jun 7–8', time:'All day', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'24-hour art marathon across Peckham. Exhibitions, pop-ups, performances and street art.', link:'https://peckham24.com', image:'https://images.unsplash.com/photo-1545987796-200677ee1011?w=800&q=80&auto=format&fit=crop' },
 
   // CREATE
-  { id:19, cat:'create', title:'Life Drawing: Drop-In', venue:'Brixton Art Studios', area:'Brixton', zone:'south', date:'Every Tuesday', time:'7pm – 9pm', sortHour:19, price:'£12', free:false, recurrence:'weekly', featured:false, desc:'Open life drawing sessions with a live model. No booking required, all abilities welcome.', link:'https://www.brixtonartstudios.co.uk' },
-  { id:20, cat:'create', title:'Screenprint Workshop', venue:'Paper Tiger, Peckham', area:'Peckham', zone:'south', date:'Monthly – 1st Saturday', time:'10am – 2pm', sortHour:10, price:'£55', free:false, recurrence:'monthly', featured:false, desc:'Hands-on screen printing workshop. Design your own print to take home.', link:'https://www.paper-tiger.co.uk' },
-  { id:21, cat:'create', title:'Watercolour Mondays', venue:'Artspace Peckham', area:'Peckham', zone:'south', date:'Every Monday', time:'6pm – 8pm', sortHour:18, price:'£15', free:false, recurrence:'weekly', featured:false, desc:'Weekly watercolour class for beginners and improvers. Materials available to buy.', link:'https://artspacepeckham.co.uk' },
-  { id:22, cat:'create', title:'Riso Print Workshop', venue:'Peckham Print Studios', area:'Peckham', zone:'south', date:'Monthly – 3rd Saturday', time:'11am – 3pm', sortHour:11, price:'£40', free:false, recurrence:'monthly', featured:false, desc:'Learn Risograph printing — zines, posters, book covers. All materials included. Take home 10 prints.', link:'https://peckhamprint.co.uk' },
-  { id:23, cat:'create', title:'Darkroom Photography', venue:'Aperture Hackney', area:'Hackney', zone:'east', date:'Monthly – 2nd Saturday', time:'10am – 4pm', sortHour:10, price:'£60', free:false, recurrence:'monthly', featured:false, desc:'Full day darkroom workshop — shoot on film and develop your own prints. Max 6 participants.', link:'https://aperturehackney.co.uk' },
+  { id:19, cat:'create', title:'Life Drawing: Drop-In', venue:'Brixton Art Studios', area:'Brixton', zone:'south', date:'Every Tuesday', time:'7pm – 9pm', sortHour:19, price:'£12', free:false, recurrence:'weekly', featured:false, desc:'Open life drawing sessions with a live model. No booking required, all abilities welcome.', link:'https://www.brixtonartstudios.co.uk', image:'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800&q=80&auto=format&fit=crop' },
+  { id:20, cat:'create', title:'Screenprint Workshop', venue:'Paper Tiger, Peckham', area:'Peckham', zone:'south', date:'Monthly – 1st Saturday', time:'10am – 2pm', sortHour:10, price:'£55', free:false, recurrence:'monthly', featured:false, desc:'Hands-on screen printing workshop. Design your own print to take home.', link:'https://www.paper-tiger.co.uk', image:'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80&auto=format&fit=crop' },
+  { id:21, cat:'create', title:'Watercolour Mondays', venue:'Artspace Peckham', area:'Peckham', zone:'south', date:'Every Monday', time:'6pm – 8pm', sortHour:18, price:'£15', free:false, recurrence:'weekly', featured:false, desc:'Weekly watercolour class for beginners and improvers. Materials available to buy.', link:'https://artspacepeckham.co.uk', image:'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&q=80&auto=format&fit=crop' },
+  { id:22, cat:'create', title:'Riso Print Workshop', venue:'Peckham Print Studios', area:'Peckham', zone:'south', date:'Monthly – 3rd Saturday', time:'11am – 3pm', sortHour:11, price:'£40', free:false, recurrence:'monthly', featured:false, desc:'Learn Risograph printing — zines, posters, book covers. All materials included. Take home 10 prints.', link:'https://peckhamprint.co.uk', image:'https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&q=80&auto=format&fit=crop' },
+  { id:23, cat:'create', title:'Darkroom Photography', venue:'Aperture Hackney', area:'Hackney', zone:'east', date:'Monthly – 2nd Saturday', time:'10am – 4pm', sortHour:10, price:'£60', free:false, recurrence:'monthly', featured:false, desc:'Full day darkroom workshop — shoot on film and develop your own prints. Max 6 participants.', link:'https://aperturehackney.co.uk', image:'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800&q=80&auto=format&fit=crop' },
 
   // WELLNESS
-  { id:24, cat:'wellness', title:'Ecstatic Dance Peckham', venue:'Bussey Building', area:'Peckham', zone:'south', date:'Every Saturday', time:'10am – 1pm', sortHour:10, price:'£12', free:false, recurrence:'weekly', featured:true, desc:'Freeform conscious dance — no steps, no phones, no alcohol. DJ-led journey through world rhythms. Welcome to all.', link:'https://www.ecstaticdance.org.uk' },
-  { id:25, cat:'wellness', title:'Sound Bath: Beckenham', venue:'Beckenham Place Mansion', area:'Beckenham', zone:'south', date:'2nd & 4th Sunday', time:'2pm – 3:30pm', sortHour:14, price:'£18', free:false, recurrence:'weekly', featured:false, desc:'Immersive group sound healing with crystal singing bowls and gongs. Mats provided.', link:'https://www.beckenhamplacemansion.co.uk' },
-  { id:26, cat:'wellness', title:'Yoga in the Park', venue:'Brockwell Park', area:'Herne Hill', zone:'south', date:'Every Sunday', time:'9am – 10am', sortHour:9, price:'Free (donations)', free:true, recurrence:'weekly', featured:false, desc:'Outdoor community yoga class. All levels. Bring your own mat. Suggested £3–5 donation.', link:'https://www.brockwellpark.co.uk' },
-  { id:27, cat:'wellness', title:'Kundalini Yoga: Brixton', venue:'Brixton Recreation Centre', area:'Brixton', zone:'south', date:'Every Thursday', time:'7:30pm', sortHour:19.5, price:'£10', free:false, recurrence:'weekly', featured:false, desc:'Traditional Kundalini yoga with chanting, breathing and meditation. Mats available.', link:'https://www.lambeth.gov.uk/leisure-centres' },
-  { id:28, cat:'wellness', title:'Breathwork & Cold Water', venue:'Brockwell Lido', area:'Herne Hill', zone:'south', date:'Monthly – last Saturday', time:'7am – 9am', sortHour:7, price:'£25', free:false, recurrence:'monthly', featured:false, desc:'Wim Hof breathing followed by guided cold water immersion at the iconic Brockwell Lido.', link:'https://www.brockwelllido.com' },
+  { id:24, cat:'wellness', title:'Ecstatic Dance Peckham', venue:'Bussey Building', area:'Peckham', zone:'south', date:'Every Saturday', time:'10am – 1pm', sortHour:10, price:'£12', free:false, recurrence:'weekly', featured:true, desc:'Freeform conscious dance — no steps, no phones, no alcohol. DJ-led journey through world rhythms. Welcome to all.', link:'https://www.ecstaticdance.org.uk', image:'https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80&auto=format&fit=crop' },
+  { id:25, cat:'wellness', title:'Sound Bath: Beckenham', venue:'Beckenham Place Mansion', area:'Beckenham', zone:'south', date:'2nd & 4th Sunday', time:'2pm – 3:30pm', sortHour:14, price:'£18', free:false, recurrence:'weekly', featured:false, desc:'Immersive group sound healing with crystal singing bowls and gongs. Mats provided.', link:'https://www.beckenhamplacemansion.co.uk', image:'https://images.unsplash.com/photo-1591291621164-2c6367723315?w=800&q=80&auto=format&fit=crop' },
+  { id:26, cat:'wellness', title:'Yoga in the Park', venue:'Brockwell Park', area:'Herne Hill', zone:'south', date:'Every Sunday', time:'9am – 10am', sortHour:9, price:'Free (donations)', free:true, recurrence:'weekly', featured:false, desc:'Outdoor community yoga class. All levels. Bring your own mat. Suggested £3–5 donation.', link:'https://www.brockwellpark.co.uk', image:'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80&auto=format&fit=crop' },
+  { id:27, cat:'wellness', title:'Kundalini Yoga: Brixton', venue:'Brixton Recreation Centre', area:'Brixton', zone:'south', date:'Every Thursday', time:'7:30pm', sortHour:19.5, price:'£10', free:false, recurrence:'weekly', featured:false, desc:'Traditional Kundalini yoga with chanting, breathing and meditation. Mats available.', link:'https://www.lambeth.gov.uk/leisure-centres', image:'https://images.unsplash.com/photo-1599447421416-3414500d18a5?w=800&q=80&auto=format&fit=crop' },
+  { id:28, cat:'wellness', title:'Breathwork & Cold Water', venue:'Brockwell Lido', area:'Herne Hill', zone:'south', date:'Monthly – last Saturday', time:'7am – 9am', sortHour:7, price:'£25', free:false, recurrence:'monthly', featured:false, desc:'Wim Hof breathing followed by guided cold water immersion at the iconic Brockwell Lido.', link:'https://www.brockwelllido.com', image:'https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=800&q=80&auto=format&fit=crop' },
 
-  // FITNESS (includes padel, tennis, plus existing)
-  { id:29, cat:'fitness', title:'Tooting Bec Runners', venue:'Tooting Bec Lido', area:'Tooting', zone:'south', date:'Every Thursday', time:'7pm', sortHour:19, price:'Free', free:true, recurrence:'weekly', featured:true, desc:'Community run club meeting at the lido. Routes from 5K to 10K, all paces welcome.', link:'https://www.slsc.org.uk' },
-  { id:30, cat:'fitness', title:'Battersea Park Parkrun', venue:'Battersea Park', area:'Battersea', zone:'south', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run in Battersea Park. Register once at parkrun.org.uk.', link:'https://www.parkrun.org.uk/battersea' },
-  { id:31, cat:'fitness', title:'Richmond Park Cycling Club', venue:'Robin Hood Gate', area:'Richmond', zone:'west', date:'Every Sunday', time:'8am', sortHour:8, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Group road ride through Richmond Park. Two pace groups: steady and sportive. Bring a road or hybrid bike.', link:'https://www.royalparks.org.uk/parks/richmond-park' },
-  { id:32, cat:'fitness', title:'Clapham Calisthenics', venue:'Clapham Common outdoor gym', area:'Clapham', zone:'south', date:'Tue & Sat', time:'7am', sortHour:7, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Community bodyweight training on the outdoor bars. Coached session, all fitness levels.', link:'https://www.claphamcommon.org' },
-  { id:33, cat:'fitness', title:'South Bank Sprint Club', venue:'Hungerford Bridge steps', area:'South Bank', zone:'south', date:'Every Wednesday', time:'6:30pm', sortHour:18.5, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'HIIT track sessions on the South Bank. Running, stairs, circuits. All paces welcome.', link:'https://www.southbankcentre.co.uk' },
-  { id:34, cat:'fitness', title:'Hackney Marshes Running Group', venue:'Hackney Marshes', area:'Hackney', zone:'east', date:'Every Sunday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Sunday morning run across the Marshes. Long and short options. Friendly East London community.', link:'https://www.hackney.gov.uk/parks' },
-  { id:41, cat:'fitness', title:'Padel at Beckenham', venue:'Beckenham Padel Club', area:'Beckenham', zone:'south', date:'Tue, Thu & Sat', time:'7am – 9pm', sortHour:9, price:'£8–£12/hr', free:false, recurrence:'weekly', featured:false, desc:'Community padel sessions at Beckenham Padel Club. Drop-in slots available — book online or just turn up.', link:'https://www.beckenhampadel.co.uk' },
-  { id:42, cat:'fitness', title:'Crystal Palace Padel', venue:'Crystal Palace NSC', area:'Crystal Palace', zone:'south', date:'Every day', time:'7am – 10pm', sortHour:10, price:'£10/hr', free:false, recurrence:'daily', featured:false, desc:'Book a padel court at Crystal Palace National Sports Centre. Beginner sessions available on weekends.', link:'https://www.gll.org/centre/crystal-palace-national-sports-centre' },
-  { id:43, cat:'fitness', title:'LTA Tennis: Brockwell Park', venue:'Brockwell Park Tennis Courts', area:'Herne Hill', zone:'south', date:'Daily (book ahead)', time:'8am – dusk', sortHour:9, price:'Free (LTA app)', free:true, recurrence:'daily', featured:false, desc:'Book a free outdoor tennis court at Brockwell Park via the LTA Parks Tennis app. Rackets available to hire on-site.', link:'https://www.lta.org.uk/play-tennis/find-a-venue/details/brockwell-park/' },
-  { id:44, cat:'fitness', title:'Clapham Common Tennis', venue:'Clapham Common Tennis Courts', area:'Clapham', zone:'south', date:'Daily (book ahead)', time:'8am – dusk', sortHour:9, price:'Free (LTA app)', free:true, recurrence:'daily', featured:false, desc:'Free public tennis on Clapham Common. Book via the LTA Parks Tennis app. Six courts available.', link:'https://www.lta.org.uk/play-tennis/find-a-venue/details/clapham-common/' },
+  // FITNESS
+  { id:29, cat:'fitness', title:'Tooting Bec Runners', venue:'Tooting Bec Lido', area:'Tooting', zone:'south', date:'Every Thursday', time:'7pm', sortHour:19, price:'Free', free:true, recurrence:'weekly', featured:true, desc:'Community run club meeting at the lido. Routes from 5K to 10K, all paces welcome.', link:'https://www.slsc.org.uk', image:'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=800&q=80&auto=format&fit=crop' },
+  { id:30, cat:'fitness', title:'Battersea Park Parkrun', venue:'Battersea Park', area:'Battersea', zone:'south', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run in Battersea Park. Register once at parkrun.org.uk.', link:'https://www.parkrun.org.uk/battersea', image:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&q=80&auto=format&fit=crop' },
+  { id:31, cat:'fitness', title:'Richmond Park Cycling Club', venue:'Robin Hood Gate', area:'Richmond', zone:'west', date:'Every Sunday', time:'8am', sortHour:8, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Group road ride through Richmond Park. Two pace groups: steady and sportive. Bring a road or hybrid bike.', link:'https://www.royalparks.org.uk/parks/richmond-park', image:'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80&auto=format&fit=crop' },
+  { id:32, cat:'fitness', title:'Clapham Calisthenics', venue:'Clapham Common outdoor gym', area:'Clapham', zone:'south', date:'Tue & Sat', time:'7am', sortHour:7, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Community bodyweight training on the outdoor bars. Coached session, all fitness levels.', link:'https://www.claphamcommon.org', image:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&auto=format&fit=crop' },
+  { id:33, cat:'fitness', title:'South Bank Sprint Club', venue:'Hungerford Bridge steps', area:'South Bank', zone:'south', date:'Every Wednesday', time:'6:30pm', sortHour:18.5, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'HIIT track sessions on the South Bank. Running, stairs, circuits. All paces welcome.', link:'https://www.southbankcentre.co.uk', image:'https://images.unsplash.com/photo-1486218119243-13883505764c?w=800&q=80&auto=format&fit=crop' },
+  { id:34, cat:'fitness', title:'Hackney Marshes Running Group', venue:'Hackney Marshes', area:'Hackney', zone:'east', date:'Every Sunday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Sunday morning run across the Marshes. Long and short options. Friendly East London community.', link:'https://www.hackney.gov.uk/parks', image:'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&q=80&auto=format&fit=crop' },
+  { id:41, cat:'fitness', title:'Padel at Beckenham', venue:'Beckenham Padel Club', area:'Beckenham', zone:'south', date:'Tue, Thu & Sat', time:'7am – 9pm', sortHour:9, price:'£8–£12/hr', free:false, recurrence:'weekly', featured:false, desc:'Community padel sessions at Beckenham Padel Club. Drop-in slots available — book online or just turn up.', link:'https://www.beckenhampadel.co.uk', image:'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80&auto=format&fit=crop' },
+  { id:42, cat:'fitness', title:'Crystal Palace Padel', venue:'Crystal Palace NSC', area:'Crystal Palace', zone:'south', date:'Every day', time:'7am – 10pm', sortHour:10, price:'£10/hr', free:false, recurrence:'daily', featured:false, desc:'Book a padel court at Crystal Palace National Sports Centre. Beginner sessions available on weekends.', link:'https://www.gll.org/centre/crystal-palace-national-sports-centre', image:'https://images.unsplash.com/photo-1542144582-1ba00456b5e3?w=800&q=80&auto=format&fit=crop' },
+  { id:43, cat:'fitness', title:'LTA Tennis: Brockwell Park', venue:'Brockwell Park Tennis Courts', area:'Herne Hill', zone:'south', date:'Daily (book ahead)', time:'8am – dusk', sortHour:9, price:'Free (LTA app)', free:true, recurrence:'daily', featured:false, desc:'Book a free outdoor tennis court at Brockwell Park via the LTA Parks Tennis app. Rackets available to hire on-site.', link:'https://www.lta.org.uk/play-tennis/find-a-venue/details/brockwell-park/', image:'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=800&q=80&auto=format&fit=crop' },
+  { id:44, cat:'fitness', title:'Clapham Common Tennis', venue:'Clapham Common Tennis Courts', area:'Clapham', zone:'south', date:'Daily (book ahead)', time:'8am – dusk', sortHour:9, price:'Free (LTA app)', free:true, recurrence:'daily', featured:false, desc:'Free public tennis on Clapham Common. Book via the LTA Parks Tennis app. Six courts available.', link:'https://www.lta.org.uk/play-tennis/find-a-venue/details/clapham-common/', image:'https://images.unsplash.com/photo-1530915365347-e35b749a0381?w=800&q=80&auto=format&fit=crop' },
 
   // ECO
-  { id:35, cat:'eco', title:'Deptford Creek Litter Pick', venue:'Deptford Creek', area:'Deptford', zone:'south', date:'Monthly – 3rd Sunday', time:'10am – 12pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:true, desc:"Join the Deptford Creek Waterway Recovery team. Equipment provided. One of London's most biodiverse waterways.", link:'https://www.deptfordcreek.org.uk' },
-  { id:36, cat:'eco', title:'Chiswick Riverside Clean-Up', venue:'Chiswick Pier', area:'Chiswick', zone:'west', date:'Every 2nd Saturday', time:'9am – 11am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Thames riverside litter pick from Chiswick Pier. Part of the Thames21 initiative. Gloves and bags provided.', link:'https://www.thames21.org.uk' },
-  { id:37, cat:'eco', title:'Clapham Common Volunteer Day', venue:'Clapham Common', area:'Clapham', zone:'south', date:'Every Sunday', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Friends of Clapham Common — weekly volunteer morning. Litter picking, tree planting, habitat maintenance.', link:'https://www.friendsofclaphamcommon.org' },
-  { id:38, cat:'eco', title:'Peckham Park Greening', venue:'Peckham Rye Park', area:'Peckham', zone:'south', date:'1st Saturday monthly', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Community rewilding project in Peckham Rye. Plant wildflowers, build bug hotels, restore green corridors.', link:'https://www.friendsofpeckhamrye.org' },
-  { id:39, cat:'eco', title:'Lee Valley Waterway Clean-Up', venue:'Tottenham Lock', area:'Tottenham', zone:'east', date:'Monthly – 2nd Sunday', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Canal and towpath litter picking along the beautiful Lee Valley. Canal & River Trust partnership event.', link:'https://canalrivertrust.org.uk' },
-  { id:40, cat:'eco', title:'Wandsworth Common Wildlife Survey', venue:'Wandsworth Common', area:'Wandsworth', zone:'south', date:'Quarterly', time:'9am – 12pm', sortHour:9, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Help survey birds, mammals and invertebrates on Wandsworth Common. Training provided.', link:'https://www.friendsofwandsworthcommon.org' },
+  { id:35, cat:'eco', title:'Deptford Creek Litter Pick', venue:'Deptford Creek', area:'Deptford', zone:'south', date:'Monthly – 3rd Sunday', time:'10am – 12pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:true, desc:"Join the Deptford Creek Waterway Recovery team. Equipment provided. One of London's most biodiverse waterways.", link:'https://www.deptfordcreek.org.uk', image:'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&q=80&auto=format&fit=crop' },
+  { id:36, cat:'eco', title:'Chiswick Riverside Clean-Up', venue:'Chiswick Pier', area:'Chiswick', zone:'west', date:'Every 2nd Saturday', time:'9am – 11am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Thames riverside litter pick from Chiswick Pier. Part of the Thames21 initiative. Gloves and bags provided.', link:'https://www.thames21.org.uk', image:'https://images.unsplash.com/photo-1473773508845-188df298d2d1?w=800&q=80&auto=format&fit=crop' },
+  { id:37, cat:'eco', title:'Clapham Common Volunteer Day', venue:'Clapham Common', area:'Clapham', zone:'south', date:'Every Sunday', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Friends of Clapham Common — weekly volunteer morning. Litter picking, tree planting, habitat maintenance.', link:'https://www.friendsofclaphamcommon.org', image:'https://images.unsplash.com/photo-1528150177508-7cc0c36cda5b?w=800&q=80&auto=format&fit=crop' },
+  { id:38, cat:'eco', title:'Peckham Park Greening', venue:'Peckham Rye Park', area:'Peckham', zone:'south', date:'1st Saturday monthly', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Community rewilding project in Peckham Rye. Plant wildflowers, build bug hotels, restore green corridors.', link:'https://www.friendsofpeckhamrye.org', image:'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=800&q=80&auto=format&fit=crop' },
+  { id:39, cat:'eco', title:'Lee Valley Waterway Clean-Up', venue:'Tottenham Lock', area:'Tottenham', zone:'east', date:'Monthly – 2nd Sunday', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Canal and towpath litter picking along the beautiful Lee Valley. Canal & River Trust partnership event.', link:'https://canalrivertrust.org.uk', image:'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=800&q=80&auto=format&fit=crop' },
+  { id:40, cat:'eco', title:'Wandsworth Common Wildlife Survey', venue:'Wandsworth Common', area:'Wandsworth', zone:'south', date:'Quarterly', time:'9am – 12pm', sortHour:9, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Help survey birds, mammals and invertebrates on Wandsworth Common. Training provided.', link:'https://www.friendsofwandsworthcommon.org', image:'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&q=80&auto=format&fit=crop' },,
+
+  // ADDED — broader borough + category coverage
+  { id:45, cat:'music', title:'Roundhouse Free Live Sessions', venue:'The Roundhouse', area:'Camden', zone:'north', date:'Last Friday monthly', time:'7pm', sortHour:19, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Free showcase nights from emerging artists in residence at the Roundhouse in Camden.', link:'https://www.roundhouse.org.uk/whats-on/', image:'https://images.unsplash.com/photo-1577083552431-6e5fd01988a5?w=800&q=80&auto=format&fit=crop' },
+  { id:46, cat:'art', title:'Camden Art Centre — Free Exhibition', venue:'Camden Art Centre', area:'Camden', zone:'north', date:'Tue–Sun', time:'10am – 6pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Always-free contemporary art exhibitions in a beautiful Arnold Circus-style Victorian building.', link:'https://camdenartcentre.org/whats-on', image:'https://images.unsplash.com/photo-1577083552431-6e5fd01988a5?w=800&q=80&auto=format&fit=crop' },
+  { id:47, cat:'art', title:'Whitechapel Gallery — First Thursdays', venue:'Whitechapel Gallery', area:'Whitechapel', zone:'east', date:'1st Thursday monthly', time:'6pm – 9pm', sortHour:18, price:'Free', free:true, recurrence:'monthly', featured:true, desc:'East End galleries open late on the first Thursday of every month. Maps and free buses from Whitechapel.', link:'https://firstthursdays.co.uk', image:'https://images.unsplash.com/photo-1531913764164-f85c52d7e6b1?w=800&q=80&auto=format&fit=crop' },
+  { id:48, cat:'markets', title:'Columbia Road Flower Market', venue:'Columbia Road, E2', area:'Bethnal Green', zone:'east', date:'Every Sunday', time:'8am – 3pm', sortHour:8, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Sunday flower market in Bethnal Green. Plants, cuttings, and a row of independent shops and cafés.', link:'https://columbiaroad.info', image:'https://images.unsplash.com/photo-1555529771-7888783a18d3?w=800&q=80&auto=format&fit=crop' },
+  { id:49, cat:'fitness', title:'Greenwich Park Parkrun', venue:'Greenwich Park', area:'Greenwich', zone:'south', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run through the historic Greenwich Park. Register once at parkrun.org.uk.', link:'https://www.parkrun.org.uk/greenwich', image:'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=800&q=80&auto=format&fit=crop' },
+  { id:50, cat:'festivals', title:'Newham Heritage Month', venue:'Various, Newham', area:'Stratford', zone:'east', date:'Throughout May', time:'Various', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'A month of free heritage walks, talks and exhibitions across Newham every May.', link:'https://www.newham.gov.uk/heritage', image:'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=800&q=80&auto=format&fit=crop' },
+  { id:51, cat:'art', title:'National Gallery — Free Entry', venue:'National Gallery', area:'Trafalgar Square', zone:'central', date:'Every day', time:'10am – 6pm', sortHour:10, price:'Free', free:true, recurrence:'daily', featured:true, desc:'Permanent collection always free. 2,300+ paintings from the 13th to the 20th century.', link:'https://www.nationalgallery.org.uk/whats-on', image:'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=800&q=80&auto=format&fit=crop' },
+  { id:52, cat:'wellness', title:'Hyde Park Sunrise Yoga', venue:'Hyde Park', area:'Hyde Park', zone:'central', date:'Every Saturday', time:'7am – 8am', sortHour:7, price:'Free (donations)', free:true, recurrence:'weekly', featured:false, desc:'Outdoor sunrise yoga next to the Serpentine. Mats and donations welcome.', link:'https://www.royalparks.org.uk/parks/hyde-park', image:'https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80&auto=format&fit=crop' },
+  { id:53, cat:'art', title:'Serpentine Galleries — Free', venue:'Serpentine Galleries', area:'Kensington Gardens', zone:'central', date:'Tue–Sun', time:'10am – 6pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Two free galleries in Kensington Gardens — North and South — plus the annual Serpentine Pavilion.', link:'https://www.serpentinegalleries.org/', image:'https://images.unsplash.com/photo-1545987796-200677ee1011?w=800&q=80&auto=format&fit=crop' },
+  { id:54, cat:'festivals', title:'Ealing Half-Marathon Community Run', venue:'Lammas Park', area:'Ealing', zone:'west', date:'Every Sunday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Friendly community 10K and half-marathon training run. All paces — bring water and trainers.', link:'https://ealinghalfmarathon.com', image:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80&auto=format&fit=crop' },
+  { id:55, cat:'art', title:'Croydon Art Quarter Open Studios', venue:'Various, Croydon', area:'Croydon', zone:'south', date:'1st weekend monthly', time:'11am – 5pm', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Croydon\'s growing art quarter — meet artists in their studios across the town centre.', link:'https://www.croydon.gov.uk/leisure-parks-and-events/events-croydon', image:'https://images.unsplash.com/photo-1577083552431-6e5fd01988a5?w=800&q=80&auto=format&fit=crop' },
+  { id:56, cat:'fitness', title:'Wembley Park Saturday Run', venue:'Wembley Park', area:'Wembley', zone:'north', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free social 5K run through Wembley Park, finishing under the iconic arch.', link:'https://wembleypark.com', image:'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800&q=80&auto=format&fit=crop' },
+  { id:57, cat:'fitness', title:'Wimbledon Common Parkrun', venue:'Wimbledon Common', area:'Wimbledon', zone:'south', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run across the open commons. The original parkrun route.', link:'https://www.parkrun.org.uk/wimbledoncommon', image:'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&q=80&auto=format&fit=crop' },
+  { id:58, cat:'markets', title:'Kingston Ancient Market', venue:'Market Place, Kingston', area:'Kingston upon Thames', zone:'south', date:'Mon–Sat', time:'9am – 5pm', sortHour:10, price:'Free', free:true, recurrence:'daily', featured:false, desc:'A 700-year-old daily market in Kingston town centre. Fresh produce, food, flowers and street food.', link:'https://www.kingstonfirst.co.uk/places/ancient-market/', image:'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80&auto=format&fit=crop' },
+  { id:59, cat:'eco', title:'Crystal Palace Park Volunteering', venue:'Crystal Palace Park', area:'Crystal Palace', zone:'south', date:'1st Sunday monthly', time:'10am – 12pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Help maintain the historic Crystal Palace Park dinosaurs site and surrounding woodland.', link:'https://crystalpalacepark.org.uk', image:'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&q=80&auto=format&fit=crop' },
+  { id:60, cat:'fitness', title:'Finsbury Park Parkrun', venue:'Finsbury Park', area:'Finsbury Park', zone:'north', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run around the lake and avenues of Finsbury Park.', link:'https://www.parkrun.org.uk/finsburypark', image:'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&auto=format&fit=crop' },
+  { id:61, cat:'eco', title:'Hampstead Heath Conservation Day', venue:'Hampstead Heath', area:'Hampstead', zone:'north', date:'Last Saturday monthly', time:'10am – 1pm', sortHour:10, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Volunteer with the City of London Heath Hands team. Habitat work, scrub clearance and tree care.', link:'https://www.heathhands.org.uk', image:'https://images.unsplash.com/photo-1473773508845-188df298d2d1?w=800&q=80&auto=format&fit=crop' },
+  { id:62, cat:'fitness', title:'Valentines Park Parkrun', venue:'Valentines Park', area:'Ilford', zone:'east', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run through Valentines Park, Ilford. Friendly local volunteers.', link:'https://www.parkrun.org.uk/valentines', image:'https://images.unsplash.com/photo-1486218119243-13883505764c?w=800&q=80&auto=format&fit=crop' },
+  { id:63, cat:'eco', title:'Forty Hall Estate Volunteering', venue:'Forty Hall', area:'Enfield', zone:'north', date:'Wednesdays', time:'10am – 2pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Volunteer at the organic farm and walled gardens of Forty Hall Estate, Enfield.', link:'https://www.fortyhallestate.co.uk', image:'https://images.unsplash.com/photo-1528150177508-7cc0c36cda5b?w=800&q=80&auto=format&fit=crop' },
+  { id:64, cat:'eco', title:'Colne Valley Wildlife Walk', venue:'Colne Valley Park', area:'Uxbridge', zone:'west', date:'Saturdays', time:'10am – 12pm', sortHour:10, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Guided wildlife walks through the Colne Valley regional park. Birds, butterflies, wildflowers.', link:'https://colnevalleypark.org.uk', image:'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=800&q=80&auto=format&fit=crop' },
+  { id:65, cat:'markets', title:'Sutton Farmers Market', venue:'High Street, Sutton', area:'Sutton', zone:'south', date:'1st & 3rd Sunday', time:'9am – 1pm', sortHour:9, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Twice-monthly farmers market with local produce, baked goods and street food.', link:'https://www.sutton.gov.uk/info/200439/things_to_do/1265/events', image:'https://images.unsplash.com/photo-1513125370-3460ebe3401b?w=800&q=80&auto=format&fit=crop' },
+  { id:66, cat:'art', title:'Danson Stables Art Studios', venue:'Danson Stables', area:'Bexleyheath', zone:'south', date:'1st Saturday monthly', time:'11am – 4pm', sortHour:11, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Open studios at Danson Stables — meet 20+ local artists in the historic Danson Park grounds.', link:'https://dansonstables.co.uk', image:'https://images.unsplash.com/photo-1531913764164-f85c52d7e6b1?w=800&q=80&auto=format&fit=crop' },
+  { id:67, cat:'fitness', title:'Raphael Park Parkrun', venue:'Raphael Park', area:'Romford', zone:'east', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run around Raphael Park\'s lake and Victorian gardens.', link:'https://www.parkrun.org.uk/raphaelpark', image:'https://images.unsplash.com/photo-1518684079-3c830dcef090?w=800&q=80&auto=format&fit=crop' },
+  { id:68, cat:'festivals', title:'Barking Folk Festival', venue:'Abbey Green', area:'Barking', zone:'east', date:'Late June', time:'12pm – 8pm', sortHour:12, price:'Free', free:true, recurrence:'monthly', featured:false, desc:'Free annual folk festival on Abbey Green — Morris dancing, live music, family workshops.', link:'https://www.lbbd.gov.uk/whats-on', image:'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=800&q=80&auto=format&fit=crop' },
+  { id:69, cat:'fitness', title:'Harrow Lodge Parkrun', venue:'Harrow Lodge Park', area:'Hornchurch', zone:'east', date:'Every Saturday', time:'9am', sortHour:9, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free 5K timed run around Harrow Lodge Park, Hornchurch.', link:'https://www.parkrun.org.uk/harrowlodge', image:'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80&auto=format&fit=crop' },
+  { id:70, cat:'art', title:'Barbican — Free Curve Exhibitions', venue:'The Barbican', area:'City of London', zone:'central', date:'Tue–Sun', time:'11am – 8pm', sortHour:11, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'The Curve at the Barbican always shows a free contemporary commission. Worth the trip alone.', link:'https://www.barbican.org.uk/whats-on/the-curve', image:'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=800&q=80&auto=format&fit=crop' },
+  { id:71, cat:'music', title:'Café OTO — Pay-What-You-Can Sessions', venue:'Café OTO', area:'Dalston', zone:'east', date:'Sundays', time:'8pm', sortHour:20, price:'PWYC', free:true, recurrence:'weekly', featured:false, desc:'Experimental music in Dalston — pay-what-you-can residency nights every Sunday.', link:'https://www.cafeoto.co.uk', image:'https://images.unsplash.com/photo-1531913764164-f85c52d7e6b1?w=800&q=80&auto=format&fit=crop' },
+  { id:72, cat:'music', title:'King\'s Cross Granary Square Music', venue:'Granary Square', area:"King's Cross", zone:'central', date:'Summer Fridays', time:'6pm – 9pm', sortHour:18, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free outdoor live music sessions on Granary Square through the summer.', link:'https://www.kingscross.co.uk', image:'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=800&q=80&auto=format&fit=crop' },
+  { id:73, cat:'create', title:'How To Academy — Free Talks', venue:'Various, Central London', area:'Central London', zone:'central', date:'Various', time:'7pm', sortHour:19, price:'Free–£15', free:false, recurrence:'monthly', featured:false, desc:'Programme of authors, scientists and thinkers across Central London. Always at least one free event each month.', link:'https://howtoacademy.com', image:'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=800&q=80&auto=format&fit=crop' },
+  { id:74, cat:'art', title:'BFI Mediatheque — Free Archive Viewing', venue:'BFI Southbank', area:'South Bank', zone:'central', date:'Tue–Sun', time:'12pm – 9pm', sortHour:14, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Free access to thousands of films and TV programmes from the BFI National Archive. Booth bookings free.', link:'https://www.bfi.org.uk/southbank/mediatheque', image:'https://images.unsplash.com/photo-1545987796-200677ee1011?w=800&q=80&auto=format&fit=crop' }
 ];
 
 // =====================
 // STATE
 // =====================
 let currentCat = 'all';
-let bookmarks = JSON.parse(localStorage.getItem('ldn_bookmarks') || '[]');
+let bookmarks = [];
+try { bookmarks = JSON.parse(localStorage.getItem('ldn_bookmarks') || '[]'); } catch (e) { bookmarks = []; }
 let filteredEvents = [...EVENTS];
 let searchTerm = '';
 let dateRange = 'all';
@@ -1167,21 +1180,25 @@ let currentZone = 'all';
 // INIT
 // =====================
 function init() {
-  setHeroDate();
-  buildTicker();
-  applyFilters();
-  updateBookmarkCount();
-  setupRadiusSlider();
-  document.getElementById('total-count').textContent = EVENTS.length;
+  // Defensive: each step is wrapped so a single failure doesn't break the rest
+  try { setHeroDate(); } catch (e) { console.warn('setHeroDate skipped:', e); }
+  try { buildTicker(); } catch (e) { console.warn('buildTicker failed:', e); }
+  try { applyFilters(); } catch (e) { console.warn('applyFilters failed:', e); }
+  try { updateBookmarkCount(); } catch (e) { console.warn('updateBookmarkCount failed:', e); }
+  try { setupRadiusSlider(); } catch (e) { console.warn('setupRadiusSlider failed:', e); }
+  const totalEl = document.getElementById('total-count');
+  if (totalEl) totalEl.textContent = EVENTS.length;
 }
 
 // =====================
-// HERO DATE
+// HERO DATE — guarded (the #hero-date element is optional)
 // =====================
 function setHeroDate() {
+  const el = document.getElementById('hero-date');
+  if (!el) return; // graceful no-op if element doesn't exist
   const now = new Date();
   const opts = { weekday:'long', day:'numeric', month:'short' };
-  document.getElementById('hero-date').textContent = now.toLocaleDateString('en-GB', opts).toUpperCase();
+  el.textContent = now.toLocaleDateString('en-GB', opts).toUpperCase();
 }
 
 // =====================
@@ -1209,7 +1226,7 @@ function buildTicker() {
   ).join('');
 
   const inner = document.getElementById('ticker-inner');
-  inner.innerHTML = items + items;
+  if (inner) inner.innerHTML = items + items;
 }
 
 // =====================
@@ -1222,7 +1239,6 @@ function filterByDate(range, btn) {
   });
   if (btn) { btn.classList.add('active'); btn.setAttribute('aria-selected','true'); }
 
-  // Handle "free" shortcut
   if (range === 'free') {
     dateRange = 'all';
     document.getElementById('price-filter').value = 'free';
@@ -1240,7 +1256,7 @@ function eventMatchesDateRange(e) {
   if (dateRange === 'all') return true;
   const d = e.date.toLowerCase();
   const now = new Date();
-  const dow = now.getDay(); // 0=Sun
+  const dow = now.getDay();
   const dayNames = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
 
   if (dateRange === 'today') {
@@ -1303,7 +1319,6 @@ function filterBorough(zone, btn) {
   });
   if (btn) { btn.classList.add('active'); btn.setAttribute('aria-pressed','true'); }
 
-  // Sync zone filter dropdown
   const zf = document.getElementById('zone-filter');
   if (zf) zf.value = zone;
   applyFilters();
@@ -1313,28 +1328,20 @@ function filterBorough(zone, btn) {
 // SEARCH
 // =====================
 function handleSearch(val) {
-  searchTerm = val.toLowerCase();
-  const headerInput = document.getElementById('site-search');
-  const rowInput = document.getElementById('search-input');
-  if (document.activeElement === headerInput) rowInput.value = val;
-  if (document.activeElement === rowInput) headerInput.value = val;
+  searchTerm = (val || '').toLowerCase();
   applyFilters();
-}
-
-function handleSearchSubmit(e) {
-  e.preventDefault();
-  handleSearch(document.getElementById('site-search').value);
-  document.getElementById('main-content').scrollIntoView({ behavior:'smooth' });
-  return false;
 }
 
 // =====================
 // APPLY ALL FILTERS
 // =====================
 function applyFilters() {
-  const freqFilter = document.getElementById('freq-filter').value;
-  const priceFilter = document.getElementById('price-filter').value;
-  const zoneFilter = document.getElementById('zone-filter').value;
+  const freqEl = document.getElementById('freq-filter');
+  const priceEl = document.getElementById('price-filter');
+  const zoneEl = document.getElementById('zone-filter');
+  const freqFilter = freqEl ? freqEl.value : 'all';
+  const priceFilter = priceEl ? priceEl.value : 'all';
+  const zoneFilter = zoneEl ? zoneEl.value : 'all';
   if (zoneFilter !== 'all') currentZone = zoneFilter;
 
   filteredEvents = EVENTS.filter(e => {
@@ -1355,32 +1362,44 @@ function applyFilters() {
   renderGrid();
 
   const count = filteredEvents.length;
-  document.getElementById('result-count').textContent = `${count} event${count !== 1 ? 's' : ''}`;
+  const rc = document.getElementById('result-count');
+  if (rc) rc.textContent = `${count} event${count !== 1 ? 's' : ''}`;
   const catLabel = currentCat === 'all' ? 'All Events' : currentCat.charAt(0).toUpperCase() + currentCat.slice(1);
-  document.getElementById('section-label').textContent = catLabel;
-  document.getElementById('section-count').textContent = `${count} found`;
+  const sl = document.getElementById('section-label');
+  const sc = document.getElementById('section-count');
+  if (sl) sl.textContent = catLabel;
+  if (sc) sc.textContent = `${count} found`;
 }
 
 // =====================
-// CATEGORY VISUALS — clean gradient backgrounds with emoji
+// CATEGORY VISUALS
 // =====================
 const CAT_VIS = {
   theatre:'vis-theatre', markets:'vis-markets', festivals:'vis-festivals',
   art:'vis-art', create:'vis-create', wellness:'vis-wellness',
-  fitness:'vis-fitness', eco:'vis-eco', community:'vis-community'
-};
-const CAT_LETTER = {
-  theatre:'TH', markets:'MK', festivals:'FT', art:'AR',
-  create:'CR', wellness:'WL', fitness:'FT', eco:'EC', community:'CM'
+  fitness:'vis-fitness', eco:'vis-eco', community:'vis-community',
+  music:'vis-festivals'
 };
 const CAT_EMOJI = {
   theatre: '🎭', markets: '🏪', festivals: '🎪', art: '🎨',
-  create: '✏️', wellness: '🌿', fitness: '🏃', eco: '🌱', community: '👥'
+  create: '✏️', wellness: '🌿', fitness: '🏃', eco: '🌱', community: '👥',
+  music: '🎵'
 };
 
+// Centred emoji wrapper — uses .card-emoji block to guarantee centring.
+// If the event has an `image` URL, that wins; emoji becomes the fallback.
 function getCatVisual(cat) {
   const emoji = CAT_EMOJI[cat] || '🗓️';
-  return `<span style="font-size:52px;line-height:1;position:relative;z-index:1;">${emoji}</span>`;
+  return `<span class="card-emoji" style="font-size:52px;">${emoji}</span>`;
+}
+function getVisualClass(e) {
+  const base = `card-visual ${CAT_VIS[e.cat] || ''}`;
+  return e.image ? `${base} has-image` : base;
+}
+function getCardImageTag(e) {
+  if (!e.image) return '';
+  // loading=lazy + onerror fallback so a broken url silently reverts to emoji
+  return `<img class="card-img" src="${e.image}" alt="" loading="lazy" decoding="async" onerror="this.remove();this.parentElement.classList.remove('has-image');">`;
 }
 
 // =====================
@@ -1389,13 +1408,15 @@ function getCatVisual(cat) {
 function renderFeatured() {
   const featured = filteredEvents.filter(e => e.featured).slice(0, 3);
   const row = document.getElementById('featured-row');
+  if (!row) return;
   if (!featured.length) { row.innerHTML = ''; return; }
   row.innerHTML = featured.map((e, i) => {
     const saved = bookmarks.includes(e.id);
     const cls = i === 0 ? 'event-card featured' : 'event-card tall';
     return `
     <article class="${cls}" role="listitem" aria-label="${e.title}" onclick="openModal(${e.id})">
-      <div class="card-visual ${CAT_VIS[e.cat] || ''}">
+      <div class="${getVisualClass(e)}">
+        ${getCardImageTag(e)}
         ${getCatVisual(e.cat)}
         <span class="card-cat-badge">${e.cat.toUpperCase()}</span>
         <button class="card-save ${saved?'saved':''}" onclick="toggleBookmark(${e.id},event)" aria-label="${saved?'Remove from saved':'Save'} ${e.title}" aria-pressed="${saved}">
@@ -1424,6 +1445,7 @@ function renderFeatured() {
 // =====================
 function renderGrid() {
   const grid = document.getElementById('event-grid');
+  if (!grid) return;
   const nonFeatured = filteredEvents.filter(e => !e.featured);
   if (!filteredEvents.length) {
     grid.innerHTML = `<div class="no-results"><div class="no-results-head">NOTHING FOUND</div><p>Try a different search or category</p></div>`;
@@ -1433,7 +1455,8 @@ function renderGrid() {
     const saved = bookmarks.includes(e.id);
     return `
     <article class="event-card" role="listitem" aria-label="${e.title}" onclick="openModal(${e.id})">
-      <div class="card-visual ${CAT_VIS[e.cat] || ''} events-grid">
+      <div class="${getVisualClass(e)} events-grid">
+        ${getCardImageTag(e)}
         ${getCatVisual(e.cat)}
         <span class="card-cat-badge">${e.cat.toUpperCase()}</span>
         <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleBookmark(${e.id},event)" aria-label="${saved?'Remove':'Save'} ${e.title}" aria-pressed="${saved}">
@@ -1467,7 +1490,7 @@ function toggleBookmark(id, ev) {
   } else {
     bookmarks.push(id);
   }
-  localStorage.setItem('ldn_bookmarks', JSON.stringify(bookmarks));
+  try { localStorage.setItem('ldn_bookmarks', JSON.stringify(bookmarks)); } catch (e) {}
   updateBookmarkCount();
   renderFeatured();
   renderGrid();
@@ -1475,7 +1498,8 @@ function toggleBookmark(id, ev) {
 }
 
 function updateBookmarkCount() {
-  document.getElementById('bm-count').textContent = bookmarks.length;
+  const el = document.getElementById('bm-count');
+  if (el) el.textContent = bookmarks.length;
 }
 
 function togglePanel() {
@@ -1490,6 +1514,7 @@ function togglePanel() {
 
 function renderPanel() {
   const body = document.getElementById('panel-body');
+  if (!body) return;
   if (!bookmarks.length) {
     body.innerHTML = `<div class="panel-empty">▓ NO SAVED EVENTS YET ▓<br><br>Tap the bookmark icon<br>on any event to save it.</div>`;
     return;
@@ -1539,7 +1564,7 @@ function openModal(id) {
   if (!e) return;
   const saved = bookmarks.includes(e.id);
   document.getElementById('modal-body').innerHTML = `
-    <span style="display:inline-block;background:var(--green);color:var(--bg);font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;padding:0.3rem 0.6rem;margin-bottom:0.75rem;">${e.cat.toUpperCase()}</span>
+    <span style="display:inline-block;background:var(--green);color:var(--white);font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;padding:0.3rem 0.6rem;margin-bottom:0.75rem;">${e.cat.toUpperCase()}</span>
     <div class="event-detail-title" id="modal-event-title">${e.title}</div>
     <div class="event-detail-venue">▸ ${e.venue} · ${e.area}, London</div>
     <div class="detail-grid">
@@ -1579,7 +1604,8 @@ function closeSubmit() {
 
 // Close modals on backdrop click
 ['detail-modal','submit-modal'].forEach(id => {
-  document.getElementById(id).addEventListener('click', function(e) {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', function(e) {
     if (e.target === this) { closeModal(); closeSubmit(); }
   });
 });
@@ -1588,35 +1614,42 @@ function closeSubmit() {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     closeModal(); closeSubmit();
-    if (document.getElementById('bm-panel').classList.contains('open')) togglePanel();
+    const bm = document.getElementById('bm-panel');
+    if (bm && bm.classList.contains('open')) togglePanel();
   }
 });
 
 // Newsletter form
-document.getElementById('newsletter-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = this.querySelector('.newsletter-btn');
-  btn.textContent = 'SENDING…';
-  try {
-    const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
-    if (res.ok) {
-      this.style.display = 'none';
-      document.getElementById('newsletter-success').style.display = 'block';
-    } else { btn.textContent = 'TRY AGAIN'; }
-  } catch { btn.textContent = 'TRY AGAIN'; }
-});
+const newsletterForm = document.getElementById('newsletter-form');
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.newsletter-btn');
+    btn.textContent = 'SENDING…';
+    try {
+      const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
+      if (res.ok) {
+        this.style.display = 'none';
+        document.getElementById('newsletter-success').style.display = 'block';
+      } else { btn.textContent = 'TRY AGAIN'; }
+    } catch { btn.textContent = 'TRY AGAIN'; }
+  });
+}
 
 // Submit event form
-document.getElementById('submit-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = this.querySelector('[type="submit"]');
-  btn.textContent = 'SENDING…';
-  try {
-    const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
-    if (res.ok) { this.innerHTML = '<p style="font-family:\'Space Mono\',monospace;font-size:0.65rem;color:var(--green);padding:1rem 0;line-height:2.5;">THANKS!<br><br>We\'ll review and add your event within 48 hours.</p>'; }
-    else { btn.textContent = 'TRY AGAIN'; }
-  } catch { btn.textContent = 'TRY AGAIN'; }
-});
+const submitForm = document.getElementById('submit-form');
+if (submitForm) {
+  submitForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('[type="submit"]');
+    btn.textContent = 'SENDING…';
+    try {
+      const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
+      if (res.ok) { this.innerHTML = '<p style="font-family:\'Space Mono\',monospace;font-size:0.65rem;color:var(--green);padding:1rem 0;line-height:2.5;">THANKS!<br><br>We\'ll review and add your event within 48 hours.</p>'; }
+      else { btn.textContent = 'TRY AGAIN'; }
+    } catch { btn.textContent = 'TRY AGAIN'; }
+  });
+}
 
 // =====================
 // SETUP RADIUS SLIDER
@@ -1624,7 +1657,7 @@ document.getElementById('submit-form').addEventListener('submit', async function
 function setupRadiusSlider() {
   const slider = document.getElementById('radius-slider');
   const display = document.getElementById('radius-display');
-  if (slider) {
+  if (slider && display) {
     slider.addEventListener('input', () => {
       display.textContent = slider.value + ' mi';
       slider.setAttribute('aria-valuenow', slider.value);
@@ -1635,7 +1668,12 @@ function setupRadiusSlider() {
 // =====================
 // RUN
 // =====================
-init();
+// Run after DOM is ready (handles both immediate and deferred load)
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
