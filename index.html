@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LDN DIRECTORY — London Community Events</title>
+<meta name="description" content="Daily, weekly and monthly community events across London. Theatre, markets, festivals, art, wellness, fitness, eco and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #fafaf5;
+    --cream: #f2efe6;
+    --acid: #d4ff00;
+    --hot: #ff2d55;
+    --electric: #0047ff;
+    --orange: #ff6b00;
+    --teal: #00c9b1;
+    --lilac: #c8b4ff;
+    --grid: #e8e4d8;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { cursor: pointer; font-family: inherit; border: none; background: none; }
+
+  /* SKIP LINK */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--acid);
+    color: var(--black);
+    padding: 0.5rem 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    z-index: 9999;
+    transition: top 0.2s;
+  }
+  .skip-link:focus { top: 1rem; }
+
+  /* TICKER */
+  .ticker {
+    background: var(--black);
+    color: var(--acid);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    padding: 0.4rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-inner span { margin: 0 3rem; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* HEADER */
+  header {
+    background: var(--cream);
+    border-bottom: 2px solid var(--black);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 2rem;
+    border-bottom: 1px solid var(--grid);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: var(--black);
+  }
+  .logo span { color: var(--hot); }
+  .logo-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: -0.2rem;
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .btn-submit {
+    background: var(--black);
+    color: var(--acid);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--black);
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .btn-submit:hover { background: var(--acid); color: var(--black); }
+  .bookmark-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem;
+  }
+  .bookmark-count .dot {
+    width: 18px; height: 18px;
+    background: var(--hot);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+  }
+
+  /* NAV CATEGORIES */
+  nav.cat-nav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav.cat-nav::-webkit-scrollbar { display: none; }
+  .cat-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.2rem;
+    border-right: 1px solid var(--grid);
+    white-space: nowrap;
+    transition: all 0.15s;
+    position: relative;
+    color: var(--muted);
+  }
+  .cat-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: transparent;
+    transition: background 0.15s;
+  }
+  .cat-btn:hover { color: var(--black); }
+  .cat-btn:hover::after { background: var(--hot); }
+  .cat-btn.active { color: var(--black); }
+  .cat-btn.active::after { background: var(--hot); }
+  .cat-icon { margin-right: 0.4rem; font-size: 0.9rem; }
+
+  /* HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 380px;
+    border-bottom: 2px solid var(--black);
+  }
+  .hero-text {
+    padding: 3rem 2rem;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .hero-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    color: var(--white);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+  }
+  .hero-headline .accent { color: var(--acid); }
+  .hero-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-top: 1.5rem;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--acid);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .hero-visual {
+    background: var(--electric);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-grid-art {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 40px);
+  }
+  .hero-big-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12rem;
+    color: rgba(255,255,255,0.08);
+    line-height: 1;
+    position: absolute;
+    letter-spacing: -0.05em;
+  }
+  .hero-pill {
+    background: var(--acid);
+    color: var(--black);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+
+  /* FILTERS + SEARCH */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--grid);
+    flex-wrap: wrap;
+    background: var(--white);
+  }
+  .search-wrap {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    border: 1.5px solid var(--black);
+    background: transparent;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.6rem 1rem 0.6rem 2.2rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-wrap input:focus { border-color: var(--electric); }
+  .search-icon {
+    position: absolute;
+    left: 0.7rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    pointer-events: none;
+  }
+  .filter-select {
+    border: 1.5px solid var(--black);
+    background: transparent;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.6rem 0.8rem;
+    outline: none;
+    cursor: pointer;
+  }
+  .filter-select:focus { border-color: var(--electric); }
+  .result-count {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-left: auto;
+  }
+
+  /* EVENT GRID */
+  main { padding: 2rem; }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--grid);
+  }
+
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0;
+    border: 1.5px solid var(--black);
+  }
+
+  .event-card {
+    border-right: 1.5px solid var(--black);
+    border-bottom: 1.5px solid var(--black);
+    padding: 1.4rem;
+    background: var(--white);
+    transition: background 0.15s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .event-card:hover { background: var(--cream); }
+  .event-card:nth-child(3n) { border-right: none; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .cat-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    font-weight: 700;
+  }
+  .tag-theatre { background: var(--lilac); color: #3d1a8a; }
+  .tag-markets { background: var(--teal); color: #003d37; }
+  .tag-festivals { background: var(--orange); color: #5a1e00; }
+  .tag-art { background: #ffd6e0; color: #7a0020; }
+  .tag-create { background: #d4edda; color: #155724; }
+  .tag-wellness { background: #cce5ff; color: #004085; }
+  .tag-fitness { background: #fff3cd; color: #856404; }
+  .tag-eco { background: #d1e7dd; color: #0a3622; }
+
+  .card-bookmark {
+    background: none;
+    border: 1.5px solid var(--grid);
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .card-bookmark:hover { border-color: var(--hot); }
+  .card-bookmark.saved { background: var(--hot); border-color: var(--hot); }
+  .card-bookmark.saved svg path { fill: white; }
+
+  .card-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--black);
+  }
+
+  .card-venue {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--grid);
+  }
+  .meta-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .meta-icon { font-size: 0.75rem; }
+
+  .card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .btn-cal {
+    flex: 1;
+    border: 1.5px solid var(--black);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.45rem 0.6rem;
+    background: transparent;
+    transition: all 0.15s;
+  }
+  .btn-cal:hover { background: var(--black); color: var(--white); }
+  .btn-more {
+    border: 1.5px solid var(--electric);
+    color: var(--electric);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.45rem 0.6rem;
+    background: transparent;
+    transition: all 0.15s;
+  }
+  .btn-more:hover { background: var(--electric); color: white; }
+
+  .price-badge {
+    position: absolute;
+    top: 1.4rem;
+    right: 3.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  .price-badge.free { color: var(--teal); }
+
+  /* FEATURED STRIP */
+  .featured-strip {
+    background: var(--black);
+    padding: 1.5rem 2rem;
+    border-top: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);
+    margin-bottom: 2rem;
+    overflow-x: auto;
+  }
+  .featured-strip-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--hot);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .featured-row {
+    display: flex;
+    gap: 1rem;
+    min-width: max-content;
+  }
+  .featured-card {
+    background: var(--cream);
+    border: 1.5px solid #333;
+    padding: 1.2rem;
+    width: 260px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .featured-card:hover { border-color: var(--acid); }
+  .featured-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--acid);
+    margin-bottom: 0.4rem;
+  }
+  .featured-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    color: var(--black);
+    margin-bottom: 0.3rem;
+  }
+  .featured-venue {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--muted);
+  }
+
+  /* BOOKMARKS PANEL */
+  .bookmarks-panel {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 360px;
+    background: var(--cream);
+    border-left: 2px solid var(--black);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    overflow-y: auto;
+  }
+  .bookmarks-panel.open { transform: translateX(0); }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 2px solid var(--black);
+    background: var(--black);
+  }
+  .panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--acid);
+    letter-spacing: 0.05em;
+  }
+  .panel-close {
+    color: var(--white);
+    font-size: 1.2rem;
+    padding: 0.3rem;
+  }
+  .panel-close:hover { color: var(--acid); }
+  .panel-body { padding: 1.5rem; }
+  .panel-empty {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: center;
+    padding: 3rem 0;
+    line-height: 1.8;
+  }
+  .bookmark-item {
+    border: 1.5px solid var(--black);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: var(--white);
+    position: relative;
+  }
+  .bookmark-item-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  .bookmark-item-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+  }
+  .bookmark-remove {
+    position: absolute;
+    top: 0.75rem; right: 0.75rem;
+    color: var(--hot);
+    font-size: 0.8rem;
+  }
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 199;
+    display: none;
+  }
+  .overlay.show { display: block; }
+
+  /* MODAL */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--cream);
+    border: 2px solid var(--black);
+    max-width: 560px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-header {
+    background: var(--black);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--acid);
+    letter-spacing: 0.05em;
+  }
+  .modal-close { color: var(--white); font-size: 1.3rem; }
+  .modal-close:hover { color: var(--acid); }
+  .modal-body { padding: 1.5rem; }
+  .modal-body .event-detail-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .modal-body .event-detail-venue {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.2rem;
+  }
+  .detail-cell {
+    border: 1.5px solid var(--grid);
+    padding: 0.75rem;
+  }
+  .detail-cell-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+  }
+  .detail-cell-val {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .event-detail-desc {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 1.2rem;
+  }
+  .modal-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .btn-primary {
+    flex: 1;
+    background: var(--black);
+    color: var(--acid);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.8rem;
+    border: 2px solid var(--black);
+    transition: all 0.15s;
+  }
+  .btn-primary:hover { background: var(--acid); color: var(--black); }
+  .btn-secondary {
+    flex: 1;
+    background: transparent;
+    color: var(--black);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.8rem;
+    border: 2px solid var(--black);
+    transition: all 0.15s;
+  }
+  .btn-secondary:hover { background: var(--electric); color: white; border-color: var(--electric); }
+
+  /* SUBMIT FORM MODAL */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    border: 1.5px solid var(--black);
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    padding: 0.7rem 0.9rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--electric); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: 1px solid var(--grid);
+    background: var(--cream);
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    padding: 3rem 2rem 2rem;
+    margin-top: 4rem;
+    border-top: 2px solid var(--black);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--acid);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .footer-tagline {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    line-height: 1.8;
+  }
+  .footer-col-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--acid);
+    margin-bottom: 1rem;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .footer-links li:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid #222;
+    padding-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: #444;
+    letter-spacing: 0.05em;
+  }
+
+  /* NO RESULTS */
+  .no-results {
+    padding: 4rem 2rem;
+    text-align: center;
+    grid-column: 1 / -1;
+  }
+  .no-results-head {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .no-results p {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* RECURRENCE BADGE */
+  .recurrence-badge {
+    position: absolute;
+    bottom: 1.4rem;
+    right: 1.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    background: var(--cream);
+    border: 1px solid var(--grid);
+    color: var(--muted);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-visual { min-height: 180px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .event-grid { grid-template-columns: 1fr; }
+    .event-card:nth-child(3n) { border-right: 1.5px solid var(--black); }
+    .header-top { padding: 0.8rem 1rem; }
+    main { padding: 1rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .modal-actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- TICKER -->
+<div class="ticker" role="marquee" aria-label="Live event updates">
+  <div class="ticker-inner" aria-hidden="true">
+    <span>★ CRYSTAL PALACE MARKET — THIS SUNDAY</span>
+    <span>★ OPEN STUDIOS: BRENTFORD ART TRAIL — ALL WEEKEND</span>
+    <span>★ TOOTING RUNNERS CLUB — EVERY THURSDAY 7PM</span>
+    <span>★ ECSTATIC DANCE PECKHAM — SATURDAY 10AM</span>
+    <span>★ DULWICH FESTIVAL — ONGOING MAY</span>
+    <span>★ FINSBURY PARK THEATRE — SEE LISTINGS</span>
+    <span>★ DEPTFORD LITTER PICK — SUNDAY 9AM</span>
+    <span>★ CRYSTAL PALACE MARKET — THIS SUNDAY</span>
+    <span>★ OPEN STUDIOS: BRENTFORD ART TRAIL — ALL WEEKEND</span>
+    <span>★ TOOTING RUNNERS CLUB — EVERY THURSDAY 7PM</span>
+    <span>★ ECSTATIC DANCE PECKHAM — SATURDAY 10AM</span>
+    <span>★ DULWICH FESTIVAL — ONGOING MAY</span>
+    <span>★ FINSBURY PARK THEATRE — SEE LISTINGS</span>
+    <span>★ DEPTFORD LITTER PICK — SUNDAY 9AM</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <div>
+      <div class="logo">LDN<span>.</span>DIRECTORY</div>
+      <div class="logo-sub">Community events across zones 2–4</div>
+    </div>
+    <div class="header-actions">
+      <button class="bookmark-count" onclick="togglePanel()" aria-label="View saved events">
+        <div class="dot" id="bm-count">0</div>
+        SAVED
+      </button>
+      <button class="btn-submit" onclick="openSubmit()" aria-haspopup="dialog">
+        + Submit Event
+      </button>
+    </div>
+  </div>
+  <nav class="cat-nav" aria-label="Event categories">
+    <button class="cat-btn active" onclick="filterCat('all')" data-cat="all">
+      <span class="cat-icon" aria-hidden="true">◎</span>All Events
+    </button>
+    <button class="cat-btn" onclick="filterCat('theatre')" data-cat="theatre">
+      <span class="cat-icon" aria-hidden="true">🎭</span>Theatre
+    </button>
+    <button class="cat-btn" onclick="filterCat('markets')" data-cat="markets">
+      <span class="cat-icon" aria-hidden="true">🧺</span>Markets
+    </button>
+    <button class="cat-btn" onclick="filterCat('festivals')" data-cat="festivals">
+      <span class="cat-icon" aria-hidden="true">🎪</span>Festivals
+    </button>
+    <button class="cat-btn" onclick="filterCat('art')" data-cat="art">
+      <span class="cat-icon" aria-hidden="true">🖼</span>Art
+    </button>
+    <button class="cat-btn" onclick="filterCat('create')" data-cat="create">
+      <span class="cat-icon" aria-hidden="true">🏺</span>Create
+    </button>
+    <button class="cat-btn" onclick="filterCat('wellness')" data-cat="wellness">
+      <span class="cat-icon" aria-hidden="true">🌀</span>Wellness
+    </button>
+    <button class="cat-btn" onclick="filterCat('fitness')" data-cat="fitness">
+      <span class="cat-icon" aria-hidden="true">🏃</span>Fitness
+    </button>
+    <button class="cat-btn" onclick="filterCat('eco')" data-cat="eco">
+      <span class="cat-icon" aria-hidden="true">🌿</span>Eco
+    </button>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" aria-label="Welcome">
+  <div class="hero-text">
+    <div>
+      <div class="hero-headline">
+        YOUR<br>LONDON<br><span class="accent">LIVES HERE</span>
+      </div>
+      <div class="hero-sub">Daily · Weekly · Monthly · Always free to browse</div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="total-count">48</div>
+        <div class="stat-label">Events listed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Categories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">Z2–4</div>
+        <div class="stat-label">Zones covered</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="hero-grid-art"></div>
+    <div class="hero-big-text">LDN</div>
+    <div class="hero-pill">↓ Scroll to explore</div>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<div class="featured-strip" aria-label="Featured events this week">
+  <div class="featured-strip-label">★ Featured this week</div>
+  <div class="featured-row" id="featured-row"></div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar" role="search">
+  <div class="search-wrap">
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input type="search" id="search-input" placeholder="Search events, venues, areas..." aria-label="Search events" oninput="handleSearch()">
+  </div>
+  <select class="filter-select" id="freq-filter" onchange="applyFilters()" aria-label="Filter by frequency">
+    <option value="all">All dates</option>
+    <option value="daily">Daily</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option>
+  </select>
+  <select class="filter-select" id="price-filter" onchange="applyFilters()" aria-label="Filter by price">
+    <option value="all">All prices</option>
+    <option value="free">Free only</option>
+    <option value="paid">Paid</option>
+  </select>
+  <select class="filter-select" id="zone-filter" onchange="applyFilters()" aria-label="Filter by area">
+    <option value="all">All areas</option>
+    <option value="north">North London</option>
+    <option value="south">South London</option>
+    <option value="east">East London</option>
+    <option value="west">West London</option>
+  </select>
+  <div class="result-count" id="result-count" aria-live="polite"></div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main id="main">
+  <div class="section-label" id="section-label">All events</div>
+  <div class="event-grid" id="event-grid" role="list" aria-label="Community events"></div>
+</main>
+
+<!-- BOOKMARKS PANEL -->
+<div class="overlay" id="overlay" onclick="togglePanel()"></div>
+<aside class="bookmarks-panel" id="bm-panel" aria-label="Saved events" role="complementary">
+  <div class="panel-header">
+    <div class="panel-title">SAVED</div>
+    <button class="panel-close" onclick="togglePanel()" aria-label="Close saved events">✕</button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<!-- EVENT DETAIL MODAL -->
+<div class="modal-backdrop" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="modal-event-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Event Details</h2>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- SUBMIT EVENT MODAL -->
+<div class="modal-backdrop" id="submit-modal" role="dialog" aria-modal="true" aria-labelledby="submit-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="submit-title">Submit an Event</h2>
+      <button class="modal-close" onclick="closeSubmit()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-note">
+        Your submission will be reviewed and added within 48 hours. Events must be in London zones 2–4 and open to the community.
+      </div>
+      <!-- Replace ACTION with your Formspree endpoint e.g. https://formspree.io/f/XXXXXXXX -->
+      <form action="https://formspree.io/f/xvzlzldp" method="POST" id="submit-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-name">Event name *</label>
+            <input type="text" id="f-name" name="event_name" required placeholder="e.g. Crystal Palace Car Boot">
+          </div>
+          <div class="form-group">
+            <label for="f-cat">Category *</label>
+            <select id="f-cat" name="category" required>
+              <option value="">Select...</option>
+              <option>Theatre</option>
+              <option>Markets</option>
+              <option>Festivals</option>
+              <option>Art</option>
+              <option>Create</option>
+              <option>Wellness</option>
+              <option>Fitness</option>
+              <option>Eco</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-venue">Venue name *</label>
+            <input type="text" id="f-venue" name="venue" required placeholder="e.g. Finsbury Park Theatre">
+          </div>
+          <div class="form-group">
+            <label for="f-area">Area / Borough *</label>
+            <input type="text" id="f-area" name="area" required placeholder="e.g. Crystal Palace, SE19">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-date">Date / Frequency *</label>
+            <input type="text" id="f-date" name="date" required placeholder="e.g. Every Sunday or 15 Jun 2025">
+          </div>
+          <div class="form-group">
+            <label for="f-time">Time</label>
+            <input type="text" id="f-time" name="time" placeholder="e.g. 10am – 2pm">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-price">Price</label>
+            <input type="text" id="f-price" name="price" placeholder="e.g. Free or £5">
+          </div>
+          <div class="form-group">
+            <label for="f-link">Event URL</label>
+            <input type="url" id="f-link" name="url" placeholder="https://...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="f-desc">Description</label>
+          <textarea id="f-desc" name="description" placeholder="Tell us about the event in 1–2 sentences..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="f-email">Your email (for confirmation)</label>
+          <input type="email" id="f-email" name="_replyto" placeholder="hello@example.com">
+        </div>
+        <input type="hidden" name="_subject" value="New LDN Directory Event Submission">
+        <div class="modal-actions">
+          <button type="submit" class="btn-primary">Submit Event →</button>
+          <button type="button" class="btn-secondary" onclick="closeSubmit()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">LDN.DIRECTORY</div>
+      <div class="footer-tagline">
+        Community events across London zones 2–4.<br>
+        Theatre · Markets · Festivals · Art · Create<br>
+        Wellness · Fitness · Eco<br><br>
+        Updated daily. Always free.
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Explore</div>
+      <ul class="footer-links">
+        <li onclick="filterCat('theatre')">Theatre</li>
+        <li onclick="filterCat('markets')">Markets</li>
+        <li onclick="filterCat('festivals')">Festivals</li>
+        <li onclick="filterCat('art')">Art</li>
+        <li onclick="filterCat('create')">Create</li>
+        <li onclick="filterCat('wellness')">Wellness</li>
+        <li onclick="filterCat('fitness')">Fitness</li>
+        <li onclick="filterCat('eco')">Eco</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Areas</div>
+      <ul class="footer-links">
+        <li>South London</li>
+        <li>North London</li>
+        <li>East London</li>
+        <li>West London</li>
+        <li>Zone 2</li>
+        <li>Zone 3</li>
+        <li>Zone 4</li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">About</div>
+      <ul class="footer-links">
+        <li onclick="openSubmit()">Submit an event</li>
+        <li>About LDN Directory</li>
+        <li>Data sources</li>
+        <li>Accessibility</li>
+        <li>Privacy policy</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 LDN DIRECTORY — Built for London communities</div>
+    <div class="footer-copy">Data: Eventbrite · Meetup · Visit London · Borough sites · Farmers' Market · Car Boot Junction</div>
+  </div>
+</footer>
+
+<script>
+// =====================
+// EVENT DATABASE
+// =====================
+const EVENTS = [
+  // THEATRE
+  { id: 1, cat: 'theatre', title: 'The Convert', venue: 'Almeida Theatre', area: 'Islington', zone: 'north', date: 'Until 7 Jun', time: '7:30pm', price: '£10–£42', free: false, recurrence: 'weekly', featured: true, desc: 'Danai Gurira\'s gripping drama set in colonial Rhodesia. A young woman\'s crisis of faith and identity. Powerful ensemble work at one of London\'s finest studio theatres.' },
+  { id: 2, cat: 'theatre', title: 'Late Night Comedy Lab', venue: 'King\'s Head Theatre', area: 'Islington', zone: 'north', date: 'Every Friday', time: '9pm', price: '£8', free: false, recurrence: 'weekly', featured: false, desc: 'New material nights from emerging stand-up and sketch comedians in London\'s oldest pub theatre. Pay what you can on the door.' },
+  { id: 3, cat: 'theatre', title: 'Community Playreading', venue: 'Finsbury Park Theatre', area: 'Finsbury Park', zone: 'north', date: 'Every Monday', time: '7pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Open to all — join the weekly script reading group exploring new and classic works. No experience needed, scripts provided.' },
+  { id: 4, cat: 'theatre', title: 'Sunday Matinée: Brecht', venue: 'Almeida Theatre', area: 'Islington', zone: 'north', date: 'Every Sunday', time: '3pm', price: '£15', free: false, recurrence: 'weekly', featured: false, desc: 'Afternoon performances of classic Brecht works, with post-show discussion with the creative team.' },
+
+  // MARKETS
+  { id: 5, cat: 'markets', title: 'Crystal Palace Car Boot', venue: 'Crystal Palace Athletics Stadium', area: 'Crystal Palace', zone: 'south', date: 'Every Sunday', time: '7am – 2pm', price: '£1 entry', free: false, recurrence: 'weekly', featured: true, desc: 'One of London\'s most beloved car boots. Hundreds of stalls, vintage finds, records, homewares and street food. Go early for the best picks.' },
+  { id: 6, cat: 'markets', title: 'Wimbledon Farmers\' Market', venue: 'Wimbledon Park Primary School', area: 'Wimbledon', zone: 'south', date: 'Every Saturday', time: '9am – 1pm', price: 'Free entry', free: true, recurrence: 'weekly', featured: false, desc: 'London Farmers\' Markets certified. Fresh produce direct from farms within 100 miles of the M25. Meat, cheese, veg, bread, plants.' },
+  { id: 7, cat: 'markets', title: 'Battersea Boot Sale', venue: 'Battersea Arts Centre', area: 'Battersea', zone: 'south', date: '1st & 3rd Sunday', time: '8am – 2pm', price: '50p entry', free: false, recurrence: 'monthly', featured: false, desc: 'Curated car boot meets flea market in the grand surroundings of the BAC. Mix of antiques, vintage clothing, art and curiosities.' },
+  { id: 8, cat: 'markets', title: 'Brockley Flea Market', venue: 'Hob Mavis, Brockley', area: 'Brockley', zone: 'south', date: 'Monthly – last Sunday', time: '10am – 4pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'South East London\'s indie flea market. Independent traders, vintage fashion, records, ceramics and zines.' },
+  { id: 9, cat: 'markets', title: 'Streatham Farmers\' Market', venue: 'Streatham High Road', area: 'Streatham', zone: 'south', date: 'Every Saturday', time: '9am – 2pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'LFM-certified weekly market. Seasonal veg, artisan bread, free-range eggs, honey, and more from local and regional growers.' },
+
+  // FESTIVALS
+  { id: 10, cat: 'festivals', title: 'Dulwich Festival', venue: 'Various venues, Dulwich', area: 'Dulwich', zone: 'south', date: 'Ongoing May', time: 'Various', price: 'Free–£15', free: false, recurrence: 'monthly', featured: true, desc: 'Annual community arts festival across Dulwich village. Open studios, live music, children\'s events, theatre and street performance throughout May.' },
+  { id: 11, cat: 'festivals', title: 'Wandsworth Arts Fringe', venue: 'Various, Wandsworth', area: 'Wandsworth', zone: 'south', date: '16–25 May', time: 'Various', price: 'Free–£12', free: false, recurrence: 'monthly', featured: false, desc: 'Borough-wide arts festival celebrating independent creative talent in Wandsworth. 200+ events across 10 days.' },
+  { id: 12, cat: 'festivals', title: 'Ealing Summer Festival', venue: 'Walpole Park, Ealing', area: 'Ealing', zone: 'west', date: '14 Jun', time: '12pm – 9pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Free all-day community festival in Walpole Park. Live music, food stalls, fairground rides, local stallholders.' },
+  { id: 13, cat: 'festivals', title: 'Lewisham People\'s Day', venue: 'Mountsfield Park', area: 'Catford', zone: 'south', date: '5 Jul', time: '12pm – 8pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'One of London\'s biggest free community festivals. Live music, dance, food, crafts, funfair and more for 10,000+ attendees.' },
+
+  // ART
+  { id: 14, cat: 'art', title: 'Brentford Open Studios', venue: 'Various studios, Brentford', area: 'Brentford', zone: 'west', date: '24–25 May', time: '11am – 6pm', price: 'Free', free: true, recurrence: 'monthly', featured: true, desc: 'Over 40 artists open their studios across Brentford. Painting, sculpture, ceramics, printmaking, photography. Buy direct from the maker.' },
+  { id: 15, cat: 'art', title: 'Brixton Art Trail', venue: 'Various venues, Brixton', area: 'Brixton', zone: 'south', date: '7–8 Jun', time: '11am – 5pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Self-guided walking trail connecting artists\' studios, pop-up galleries and community spaces across Brixton and Stockwell.' },
+  { id: 16, cat: 'art', title: 'Highgate Open Studios', venue: 'Various, Highgate', area: 'Highgate', zone: 'north', date: '14–15 Jun', time: '11am – 6pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Annual open studios across Highgate village. Works spanning oil painting, ceramics, illustration and mixed media.' },
+  { id: 17, cat: 'art', title: 'Peckham 24', venue: 'Various, Peckham', area: 'Peckham', zone: 'south', date: '21–22 Jun', time: 'All hours', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: '24-hour art event across Peckham studios and warehouses. Performance, video, installation and painting from emerging artists.' },
+
+  // CREATE
+  { id: 18, cat: 'create', title: 'Wheel Throwing for Beginners', venue: 'Brentford Pottery Studio', area: 'Brentford', zone: 'west', date: 'Every Wednesday', time: '6:30pm – 9pm', price: '£45', free: false, recurrence: 'weekly', featured: true, desc: 'Learn to throw on the wheel in a relaxed, social studio environment. All clay and tools provided. Max 8 students per session.' },
+  { id: 19, cat: 'create', title: 'Life Drawing: Drop-In', venue: 'Brixton Art Studios', area: 'Brixton', zone: 'south', date: 'Every Tuesday', time: '7pm – 9pm', price: '£12', free: false, recurrence: 'weekly', featured: false, desc: 'Open life drawing sessions with a live model. No booking required, all abilities welcome. Bring your own materials or buy at the door.' },
+  { id: 20, cat: 'create', title: 'Screenprint Workshop', venue: 'Paper Tiger, Peckham', area: 'Peckham', zone: 'south', date: 'Monthly – 1st Saturday', time: '10am – 2pm', price: '£55', free: false, recurrence: 'monthly', featured: false, desc: 'Hands-on screen printing workshop. Design your own print to take home. Suitable for beginners and intermediates. Book in advance.' },
+  { id: 21, cat: 'create', title: 'Watercolour Mondays', venue: 'Artspace Peckham', area: 'Peckham', zone: 'south', date: 'Every Monday', time: '6pm – 8pm', price: '£15', free: false, recurrence: 'weekly', featured: false, desc: 'Weekly watercolour painting class for beginners and improvers. Guided by working illustrator. Materials available to buy.' },
+
+  // WELLNESS
+  { id: 22, cat: 'wellness', title: 'Ecstatic Dance Peckham', venue: 'Bussey Building', area: 'Peckham', zone: 'south', date: 'Every Saturday', time: '10am – 1pm', price: '£12', free: false, recurrence: 'weekly', featured: true, desc: 'Freeform conscious dance — no steps, no phones, no alcohol. DJ-led journey through world rhythms. Welcome to all bodies, abilities and experience levels.' },
+  { id: 23, cat: 'wellness', title: 'Sound Bath: Beckenham', venue: 'Beckenham Place Mansion', area: 'Beckenham', zone: 'south', date: '2nd & 4th Sunday', time: '2pm – 3:30pm', price: '£18', free: false, recurrence: 'weekly', featured: false, desc: 'Immersive group sound healing with crystal singing bowls and gongs in the stunning Beckenham Place mansion. Mats provided.' },
+  { id: 24, cat: 'wellness', title: 'Reformer Pilates: Battersea', venue: 'Pilates Works, Battersea', area: 'Battersea', zone: 'south', date: 'Daily', time: 'Various slots', price: '£24', free: false, recurrence: 'daily', featured: false, desc: 'Small-group reformer Pilates for all abilities. Studios overlooking Battersea Park. First class 50% off for new clients.' },
+  { id: 25, cat: 'wellness', title: 'Yoga in the Park', venue: 'Brockwell Park', area: 'Herne Hill', zone: 'south', date: 'Every Sunday', time: '9am – 10am', price: 'Free (donations)', free: true, recurrence: 'weekly', featured: false, desc: 'Outdoor community yoga class in Brockwell Park. All levels. Bring your own mat. Suggested £3–5 donation to the teacher.' },
+
+  // FITNESS
+  { id: 26, cat: 'fitness', title: 'Tooting Bec Runners', venue: 'Tooting Bec Lido', area: 'Tooting', zone: 'south', date: 'Every Thursday', time: '7pm', price: 'Free', free: true, recurrence: 'weekly', featured: true, desc: 'Community run club meeting at the lido. Routes from 5K to 10K, all paces welcome. Warm-up at the lido, drinks at The Wheatsheaf after.' },
+  { id: 27, cat: 'fitness', title: 'Battersea Park Parkrun', venue: 'Battersea Park', area: 'Battersea', zone: 'south', date: 'Every Saturday', time: '9am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Free 5K timed run in Battersea Park. Register once at parkrun.org.uk, then run, jog or walk any time. Community-run event.' },
+  { id: 28, cat: 'fitness', title: 'Richmond Park Cycling Club', venue: 'Robin Hood Gate, Richmond', area: 'Richmond', zone: 'west', date: 'Every Sunday', time: '8am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Group road ride through Richmond Park. 2 pace groups: steady (15mph avg) and sportive (20mph avg). Bring a road or hybrid bike.' },
+  { id: 29, cat: 'fitness', title: 'Clapham Calisthenics', venue: 'Clapham Common outdoor gym', area: 'Clapham', zone: 'south', date: 'Every Tuesday & Saturday', time: '7am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Community bodyweight training on the outdoor bars. Coached session, all fitness levels. No equipment needed.' },
+
+  // ECO
+  { id: 30, cat: 'eco', title: 'Deptford Creek Litter Pick', venue: 'Deptford Creek', area: 'Deptford', zone: 'south', date: 'Monthly – 3rd Sunday', time: '10am – 12pm', price: 'Free', free: true, recurrence: 'monthly', featured: true, desc: 'Join the Deptford Creek Waterway Recovery team for a monthly litter pick along one of London\'s most biodiverse waterways. Equipment provided.' },
+  { id: 31, cat: 'eco', title: 'Chiswick Riverside Clean-Up', venue: 'Chiswick Pier', area: 'Chiswick', zone: 'west', date: 'Every 2nd Saturday', time: '9am – 11am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Thames riverside litter pick from Chiswick Pier. Part of the Thames21 initiative. Gloves and bags provided — just bring boots.' },
+  { id: 32, cat: 'eco', title: 'Clapham Common Volunteer Day', venue: 'Clapham Common', area: 'Clapham', zone: 'south', date: 'Every Sunday', time: '10am – 1pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Friends of Clapham Common — weekly volunteer morning. Litter picking, tree planting, and habitat maintenance. Refreshments provided.' },
+  { id: 33, cat: 'eco', title: 'Peckham Park Greening', venue: 'Peckham Rye Park', area: 'Peckham', zone: 'south', date: '1st Saturday monthly', time: '10am – 1pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Community rewilding project in Peckham Rye. Plant wildflowers, build bug hotels, and help restore a vital green corridor.' },
+
+  // MORE EVENTS
+  { id: 34, cat: 'theatre', title: 'New Writing Festival', venue: 'King\'s Head Theatre', area: 'Islington', zone: 'north', date: '1–8 Jun', time: '7:30pm', price: '£10', free: false, recurrence: 'monthly', featured: false, desc: 'Week-long festival of new plays by emerging writers. Five world premieres across eight days.' },
+  { id: 35, cat: 'markets', title: 'Herne Hill Market', venue: 'Railton Road, Herne Hill', area: 'Herne Hill', zone: 'south', date: 'Every Sunday', time: '10am – 2pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Weekly community market with fresh produce, artisan food, vintage and crafts. Thriving local institution on Railton Road.' },
+  { id: 36, cat: 'create', title: 'Riso Print Workshop', venue: 'Peckham Print Studios', area: 'Peckham', zone: 'south', date: 'Monthly – 3rd Saturday', time: '11am – 3pm', price: '£40', free: false, recurrence: 'monthly', featured: false, desc: 'Learn Risograph printing — zines, posters, book covers. All materials included. Take home 10 prints.' },
+  { id: 37, cat: 'wellness', title: 'Breathwork & Cold Water', venue: 'Brockwell Lido', area: 'Herne Hill', zone: 'south', date: 'Monthly – last Saturday', time: '7am – 9am', price: '£25', free: false, recurrence: 'monthly', featured: false, desc: 'Wim Hof breathing techniques followed by guided cold water immersion at the iconic Brockwell Lido. Transformative and social.' },
+  { id: 38, cat: 'fitness', title: 'South Bank Sprint Club', venue: 'Hungerford Bridge steps', area: 'South Bank', zone: 'south', date: 'Every Wednesday', time: '6:30pm', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'HIIT track sessions on the South Bank with views to match. Running, stairs, circuits. All paces from 5K to marathon runners.' },
+  { id: 39, cat: 'eco', title: 'Wandsworth Common Wildlife Survey', venue: 'Wandsworth Common', area: 'Wandsworth', zone: 'south', date: 'Quarterly – check website', time: '9am – 12pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Help survey birds, mammals and invertebrates on Wandsworth Common. Training provided. Part of the national biodiversity recording scheme.' },
+  { id: 40, cat: 'art', title: 'Camberwell Art Trail', venue: 'Various, Camberwell', area: 'Camberwell', zone: 'south', date: '28–29 Jun', time: '11am – 6pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Weekend open studios across Camberwell. 60+ artists open their doors in one of London\'s most creative neighbourhoods.' },
+  { id: 41, cat: 'festivals', title: 'Brockley Max', venue: 'Various, Brockley', area: 'Brockley', zone: 'south', date: '6–15 Jun', time: 'Various', price: 'Free–£10', free: false, recurrence: 'monthly', featured: false, desc: 'Brockley\'s arts and music festival, ten days of gigs, exhibitions, comedy and workshops across the neighbourhood.' },
+  { id: 42, cat: 'wellness', title: 'Kundalini Yoga: Brixton', venue: 'Brixton Recreation Centre', area: 'Brixton', zone: 'south', date: 'Every Thursday', time: '7:30pm', price: '£10', free: false, recurrence: 'weekly', featured: false, desc: 'Traditional Kundalini yoga with chanting, breathing and meditation. Suitable for beginners. Mats available.' },
+  { id: 43, cat: 'fitness', title: 'Hackney Marshes Running Group', venue: 'Hackney Marshes', area: 'Hackney', zone: 'east', date: 'Every Sunday', time: '9am', price: 'Free', free: true, recurrence: 'weekly', featured: false, desc: 'Sunday morning run across the Marshes. Long run (10–15 miles) and shorter option (5–7 miles). Friendly East London running community.' },
+  { id: 44, cat: 'eco', title: 'Lee Valley Waterway Clean-Up', venue: 'Tottenham Lock', area: 'Tottenham', zone: 'east', date: 'Monthly – 2nd Sunday', time: '10am – 1pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: 'Canal and towpath litter picking along the beautiful Lee Valley. Canal & River Trust partnership event. All welcome.' },
+  { id: 45, cat: 'markets', title: 'Walthamstow Market', venue: 'Hoe Street, Walthamstow', area: 'Walthamstow', zone: 'east', date: 'Mon–Sat', time: '8am – 5pm', price: 'Free', free: true, recurrence: 'daily', featured: false, desc: 'Europe\'s longest outdoor market. Fresh produce, fabrics, electronics, food — a genuine slice of East London life. Daily except Sunday.' },
+  { id: 46, cat: 'art', title: 'Hackney Open Studios', venue: 'Various, Hackney', area: 'Hackney', zone: 'east', date: '7–8 Jun', time: '11am – 6pm', price: 'Free', free: true, recurrence: 'monthly', featured: false, desc: '80+ artists open their studios across Hackney. One of London\'s most anticipated open studio weekends.' },
+  { id: 47, cat: 'create', title: 'Darkroom Photography: Hackney', venue: 'Aperture Hackney', area: 'Hackney', zone: 'east', date: 'Monthly – 2nd Saturday', time: '10am – 4pm', price: '£60', free: false, recurrence: 'monthly', featured: false, desc: 'Full day darkroom workshop — shoot on film and develop your own prints. All chemicals and paper included. Max 6 participants.' },
+  { id: 48, cat: 'theatre', title: 'Hackney Empire Comedy Night', venue: 'Hackney Empire', area: 'Hackney', zone: 'east', date: 'Monthly – 1st Friday', time: '8pm', price: '£15', free: false, recurrence: 'monthly', featured: false, desc: 'Monthly comedy showcase at the magnificent Hackney Empire. Four acts, one night. Book in advance.' },
+];
+
+// =====================
+// STATE
+// =====================
+let currentCat = 'all';
+let bookmarks = JSON.parse(localStorage.getItem('ldn_bookmarks') || '[]');
+let filteredEvents = [...EVENTS];
+let searchTerm = '';
+let freqFilter = 'all';
+let priceFilter = 'all';
+let zoneFilter = 'all';
+
+// =====================
+// INIT
+// =====================
+function init() {
+  renderFeatured();
+  applyFilters();
+  updateBookmarkCount();
+}
+
+// =====================
+// FEATURED
+// =====================
+function renderFeatured() {
+  const featured = EVENTS.filter(e => e.featured);
+  const row = document.getElementById('featured-row');
+  row.innerHTML = featured.map(e => `
+    <div class="featured-card" onclick="openModal(${e.id})" role="button" tabindex="0" aria-label="${e.title} at ${e.venue}">
+      <div class="featured-label">${e.cat.toUpperCase()} · ${e.area}</div>
+      <div class="featured-title">${e.title}</div>
+      <div class="featured-venue">${e.venue} · ${e.date}</div>
+    </div>
+  `).join('');
+}
+
+// =====================
+// FILTERING
+// =====================
+function filterCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  applyFilters();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function handleSearch() {
+  searchTerm = document.getElementById('search-input').value.toLowerCase();
+  applyFilters();
+}
+
+function applyFilters() {
+  freqFilter = document.getElementById('freq-filter').value;
+  priceFilter = document.getElementById('price-filter').value;
+  zoneFilter = document.getElementById('zone-filter').value;
+
+  filteredEvents = EVENTS.filter(e => {
+    if (currentCat !== 'all' && e.cat !== currentCat) return false;
+    if (freqFilter !== 'all' && e.recurrence !== freqFilter) return false;
+    if (priceFilter === 'free' && !e.free) return false;
+    if (priceFilter === 'paid' && e.free) return false;
+    if (zoneFilter !== 'all' && e.zone !== zoneFilter) return false;
+    if (searchTerm) {
+      const hay = `${e.title} ${e.venue} ${e.area} ${e.desc}`.toLowerCase();
+      if (!hay.includes(searchTerm)) return false;
+    }
+    return true;
+  });
+
+  renderGrid();
+  document.getElementById('result-count').textContent = `${filteredEvents.length} event${filteredEvents.length !== 1 ? 's' : ''} found`;
+  const catLabel = currentCat === 'all' ? 'All events' : currentCat.charAt(0).toUpperCase() + currentCat.slice(1);
+  document.getElementById('section-label').textContent = catLabel;
+}
+
+// =====================
+// RENDER GRID
+// =====================
+function renderGrid() {
+  const grid = document.getElementById('event-grid');
+  if (!filteredEvents.length) {
+    grid.innerHTML = `<div class="no-results">
+      <div class="no-results-head">Nothing found</div>
+      <p>Try a different search or category</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = filteredEvents.map(e => {
+    const saved = bookmarks.includes(e.id);
+    return `
+      <article class="event-card" role="listitem" aria-label="${e.title}">
+        <div class="card-top">
+          <span class="cat-tag tag-${e.cat}">${e.cat.toUpperCase()}</span>
+          <button class="card-bookmark ${saved ? 'saved' : ''}" onclick="toggleBookmark(${e.id}, event)" aria-label="${saved ? 'Remove from saved' : 'Save'} ${e.title}" aria-pressed="${saved}">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M2 2h10v11l-5-3-5 3V2z" stroke="${saved ? 'white' : 'currentColor'}" stroke-width="1.5" fill="${saved ? 'white' : 'none'}"/>
+            </svg>
+          </button>
+        </div>
+        <span class="price-badge ${e.free ? 'free' : ''}">${e.price}</span>
+        <div class="card-title">${e.title}</div>
+        <div class="card-venue">${e.venue} · ${e.area}</div>
+        <div class="card-meta">
+          <span class="meta-item"><span class="meta-icon" aria-hidden="true">📅</span>${e.date}</span>
+          <span class="meta-item"><span class="meta-icon" aria-hidden="true">⏱</span>${e.time}</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-cal" onclick="downloadICS(${e.id})" aria-label="Add ${e.title} to calendar">+ Calendar</button>
+          <button class="btn-more" onclick="openModal(${e.id})" aria-label="More details about ${e.title}">Details →</button>
+        </div>
+        <span class="recurrence-badge">${e.recurrence}</span>
+      </article>
+    `;
+  }).join('');
+}
+
+// =====================
+// BOOKMARKS
+// =====================
+function toggleBookmark(id, ev) {
+  ev.stopPropagation();
+  if (bookmarks.includes(id)) {
+    bookmarks = bookmarks.filter(b => b !== id);
+  } else {
+    bookmarks.push(id);
+  }
+  localStorage.setItem('ldn_bookmarks', JSON.stringify(bookmarks));
+  updateBookmarkCount();
+  renderGrid();
+  renderPanel();
+}
+
+function updateBookmarkCount() {
+  document.getElementById('bm-count').textContent = bookmarks.length;
+}
+
+function togglePanel() {
+  const panel = document.getElementById('bm-panel');
+  const overlay = document.getElementById('overlay');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open');
+  overlay.classList.toggle('show');
+  if (!isOpen) {
+    renderPanel();
+    panel.focus();
+  }
+}
+
+function renderPanel() {
+  const body = document.getElementById('panel-body');
+  if (!bookmarks.length) {
+    body.innerHTML = `<div class="panel-empty">No saved events yet.<br><br>Hit the bookmark icon<br>on any event to save it.</div>`;
+    return;
+  }
+  const saved = EVENTS.filter(e => bookmarks.includes(e.id));
+  body.innerHTML = saved.map(e => `
+    <div class="bookmark-item">
+      <button class="bookmark-remove" onclick="toggleBookmark(${e.id}, event)" aria-label="Remove ${e.title} from saved">✕</button>
+      <div class="bookmark-item-title">${e.title}</div>
+      <div class="bookmark-item-meta">${e.venue} · ${e.date}</div>
+      <div style="margin-top:0.5rem; display:flex; gap:0.5rem;">
+        <button class="btn-cal" style="font-size:0.55rem; padding:0.35rem 0.5rem;" onclick="downloadICS(${e.id})">+ Cal</button>
+        <button class="btn-more" style="font-size:0.55rem; padding:0.35rem 0.5rem;" onclick="openModal(${e.id}); togglePanel()">Details</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// =====================
+// CALENDAR .ICS DOWNLOAD
+// =====================
+function downloadICS(id) {
+  const e = EVENTS.find(ev => ev.id === id);
+  if (!e) return;
+  const now = new Date();
+  const stamp = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const start = now.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const end = new Date(now.getTime() + 2 * 60 * 60 * 1000).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//LDN Directory//EN',
+    'BEGIN:VEVENT',
+    `UID:${e.id}-${stamp}@ldndirectory.co.uk`,
+    `DTSTAMP:${stamp}`,
+    `DTSTART:${start}`,
+    `DTEND:${end}`,
+    `SUMMARY:${e.title}`,
+    `DESCRIPTION:${e.desc.replace(/\n/g, '\\n')} | ${e.date} · ${e.time} · ${e.price}`,
+    `LOCATION:${e.venue}, ${e.area}, London`,
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${e.title.toLowerCase().replace(/\s+/g, '-')}.ics`;
+  a.click();
+}
+
+// =====================
+// DETAIL MODAL
+// =====================
+function openModal(id) {
+  const e = EVENTS.find(ev => ev.id === id);
+  if (!e) return;
+  const saved = bookmarks.includes(e.id);
+  document.getElementById('modal-body').innerHTML = `
+    <span class="cat-tag tag-${e.cat}" style="margin-bottom:0.75rem; display:inline-block;">${e.cat.toUpperCase()}</span>
+    <div class="event-detail-title" id="modal-event-title">${e.title}</div>
+    <div class="event-detail-venue">${e.venue} · ${e.area}, London</div>
+    <div class="detail-grid">
+      <div class="detail-cell">
+        <div class="detail-cell-label">Date</div>
+        <div class="detail-cell-val">${e.date}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-cell-label">Time</div>
+        <div class="detail-cell-val">${e.time}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-cell-label">Price</div>
+        <div class="detail-cell-val">${e.price}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-cell-label">Frequency</div>
+        <div class="detail-cell-val" style="text-transform:capitalize;">${e.recurrence}</div>
+      </div>
+    </div>
+    <p class="event-detail-desc">${e.desc}</p>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="downloadICS(${e.id})">+ Add to Calendar</button>
+      <button class="btn-secondary" onclick="toggleBookmark(${e.id}, event); document.querySelector('.btn-secondary').textContent = bookmarks.includes(${e.id}) ? '★ Saved' : '☆ Save Event'" style="transition:all 0.15s;">
+        ${saved ? '★ Saved' : '☆ Save Event'}
+      </button>
+    </div>
+  `;
+  document.getElementById('detail-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('detail-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// =====================
+// SUBMIT MODAL
+// =====================
+function openSubmit() {
+  document.getElementById('submit-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSubmit() {
+  document.getElementById('submit-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close modals on backdrop click
+document.getElementById('detail-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.getElementById('submit-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeSubmit();
+});
+
+// Keyboard escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeModal(); closeSubmit(); }
+});
+
+// Update total count
+document.getElementById('total-count').textContent = EVENTS.length;
+
+// =====================
+// RUN
+// =====================
+init();
+</script>
+</body>
+</html>
