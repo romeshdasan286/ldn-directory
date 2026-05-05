@@ -715,7 +715,7 @@ footer {
         <div class="footer-col-title">About</div>
         <div class="footer-links">
           <a href="#" onclick="openSubmit();return false;">Submit an event</a>
-          <a href="mailto:hello@theldndirectory.co.uk">Contact</a>
+          <a href="#" onclick="openContact();return false;">Contact</a>
           <a href="#">Privacy</a>
           <a href="#">Terms</a>
         </div>
@@ -784,6 +784,25 @@ footer {
         </div>
         <div class="form-group"><label for="f-desc">Description</label><textarea id="f-desc" name="description" placeholder="Tell us about the event in 1–2 sentences…"></textarea></div>
         <button class="btn-primary" type="submit" style="width:100%;margin-top:6px">Submit event ▸</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONTACT MODAL ===== -->
+<div class="modal-backdrop" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="contact-modal-title">Contact us</h2>
+      <button class="modal-close" onclick="closeContact()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="form-note">Have a question or suggestion? We'd love to hear from you.</p>
+      <form id="contact-form" action="https://formspree.io/f/mgodklnd" method="POST">
+        <div class="form-group"><label for="c-name">Name *</label><input type="text" id="c-name" name="name" required placeholder="Your name"></div>
+        <div class="form-group"><label for="c-email">Email *</label><input type="email" id="c-email" name="email" required placeholder="your@email.com"></div>
+        <div class="form-group"><label for="c-message">Message *</label><textarea id="c-message" name="message" required placeholder="Tell us what's on your mind…"></textarea></div>
+        <button class="btn-primary" type="submit" style="width:100%;margin-top:6px">Send ▸</button>
       </form>
     </div>
   </div>
@@ -1490,17 +1509,19 @@ function openModal(id) {
 function closeModal() { document.getElementById('detail-modal').classList.remove('open'); document.body.style.overflow = ''; }
 function openSubmit() { document.getElementById('submit-modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
 function closeSubmit() { document.getElementById('submit-modal').classList.remove('open'); document.body.style.overflow = ''; }
+function openContact() { document.getElementById('contact-modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeContact() { document.getElementById('contact-modal').classList.remove('open'); document.body.style.overflow = ''; }
 
-['detail-modal','submit-modal'].forEach(id => {
+['detail-modal','submit-modal','contact-modal'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('click', function(e) {
-    if (e.target === this) { closeModal(); closeSubmit(); }
+    if (e.target === this) { closeModal(); closeSubmit(); closeContact(); }
   });
 });
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    closeModal(); closeSubmit();
+    closeModal(); closeSubmit(); closeContact();
     const bm = document.getElementById('bm-panel');
     if (bm && bm.classList.contains('open')) togglePanel();
   }
@@ -1515,6 +1536,20 @@ if (submitForm) {
     try {
       const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
       if (res.ok) { this.innerHTML = '<p style="font-family:var(--serif-alt);font-style:italic;font-size:15px;color:var(--text-primary);padding:12px 0;line-height:1.7">Thanks — we\'ll review and add your event within 48 hours.</p>'; }
+      else { btn.textContent = 'Try again'; }
+    } catch { btn.textContent = 'Try again'; }
+  });
+}
+
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('[type="submit"]');
+    btn.textContent = 'Sending…';
+    try {
+      const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
+      if (res.ok) { this.innerHTML = '<p style="font-family:var(--serif-alt);font-style:italic;font-size:15px;color:var(--text-primary);padding:12px 0;line-height:1.7">Thanks for reaching out — we\'ll get back to you soon.</p>'; }
       else { btn.textContent = 'Try again'; }
     } catch { btn.textContent = 'Try again'; }
   });
