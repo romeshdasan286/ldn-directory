@@ -587,14 +587,10 @@ footer {
 <section class="masthead" aria-labelledby="mast-h">
   <div class="frame">
     <div class="mast-trim">
-      <span>Vol. I</span><span class="sep">·</span>
-      <span>London</span><span class="sep">·</span>
-      <span class="star">★</span>
-      <span>No. 01</span><span class="sep">·</span>
       <span id="mast-date">A weekly index</span>
     </div>
-    <h1 class="mast-headline" id="mast-h">London, <em>curated daily.</em></h1>
-    <p class="mast-kicker">Free, paid, today, this week — 33 boroughs in one place. Theatre, music, markets, art, wellness and the quiet rituals that make a city feel like home.</p>
+    <h1 class="mast-headline" id="mast-h"><em>your</em> <strong>London</strong>, <em>your</em> <strong>Borough</strong>, <em>your</em> <strong>Events</strong></h1>
+    <p class="mast-kicker">Curated neighbourhood and lifestyle events that bring you closer to your community. Build your personal itinerary with bookmarks and reminders.</p>
     <div class="mast-rule"></div>
     <div class="mast-stats">
       <span><strong id="stat-total">74</strong> Events live</span>
@@ -624,12 +620,6 @@ footer {
         </div>
         <div class="map-wrap">
           <svg id="map" viewBox="0 0 760 540" role="img" aria-label="Map of Greater London with borough boundaries"></svg>
-        </div>
-        <div class="map-legend" aria-hidden="true">
-          <span class="item"><span class="swatch sw-default"></span> Inner London — events available</span>
-          <span class="item"><span class="swatch sw-empty"></span> Inner — coming soon</span>
-          <span class="item"><span class="swatch sw-outer"></span> Outer London</span>
-          <span class="item"><span class="swatch sw-sel"></span> Selected (filtering)</span>
         </div>
       </div>
 
@@ -768,7 +758,7 @@ footer {
     </div>
     <div class="modal-body">
       <p class="form-note">Know of a free or community event in London? Tell us about it and we'll add it within 48 hours.</p>
-      <form id="submit-form" action="https://formspree.io/f/placeholder" method="POST">
+      <form id="submit-form" action="https://formspree.io/f/mgodklnd" method="POST">
         <div class="form-row">
           <div class="form-group"><label for="f-title">Event name *</label><input type="text" id="f-title" name="title" required placeholder="e.g. Crystal Palace Food Market"></div>
           <div class="form-group"><label for="f-cat">Category *</label>
@@ -965,39 +955,39 @@ function areaToBorough(area){ return AREA_TO_BOROUGH[(area||'').toLowerCase().tr
    BOROUGH METADATA + Inline GeoJSON (33 features)
    ============================================================ */
 const BOROUGHS = [
-  {n:'City of London',         a:'CL', lon:-0.0922, lat:51.5155, zone:1, inner:true,  num:4},
-  {n:'Westminster',            a:'WS', lon:-0.1357, lat:51.4975, zone:1, inner:true,  num:3},
-  {n:'Camden',                 a:'CM', lon:-0.1426, lat:51.5290, zone:2, inner:true},
-  {n:'Islington',              a:'IS', lon:-0.1031, lat:51.5416, zone:2, inner:true},
-  {n:'Hackney',                a:'HK', lon:-0.0552, lat:51.5450, zone:2, inner:true},
-  {n:'Tower Hamlets',          a:'TH', lon:-0.0270, lat:51.5099, zone:2, inner:true},
-  {n:'Southwark',              a:'SK', lon:-0.0805, lat:51.4733, zone:2, inner:true},
-  {n:'Lambeth',                a:'LM', lon:-0.1167, lat:51.4607, zone:2, inner:true},
-  {n:'Wandsworth',             a:'WW', lon:-0.1910, lat:51.4571, zone:2, inner:true},
-  {n:'Hammersmith and Fulham', a:'HF', lon:-0.2192, lat:51.4927, zone:2, inner:true,  num:1},
-  {n:'Kensington and Chelsea', a:'KC', lon:-0.1933, lat:51.5018, zone:2, inner:true,  num:2},
-  {n:'Lewisham',               a:'LW', lon:-0.0207, lat:51.4452, zone:3, inner:true},
-  {n:'Haringey',               a:'HG', lon:-0.1115, lat:51.6000, zone:3, inner:true},
-  {n:'Newham',                 a:'NW', lon: 0.0469, lat:51.5255, zone:3, inner:true},
-  {n:'Greenwich',              a:'GR', lon: 0.0612, lat:51.4892, zone:3, inner:false},
-  {n:'Waltham Forest',         a:'WF', lon:-0.0134, lat:51.5908, zone:3, inner:false},
-  {n:'Brent',                  a:'BR', lon:-0.2710, lat:51.5588, zone:3, inner:false},
-  {n:'Ealing',                 a:'EA', lon:-0.3089, lat:51.5130, zone:3, inner:false},
-  {n:'Merton',                 a:'MR', lon:-0.1925, lat:51.4097, zone:3, inner:false},
-  {n:'Richmond upon Thames',   a:'RM', lon:-0.3037, lat:51.4479, zone:4, inner:false},
-  {n:'Hounslow',               a:'HN', lon:-0.3678, lat:51.4607, zone:4, inner:false},
-  {n:'Barnet',                 a:'BA', lon:-0.2042, lat:51.6252, zone:4, inner:false},
-  {n:'Redbridge',              a:'RB', lon: 0.0739, lat:51.5897, zone:4, inner:false},
-  {n:'Croydon',                a:'CR', lon:-0.1037, lat:51.3714, zone:5, inner:false},
-  {n:'Bromley',                a:'BM', lon: 0.0147, lat:51.4039, zone:5, inner:false},
-  {n:'Bexley',                 a:'BX', lon: 0.1456, lat:51.4549, zone:5, inner:false},
-  {n:'Sutton',                 a:'ST', lon:-0.1955, lat:51.3618, zone:5, inner:false},
-  {n:'Kingston upon Thames',   a:'KT', lon:-0.3023, lat:51.4123, zone:5, inner:false},
-  {n:'Hillingdon',             a:'HI', lon:-0.4476, lat:51.5441, zone:6, inner:false},
-  {n:'Harrow',                 a:'HW', lon:-0.3346, lat:51.5898, zone:5, inner:false},
-  {n:'Enfield',                a:'EN', lon:-0.0815, lat:51.6538, zone:5, inner:false},
-  {n:'Havering',               a:'HV', lon: 0.1837, lat:51.5779, zone:6, inner:false},
-  {n:'Barking and Dagenham',   a:'BD', lon: 0.1313, lat:51.5463, zone:4, inner:false}
+  {n:'City of London',         lon:-0.0922, lat:51.5155, zone:1, inner:true,  num:'City of London'},
+  {n:'Westminster',            lon:-0.1357, lat:51.4975, zone:1, inner:true,  num:'Westminster'},
+  {n:'Camden',                 lon:-0.1426, lat:51.5290, zone:2, inner:true},
+  {n:'Islington',              lon:-0.1031, lat:51.5416, zone:2, inner:true},
+  {n:'Hackney',                lon:-0.0552, lat:51.5450, zone:2, inner:true},
+  {n:'Tower Hamlets',          lon:-0.0270, lat:51.5099, zone:2, inner:true},
+  {n:'Southwark',              lon:-0.0805, lat:51.4733, zone:2, inner:true},
+  {n:'Lambeth',                lon:-0.1167, lat:51.4607, zone:2, inner:true},
+  {n:'Wandsworth',             lon:-0.1910, lat:51.4571, zone:2, inner:true},
+  {n:'Hammersmith and Fulham', lon:-0.2192, lat:51.4927, zone:2, inner:true,  num:'Hammersmith and Fulham'},
+  {n:'Kensington and Chelsea', lon:-0.1933, lat:51.5018, zone:2, inner:true,  num:'Kensington and Chelsea'},
+  {n:'Lewisham',               lon:-0.0207, lat:51.4452, zone:3, inner:true},
+  {n:'Haringey',               lon:-0.1115, lat:51.6000, zone:3, inner:true},
+  {n:'Newham',                 lon: 0.0469, lat:51.5255, zone:3, inner:true},
+  {n:'Greenwich',              lon: 0.0612, lat:51.4892, zone:3, inner:false},
+  {n:'Waltham Forest',         lon:-0.0134, lat:51.5908, zone:3, inner:false},
+  {n:'Brent',                  lon:-0.2710, lat:51.5588, zone:3, inner:false},
+  {n:'Ealing',                 lon:-0.3089, lat:51.5130, zone:3, inner:false},
+  {n:'Merton',                 lon:-0.1925, lat:51.4097, zone:3, inner:false},
+  {n:'Richmond upon Thames',   lon:-0.3037, lat:51.4479, zone:4, inner:false},
+  {n:'Hounslow',               lon:-0.3678, lat:51.4607, zone:4, inner:false},
+  {n:'Barnet',                 lon:-0.2042, lat:51.6252, zone:4, inner:false},
+  {n:'Redbridge',              lon: 0.0739, lat:51.5897, zone:4, inner:false},
+  {n:'Croydon',                lon:-0.1037, lat:51.3714, zone:5, inner:false},
+  {n:'Bromley',                lon: 0.0147, lat:51.4039, zone:5, inner:false},
+  {n:'Bexley',                 lon: 0.1456, lat:51.4549, zone:5, inner:false},
+  {n:'Sutton',                 lon:-0.1955, lat:51.3618, zone:5, inner:false},
+  {n:'Kingston upon Thames',   lon:-0.3023, lat:51.4123, zone:5, inner:false},
+  {n:'Hillingdon',             lon:-0.4476, lat:51.5441, zone:6, inner:false},
+  {n:'Harrow',                 lon:-0.3346, lat:51.5898, zone:5, inner:false},
+  {n:'Enfield',                lon:-0.0815, lat:51.6538, zone:5, inner:false},
+  {n:'Havering',               lon: 0.1837, lat:51.5779, zone:6, inner:false},
+  {n:'Barking and Dagenham',   lon: 0.1313, lat:51.5463, zone:4, inner:false}
 ];
 function normName(s){ return (s||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z]/g,''); }
 const BY_NORM = Object.fromEntries(BOROUGHS.map(b=>[normName(b.n), b]));
@@ -1153,12 +1143,6 @@ function renderMap(){
     .on('mouseleave', hideTip)
     .on('click', (e,f) => { const n = f.properties._n; if(counts[n]) toggleBorough(n); });
 
-  const thamesPx = THAMES.map(p => projection(p));
-  const lineGen  = d3.line().curve(d3.curveCatmullRom.alpha(0.6));
-  gThames.append('path').attr('class','thames-line').attr('d', lineGen(thamesPx));
-  gThames.append('text').attr('class','thames-label')
-    .attr('x', thamesPx[18][0]+8).attr('y', thamesPx[18][1]-6)
-    .text('R. Thames');
 
   const labels = gLabels.selectAll('g.lbl')
     .data(geo.features).enter()
