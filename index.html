@@ -530,6 +530,161 @@ footer {
 .form-group textarea { resize: vertical; min-height: 80px; }
 
 /* =====================================================
+   FEATURED BLOCK — full-width hero event card
+   ===================================================== */
+.featured-section {
+  background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 0;
+}
+.featured-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 28px;
+  display: grid; grid-template-columns: 1fr 1fr; min-height: 360px;
+}
+@media (max-width: 760px) { .featured-inner { grid-template-columns: 1fr; min-height: auto; } }
+
+.featured-image-wrap {
+  position: relative; overflow: hidden; min-height: 280px; background: var(--surface-2);
+}
+.featured-image-wrap img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .5s ease;
+}
+.featured-image-wrap:hover img { transform: scale(1.03); }
+.featured-image-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, transparent 60%, var(--surface) 100%);
+}
+@media (max-width: 760px) {
+  .featured-image-wrap { min-height: 220px; }
+  .featured-image-overlay { background: linear-gradient(to top, var(--surface) 0%, transparent 60%); }
+}
+
+.featured-content {
+  padding: 44px 40px 44px 48px; display: flex; flex-direction: column; justify-content: center; gap: 14px;
+}
+@media (max-width: 760px) { .featured-content { padding: 24px 0 36px; } }
+
+.featured-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+}
+.featured-label {
+  font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--surface); background: var(--text-primary);
+  padding: 3px 10px;
+}
+.featured-cat {
+  font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--accent-gold);
+}
+.featured-title {
+  font-family: var(--serif); font-weight: 900; font-size: clamp(22px, 3vw, 34px);
+  line-height: 1.12; letter-spacing: -.01em; color: var(--text-primary);
+}
+.featured-venue {
+  font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  letter-spacing: .04em;
+}
+.featured-desc {
+  font-family: var(--serif-alt); font-size: 15px; line-height: 1.68; color: var(--text-secondary);
+  max-width: 480px;
+}
+.featured-meta {
+  display: flex; gap: 20px; flex-wrap: wrap;
+}
+.featured-meta-item {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.featured-meta-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted);
+}
+.featured-meta-val {
+  font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text-primary);
+}
+.featured-cta {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 4px;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--text-primary);
+  background: none; border: 1px solid var(--text-primary); padding: 10px 20px;
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.featured-cta:hover { background: var(--text-primary); color: var(--surface); }
+.featured-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 220px; color: var(--text-muted); font-family: var(--mono); font-size: 11px;
+  letter-spacing: .1em;
+}
+
+/* =====================================================
+   ARTICLES BLOCK — 3-column reading list
+   ===================================================== */
+.articles-section {
+  background: var(--bg); padding: 48px 0 56px; border-top: 1px solid var(--border-soft);
+}
+.articles-header {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  margin-bottom: 24px; border-bottom: 1px solid var(--border-soft); padding-bottom: 10px;
+}
+.articles-header-title {
+  font-family: var(--serif); font-weight: 700; font-size: 13px;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--text-secondary);
+}
+.articles-header-rule {
+  height: 2px; width: 28px; background: var(--accent-gold); margin-top: 6px;
+}
+.articles-grid {
+  display: grid; grid-template-columns: 1fr; gap: 24px;
+}
+@media (min-width: 600px) { .articles-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .articles-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.article-card {
+  background: var(--surface); border: 1px solid var(--border-soft);
+  display: flex; flex-direction: column; transition: border-color .15s, transform .12s;
+  text-decoration: none; color: inherit;
+}
+.article-card:hover { border-color: var(--text-primary); transform: translateY(-2px); }
+.article-card-image {
+  width: 100%; height: 180px; object-fit: cover; display: block; background: var(--surface-2);
+}
+.article-card-image.no-img {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; color: var(--text-muted);
+}
+.article-card-body {
+  padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1;
+}
+.article-card-source {
+  font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .26em;
+  text-transform: uppercase; color: var(--accent-gold);
+}
+.article-card-title {
+  font-family: var(--serif); font-weight: 700; font-size: 16px; line-height: 1.3;
+  color: var(--text-primary);
+}
+.article-card-desc {
+  font-family: var(--serif-alt); font-size: 13.5px; line-height: 1.62; color: var(--text-secondary);
+  flex: 1;
+}
+.article-card-link {
+  font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--text-primary); margin-top: 6px;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.articles-skeleton {
+  grid-column: 1/-1; display: flex; gap: 24px;
+}
+.articles-skeleton-card {
+  flex: 1; background: var(--surface-2); height: 260px; animation: shimmer 1.5s infinite linear;
+}
+@keyframes shimmer {
+  0%,100% { opacity: .7; } 50% { opacity: 1; }
+}
+.articles-empty {
+  grid-column: 1/-1; padding: 28px 0; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .12em; color: var(--text-muted); text-align: center;
+}
+
+/* =====================================================
    RESPONSIVE
    ===================================================== */
 @media (min-width: 760px) {
@@ -597,6 +752,13 @@ footer {
       <span><strong id="stat-free">0</strong> Free this month</span>
       <span><strong id="stat-boroughs">33</strong> Boroughs covered</span>
     </div>
+  </div>
+</section>
+
+<!-- ===== FEATURED EVENT BLOCK ===== -->
+<section class="featured-section" id="featured-section" aria-label="Featured event">
+  <div class="featured-inner" id="featured-block">
+    <div class="featured-placeholder">Loading featured event…</div>
   </div>
 </section>
 
@@ -676,6 +838,26 @@ footer {
     <div class="events-grid" id="event-grid" role="list" aria-label="All events"></div>
   </div>
 </main>
+
+<!-- ===== ARTICLES READING LIST ===== -->
+<section class="articles-section" id="articles-section" aria-labelledby="articles-h">
+  <div class="frame">
+    <div class="articles-header">
+      <div>
+        <div class="articles-header-title" id="articles-h">Reading List</div>
+        <div class="articles-header-rule"></div>
+      </div>
+      <span style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--text-muted);text-transform:uppercase">From London's press</span>
+    </div>
+    <div class="articles-grid" id="articles-grid">
+      <div class="articles-skeleton">
+        <div class="articles-skeleton-card"></div>
+        <div class="articles-skeleton-card"></div>
+        <div class="articles-skeleton-card"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ===== FOOTER ===== -->
 <footer role="contentinfo" id="colophon">
@@ -1054,6 +1236,101 @@ function init() {
   try { renderMap(); } catch (e) { console.warn('renderMap', e); }
   try { applyFilters(); } catch (e) { console.warn('applyFilters', e); }
   try { updateBookmarkCount(); } catch (e) { console.warn('updateBookmarkCount', e); }
+  loadFeatured();
+  loadArticles();
+}
+
+/* ============================================================
+   FEATURED BLOCK — loads featured.json, falls back to EVENTS
+   ============================================================ */
+function renderFeaturedItem(e) {
+  const block = document.getElementById('featured-block');
+  if (!block) return;
+  const imgSrc = e.image || '';
+  block.innerHTML = `
+    <div class="featured-image-wrap">
+      ${imgSrc ? `<img src="${imgSrc}" alt="${e.title}" loading="eager">` : `<div style="width:100%;height:100%;background:var(--surface-2)"></div>`}
+      <div class="featured-image-overlay"></div>
+    </div>
+    <div class="featured-content">
+      <div class="featured-eyebrow">
+        <span class="featured-label">Featured</span>
+        <span class="featured-cat">${e.cat || e.category || 'Event'}</span>
+      </div>
+      <div class="featured-title">${e.title}</div>
+      <div class="featured-venue">${e.venue}${e.area ? ' · ' + e.area + ', London' : ''}</div>
+      <p class="featured-desc">${e.desc || e.description || ''}</p>
+      <div class="featured-meta">
+        ${e.date ? `<div class="featured-meta-item"><div class="featured-meta-label">Date</div><div class="featured-meta-val">${e.date}</div></div>` : ''}
+        ${e.time ? `<div class="featured-meta-item"><div class="featured-meta-label">Time</div><div class="featured-meta-val">${e.time}</div></div>` : ''}
+        ${e.price ? `<div class="featured-meta-item"><div class="featured-meta-label">Price</div><div class="featured-meta-val">${e.price}</div></div>` : ''}
+      </div>
+      ${e.link ? `<button class="featured-cta" onclick="window.open('${e.link}','_blank','noopener')">View event ▸</button>` :
+        (e.id ? `<button class="featured-cta" onclick="openModal(${e.id})">View details ▸</button>` : '')}
+    </div>`;
+}
+
+async function loadFeatured() {
+  const block = document.getElementById('featured-block');
+  try {
+    const res = await fetch('featured.json?_=' + Date.now());
+    if (res.ok) {
+      const data = await res.json();
+      if (data && (data.title || (Array.isArray(data) && data.length))) {
+        const item = Array.isArray(data) ? data[0] : data;
+        if (item && item.title) { renderFeaturedItem(item); return; }
+      }
+    }
+  } catch (_) { /* fall through */ }
+  // Fallback: first featured event in EVENTS
+  const fallback = EVENTS.find(e => e.featured) || EVENTS[0];
+  if (fallback) { renderFeaturedItem(fallback); }
+  else if (block) { block.innerHTML = ''; }
+}
+
+/* ============================================================
+   ARTICLES BLOCK — loads articles.json (3 items)
+   ============================================================ */
+function renderArticles(articles) {
+  const grid = document.getElementById('articles-grid');
+  if (!grid) return;
+  const items = articles.slice(0, 3);
+  if (!items.length) {
+    grid.innerHTML = '<div class="articles-empty">No articles available yet — check back soon.</div>';
+    return;
+  }
+  grid.innerHTML = items.map(a => {
+    const imgSrc = a.image || a.image_url || '';
+    const imgHtml = imgSrc
+      ? `<img class="article-card-image" src="${imgSrc}" alt="${a.title || ''}" loading="lazy" onerror="this.style.display='none'">`
+      : `<div class="article-card-image no-img">📰</div>`;
+    const desc = a.desc || a.description || a.summary || '';
+    const source = a.source || a.feed || '';
+    const link = a.link || a.url || '#';
+    return `
+    <a class="article-card" href="${link}" target="_blank" rel="noopener noreferrer" aria-label="${a.title || 'Read article'}">
+      ${imgHtml}
+      <div class="article-card-body">
+        ${source ? `<div class="article-card-source">${source}</div>` : ''}
+        <div class="article-card-title">${a.title || 'Untitled'}</div>
+        ${desc ? `<p class="article-card-desc">${desc.length > 120 ? desc.slice(0,117)+'…' : desc}</p>` : ''}
+        <span class="article-card-link">Read more ▸</span>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+async function loadArticles() {
+  const grid = document.getElementById('articles-grid');
+  try {
+    const res = await fetch('articles.json?_=' + Date.now());
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) { renderArticles(data); return; }
+    }
+  } catch (_) { /* fall through */ }
+  // No articles available yet
+  if (grid) grid.innerHTML = '<div class="articles-empty">Articles loading — run the content refresh to populate.</div>';
 }
 
 function setMastDate() {
