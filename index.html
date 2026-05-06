@@ -1320,6 +1320,33 @@ function renderArticles(articles) {
   }).join('');
 }
 
+const ARTICLES_DATA = [
+  {
+    "title": "Why Community Collaboration Is One of the Best Things for Your Mental Health",
+    "source": "Mind",
+    "desc": "Research consistently shows that people who participate in community groups — from local clubs to volunteering — report lower anxiety, stronger resilience, and greater sense of purpose. Here's the science behind why belonging matters.",
+    "link": "https://www.mind.org.uk/information-support/tips-for-everyday-living/community/",
+    "image": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80&auto=format&fit=crop",
+    "category": "wellness"
+  },
+  {
+    "title": "London's Best Padel Courts: Where to Play in 2025",
+    "source": "Time Out London",
+    "desc": "Padel has exploded across the capital. From rooftop courts in Canary Wharf to community clubs in Brixton and Islington, we rank the best spots to pick up a racket — whether you're a beginner or seasoned player.",
+    "link": "https://www.timeout.com/london/sport-and-fitness",
+    "image": "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=600&q=80&auto=format&fit=crop",
+    "category": "fitness"
+  },
+  {
+    "title": "Sleep Hygiene: The Science-Backed Habits That Actually Work",
+    "source": "Mind",
+    "desc": "Poor sleep costs the UK economy billions each year — and Londoners are among the worst affected. We look at the evidence-based routines, from cutting blue light to consistent wake times, that can genuinely improve your rest.",
+    "link": "https://www.mind.org.uk/information-support/types-of-mental-health-problems/sleep-problems/",
+    "image": "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=600&q=80&auto=format&fit=crop",
+    "category": "wellness"
+  }
+];
+
 async function loadArticles() {
   const grid = document.getElementById('articles-grid');
   try {
@@ -1329,8 +1356,8 @@ async function loadArticles() {
       if (Array.isArray(data) && data.length) { renderArticles(data); return; }
     }
   } catch (_) { /* fall through */ }
-  // No articles available yet
-  if (grid) grid.innerHTML = '<div class="articles-empty">Articles loading — run the content refresh to populate.</div>';
+  // Use inline articles data
+  renderArticles(ARTICLES_DATA);
 }
 
 function setMastDate() {
