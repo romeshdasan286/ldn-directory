@@ -110,7 +110,7 @@ def apply(site: Path, updates: list[dict], dry: bool) -> int:
     block = text[s:e]
     lines = event_lines(block)
     zones, cats = site_knowledge(lines)
-    next_id = max(lines) + 1
+    next_id = max([int(i) for i in re.findall(r"\bid:(\d+),", block)] or [0]) + 1   # includes hidden (//~) events
     by_title = {(field(l, "title") or "").replace("\\'", "'").lower(): i for i, l in lines.items()}
 
     new_block = block
