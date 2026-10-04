@@ -20,24 +20,22 @@ jobs:
       - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
 
-      - name: Pull approved submissions
-        env:
-          SUBMISSIONS_CSV_URL: ${{ secrets.SUBMISSIONS_CSV_URL }}
-        run: python3 pull_submissions.py --csv "$SUBMISSIONS_CSV_URL" --out updates.json
+      - name: Scrape events and articles
+        run: python3 fetch_events_v2.py --articles --max-per-source 8
+
+      - name: Choose which scraped events are good enough
+        run: python3 apply_scraped.py --site "$SITE_FILE" --events events.json --out updates.json
 
       - name: Apply to site
         run: python3 update_site.py --site "$SITE_FILE" --updates updates.json
         continue-on-error: true
-
-      - name: Refresh articles and featured
-        run: python3 fetch_events_v2.py --articles-only || true
 
       - name: Open pull request
         uses: peter-evans/create-pull-request@v7
         with:
           branch: weekly-update
           title: "Weekly update"
-          body: "Approved submissions applied. Merge to publish. Close to skip."
+          body: "Scraped events added and past ones removed. Merge to publish. Close to skip."
           commit-message: "Weekly events update"
           add-paths: |
             ${{ env.SITE_FILE }}
