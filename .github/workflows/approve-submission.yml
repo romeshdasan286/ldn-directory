@@ -1,0 +1,38 @@
+name: Publish approved submission
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  publish:
+    if: github.event.label.name == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+
+      - name: Read the submission from the issue
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: python3 apply_issue.py
+
+      - name: Add it to the site
+        run: python3 update_site.py --site index.html --updates updates.json
+        continue-on-error: true   # warnings (like no image) should not stop publishing
+
+      - name: Save, publish and close the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "ldn-bot"
+          git config user.email "ldn-bot@users.noreply.github.com"
+          git add index.html
+          git commit -m "Add approved submission (#${{ github.event.issue.number }})"
+          git push
+          gh issue close ${{ github.event.issue.number }} --comment "Published. The site will update in a minute or two."
