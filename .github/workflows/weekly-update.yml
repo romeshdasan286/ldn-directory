@@ -40,6 +40,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           branch: weekly-update
+          delete-branch: true
           title: "Weekly update"
           body: "New scraped events added, past events hidden, featured event refreshed. Merge to publish. Close to skip."
           commit-message: "Weekly events update"
@@ -47,4 +48,5 @@ jobs:
             ${{ env.SITE_FILE }}
             articles.json
             featured.json
+            featured_image.jpg
  
