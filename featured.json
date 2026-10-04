@@ -1,0 +1,21 @@
+{
+  "id": 1,
+  "title": "Discover the world’s coolest cities",
+  "venue": "Time Out — Free London",
+  "area": "London",
+  "borough": "See site",
+  "category": "community",
+  "category_confidence": 0.3,
+  "date": "Ongoing",
+  "time": "",
+  "price": "See site",
+  "free": true,
+  "link": "https://www.timeout.com",
+  "image": "featured_main.jpg",
+  "image_fallback_method": "detail-page",
+  "source": "Time Out — Free London",
+  "fetched": "2026-10-04T09:41:31.153403Z",
+  "featured": false,
+  "verified": false,
+  "desc": "Your ultimate guide to the best art and entertainment, food and drink, attractions, hotels and things to do in the world’s greatest cities."
+}
