@@ -1,0 +1,86 @@
+[
+  {
+    "id": "rss-1",
+    "title": "Housing or data centre? London's land-use dilemma",
+    "link": "https://www.bbc.co.uk/news/articles/cj20709qxleyo?at_medium=RSS&at_campaign=rss",
+    "summary": "A data centre plan in Greenwich is the latest flashpoint in a debate about London's digital future.",
+    "image": "_images/article_1.jpg",
+    "date": "Sun, 04 Oct 2026 07:07:08 GMT",
+    "category": "community",
+    "source": "BBC London",
+    "type": "rss_article",
+    "featured": true
+  },
+  {
+    "id": "rss-2",
+    "title": "Man shot dead as families gather for memorial",
+    "link": "https://www.bbc.co.uk/news/articles/c3zxjl2pp49zo?at_medium=RSS&at_campaign=rss",
+    "summary": "The 40-year-old died at the scene in west London from a gunshot wound, the Met Police said.",
+    "image": "_images/article_2.jpg",
+    "date": "Sat, 03 Oct 2026 20:42:05 GMT",
+    "category": "community",
+    "source": "BBC London",
+    "type": "rss_article",
+    "featured": true
+  },
+  {
+    "id": "rss-3",
+    "title": "Horniman Museum's new gallery to open in February",
+    "link": "https://www.bbc.co.uk/news/articles/c6vgy2exkn9zo?at_medium=RSS&at_campaign=rss",
+    "summary": "The new Nature Gallery hopes to explore people's connection to and reliance on nature.",
+    "image": "_images/article_3.jpg",
+    "date": "Sun, 04 Oct 2026 07:05:42 GMT",
+    "category": "community",
+    "source": "BBC London",
+    "type": "rss_article",
+    "featured": true
+  },
+  {
+    "id": "rss-4",
+    "title": "Farewell, Eater London",
+    "link": "https://london.eater.com/2023/2/14/23598362/eater-london-ceasing-publication-editors-note",
+    "summary": "After five and half years, as of February 2023, Eater London will cease daily news publication. In the future, the site’s core maps will be updated on a quarterly or bi-annual basis. But for now, and for me, the site’s editor, it is time to",
+    "image": "_images/article_4.jpg",
+    "date": "2023-02-14",
+    "category": "food",
+    "source": "Eater London",
+    "type": "rss_article",
+    "featured": true
+  },
+  {
+    "id": "rss-5",
+    "title": "Where to Eat the Finest French Food in London",
+    "link": "https://london.eater.com/maps/best-french-restaurants-london",
+    "summary": "The Iberian peninsula might be where it’s at right now, but the city’s French restaurants continue to bring a lot to the table (literally). Good bread and good wine, roll-the-sleeves-up cheeses and OTT desserts are so ubiquitous that it’s e",
+    "image": "_images/article_5.jpg",
+    "date": "2023-01-23",
+    "category": "food",
+    "source": "Eater London",
+    "type": "rss_article",
+    "featured": true
+  },
+  {
+    "id": "rss-6",
+    "title": "NHS cuts British forces’ waiting times by a month in targeted campaign",
+    "link": "https://www.england.nhs.uk/2026/10/nhs-cuts-british-forces-waiting-times-by-a-month-in-targeted-campaign/",
+    "summary": "The NHS has cut waiting times for serving soldiers, sailors and air crew by more than 4 weeks, thanks to a targeted campaign to get injured military personnel ready for action quicker. The Further Faster Armed Forces (FF-AF) initiative saw ",
+    "image": "",
+    "date": "Sat, 03 Oct 2026 23:01:49 +0000",
+    "category": "wellness",
+    "source": "NHS England",
+    "type": "rss_article",
+    "featured": true
+  },
+  {
+    "id": "rss-7",
+    "title": "NHS protects thousands of rough sleepers ahead of winter with vital vaccines",
+    "link": "https://www.england.nhs.uk/2026/10/nhs-protects-thousands-of-rough-sleepers-ahead-of-winter-with-vital-vaccines/",
+    "summary": "Tens of thousands of people experiencing homelessness can now get vital protection from potentially serious winter viruses with a free NHS vaccine. From this week, NHS teams and charity partners will offer crucial flu and pneumococcal disea",
+    "image": "",
+    "date": "Thu, 01 Oct 2026 23:01:04 +0000",
+    "category": "wellness",
+    "source": "NHS England",
+    "type": "rss_article",
+    "featured": true
+  }
+]
