@@ -546,6 +546,11 @@ def collect(max_per_source: int = 12, deep_image: bool = True, include_rss: bool
                         ev["image"] = img
                         ev["image_fallback_method"] = "detail-page"
 
+                    # Short description (meta description / og:description)
+                    dm = (re.search(r'<meta[^>]+(?:property=["\']og:description["\']|name=["\']description["\'])[^>]+content=["\']([^"\']+)["\']', detail, re.I))
+                    if dm:
+                        ev["desc"] = html.unescape(dm.group(1)).strip()[:240]
+
                     # Better title
                     title = page_title(detail)
                     if title and len(title) > len(ev["title"]) * 0.6:
