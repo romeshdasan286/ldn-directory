@@ -11,7 +11,7 @@ Nothing is deleted. Hidden lines stay in the file, so annual festivals return ne
 
     python3 expire_events.py --site index.html [--dry-run]
 """
-import argparse, re, sys
+import argparse, json, re, sys
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -61,7 +61,15 @@ LINE = re.compile(r"^(\s*)(//~ )?(\{ id:\d+,.*\},?)\s*$")
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--site", type=Path, required=True); ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--overrides", type=Path, default=Path("event_overrides.json"),
+                    help='Optional list like [{"title":"The Ferryman","hide":true}] or [{"title":"X","until":"2026-12-31"}]')
     a = ap.parse_args(); today = date.today()
+    forced = {}                                   # title -> True when it must stay hidden
+    if a.overrides.exists():
+        for o in json.loads(a.overrides.read_text(encoding="utf-8")):
+            u = o.get("until")
+            if o.get("hide") or (u and today > date.fromisoformat(u)):
+                forced[o["title"].strip().lower()] = True
     text = a.site.read_text(encoding="utf-8")
     s = text.index("const EVENTS = ["); e = text.index("\n];", s)
     out, hid, back = [], [], []
@@ -71,6 +79,7 @@ def main():
             d = re.search(r"\bdate:'([^']*)'", m.group(3)); title = re.search(r"title:'((?:[^'\\]|\\.)*)'", m.group(3))
             st = status(d.group(1), today) if d else "recurring"
             name = (title.group(1) if title else "?").replace("\\'", "'")
+            if forced.get(name.strip().lower()): st = "ended"
             if st == "ended" and not m.group(2):
                 line = f"{m.group(1)}//~ {m.group(3)}"; hid.append(f"{name} ({d.group(1)})")
             elif st == "live" and m.group(2):

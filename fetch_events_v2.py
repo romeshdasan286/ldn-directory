@@ -688,6 +688,8 @@ def main() -> int:
                    help="Skip events; only refresh articles.json. Useful for hourly schedule.")
     p.add_argument("--force-refresh-articles", action="store_true",
                    help="Ignore the articles cache and re-fetch all RSS feeds.")
+    p.add_argument("--write-featured", action="store_true",
+                   help="Also write the scraper's own featured.json pick (off by default; use build_featured.py)")
     args = p.parse_args()
 
     cache_path = args.outdir / ".articles_cache.json"
@@ -744,8 +746,10 @@ def main() -> int:
     print(f"[ok] wrote {j}", file=sys.stderr)
     print(f"[ok] wrote {js}", file=sys.stderr)
 
-    # Write featured.json from collected events
-    write_featured(events, args.outdir)
+    # featured.json is now chosen by build_featured.py (a real, specific event).
+    # Only write the scraper's old guess if explicitly asked.
+    if args.write_featured:
+        write_featured(events, args.outdir)
 
     if args.html:
         patch_html(args.html, events)

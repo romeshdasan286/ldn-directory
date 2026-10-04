@@ -6,7 +6,7 @@ Always a real, specific event that is on the site right now. Order of preference
   2. A featured event with specific dates that is on now or starting soon
   3. Another featured event on the site, rotating each week
 """
-import argparse, json, re, sys
+import argparse, json, re, sys, urllib.request, urllib.error
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from expire_events import LINE, status, MON
@@ -29,9 +29,37 @@ def scraped_day(dtext, today):
     except (KeyError, ValueError): return None
     return d if d >= today - timedelta(days=200) else date(today.year + 1, d.month, d.day)
 
+def fetch_image(url, dest):
+    """Download the image next to the site so it always loads.
+    Returns 'ok' (saved), 'bad' (link is broken), or 'unknown' (couldn't check)."""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            data = r.read()
+            if r.status == 200 and r.headers.get("Content-Type", "").startswith("image") and len(data) > 2000:
+                dest.write_bytes(data); return "ok"
+            return "bad"
+    except urllib.error.HTTPError as e:
+        return "unknown" if e.headers.get("x-deny-reason") else "bad"
+    except Exception:
+        return "unknown"
+
+IMG_DEST = Path("featured_image.jpg")
+
+def first_working(cands):
+    for ev in cands:
+        res = fetch_image(ev["image"], IMG_DEST)
+        if res == "ok":
+            return dict(ev, image=IMG_DEST.name)
+        if res == "unknown":
+            return ev                      # can't check from here; keep the remote link
+        print(f"  [skip] broken image: {ev['title']}")
+    return None
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--site", type=Path, required=True); ap.add_argument("--out", type=Path, default=Path("featured.json"))
     a = ap.parse_args(); today = date.today()
+    global IMG_DEST; IMG_DEST = a.out.parent / "featured_image.jpg"
     text = a.site.read_text(encoding="utf-8"); s = text.index("const EVENTS = ["); e = text.index("\n];", s)
     live = []
     for line in text[s:e].split("\n"):
@@ -47,13 +75,15 @@ def main():
             soon.append((d, ev))
     pick, why = None, ""
     if soon:
-        pick, why = sorted(soon, key=lambda x: x[0])[0][1], "upcoming scraped event"
+        pick, why = first_working([ev for _, ev in sorted(soon, key=lambda x: x[0])]), "upcoming scraped event"
     if not pick:
         dated = [ev for ev in live if ev["featured"] and status(ev.get("date"), today) == "live"]
-        if dated: pick, why = dated[today.isocalendar()[1] % len(dated)], "featured dated event"
+        if dated:
+            k = today.isocalendar()[1] % len(dated); pick, why = first_working(dated[k:] + dated[:k]), "featured dated event"
     if not pick:
         feats = [ev for ev in live if ev["featured"]] or live
-        if feats: pick, why = feats[today.isocalendar()[1] % len(feats)], "weekly rotation of featured events"
+        if feats:
+            k = today.isocalendar()[1] % len(feats); pick, why = first_working(feats[k:] + feats[:k]), "weekly rotation of featured events"
     if not pick:
         print("No suitable event found; leaving featured.json unchanged."); return 0
     pick = {k: v for k, v in pick.items() if k != "featured"}

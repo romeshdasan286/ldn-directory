@@ -999,8 +999,8 @@ footer {
    ============================================================ */
 const EVENTS = [
   // THEATRE
-  { id:1,  cat:'theatre', title:'The Ferryman', venue:'Brixton House', area:'Brixton', zone:'south', date:'Tue–Sat', time:'7:30pm', sortHour:19.5, price:'£16–£30', free:false, recurrence:'weekly', featured:true, desc:"Jez Butterworth's epic family drama set in Northern Ireland. Intimate staging in Brixton House's main theatre.", link:'https://www.brixtonhouse.co.uk/whats-on', image:'https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&q=80&auto=format&fit=crop' },
-  { id:2,  cat:'theatre', title:'Bold Tendencies Theatre Night', venue:'Bold Tendencies, Peckham', area:'Peckham', zone:'south', date:'Every Friday', time:'8pm', sortHour:20, price:'£10', free:false, recurrence:'weekly', featured:false, desc:'Site-specific performances on the top floors of the Peckham car park. Part installation, part theatre, part experience.', link:'https://boldtendencies.com', image:'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800&q=80&auto=format&fit=crop' },
+  //~ { id:1,  cat:'theatre', title:'The Ferryman', venue:'Brixton House', area:'Brixton', zone:'south', date:'Tue–Sat', time:'7:30pm', sortHour:19.5, price:'£16–£30', free:false, recurrence:'weekly', featured:true, desc:"Jez Butterworth's epic family drama set in Northern Ireland. Intimate staging in Brixton House's main theatre.", link:'https://www.brixtonhouse.co.uk/whats-on', image:'https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&q=80&auto=format&fit=crop' },
+  //~ { id:2,  cat:'theatre', title:'Bold Tendencies Theatre Night', venue:'Bold Tendencies, Peckham', area:'Peckham', zone:'south', date:'Wed–Sun, 15 May–12 Sep', time:'11am – 11pm', sortHour:11, price:'Free', free:true, recurrence:'weekly', featured:false, desc:'Site-specific performances on the top floors of the Peckham car park. Part installation, part theatre, part experience.', link:'https://boldtendencies.com', image:'https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=800&q=80&auto=format&fit=crop' },
   //~ { id:3,  cat:'theatre', title:'The Yard: New Writing', venue:'The Yard Theatre', area:'Hackney Wick', zone:'east', date:'Runs Jun', time:'7:30pm', sortHour:19.5, price:'£12', free:false, recurrence:'monthly', featured:false, desc:'Platform programme for emerging theatre makers. Short works in progress in a unique warehouse space.', link:'https://theyardtheatre.co.uk', image:'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=800&q=80&auto=format&fit=crop' },
   { id:4,  cat:'theatre', title:'Bush Theatre Sunday Matinee', venue:'Bush Theatre', area:"Shepherd's Bush", zone:'west', date:'Every Sunday', time:'3pm', sortHour:15, price:'£14', free:false, recurrence:'weekly', featured:false, desc:"Sunday matinee programme at one of London's most celebrated new writing houses.", link:'https://www.bushtheatre.co.uk', image:'https://images.unsplash.com/photo-1499364615650-ec38552f4f34?w=800&q=80&auto=format&fit=crop' },
   { id:5,  cat:'theatre', title:'Hackney Empire Comedy Night', venue:'Hackney Empire', area:'Hackney', zone:'east', date:'Monthly – 1st Friday', time:'8pm', sortHour:20, price:'£15', free:false, recurrence:'monthly', featured:false, desc:'Monthly comedy showcase at the magnificent Hackney Empire. Four acts, one night. Book in advance.', link:'https://www.hackneyempire.co.uk', image:'https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=800&q=80&auto=format&fit=crop' },
@@ -1243,13 +1243,25 @@ function init() {
 /* ============================================================
    FEATURED BLOCK — loads featured.json, falls back to EVENTS
    ============================================================ */
-function renderFeaturedItem(e) {
+let _featCur = null, _featTried = [];
+/* If the featured image won't load, show the next event that has a working image
+   (never a mismatched picture), and finally show the block without an image. */
+function featuredImageFailed() {
+  if (!_featCur) return;
+  _featTried.push(_featCur.id || _featCur.title);
+  const next = EVENTS.filter(x => x.image && !_featTried.includes(x.id))
+    .sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))[0];
+  renderFeaturedItem(next || Object.assign({}, _featCur, { image: '' }), true);
+}
+function renderFeaturedItem(e, isFallback) {
   const block = document.getElementById('featured-block');
   if (!block) return;
+  if (!isFallback) _featTried = [];
+  _featCur = e;
   const imgSrc = e.image || '';
   block.innerHTML = `
     <div class="featured-image-wrap">
-      ${imgSrc ? `<img src="${imgSrc}" alt="${e.title}" loading="eager">` : `<div style="width:100%;height:100%;background:var(--surface-2)"></div>`}
+      ${imgSrc ? `<img src="${imgSrc}" alt="${e.title}" loading="eager" onerror="featuredImageFailed()">` : `<div style="width:100%;height:100%;background:var(--surface-2)"></div>`}
       <div class="featured-image-overlay"></div>
     </div>
     <div class="featured-content">
