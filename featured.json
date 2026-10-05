@@ -1,13 +1,13 @@
 {
-  "id": 47,
-  "cat": "art",
-  "title": "Whitechapel Gallery — First Thursdays",
-  "venue": "Whitechapel Gallery",
-  "area": "Whitechapel",
-  "date": "1st Thursday monthly",
-  "time": "6pm – 9pm",
+  "id": 7,
+  "cat": "markets",
+  "title": "Crystal Palace Food Market",
+  "venue": "Haynes Lane, SE19",
+  "area": "Crystal Palace",
+  "date": "Every Saturday",
+  "time": "10am – 3pm",
   "price": "Free",
-  "desc": "East End galleries open late on the first Thursday of every month. Maps and free buses from Whitechapel.",
-  "link": "https://firstthursdays.co.uk",
-  "image": "https://images.unsplash.com/photo-1531913764164-f85c52d7e6b1?w=800&q=80&auto=format&fit=crop"
+  "desc": "Brilliant weekly market with street food, artisan producers, fresh veg, baked goods and more. One of south London's best.",
+  "link": "https://www.cpfoodmarket.com",
+  "image": "featured_image.jpg"
 }
