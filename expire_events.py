@@ -26,6 +26,10 @@ def window(text, year):
     t = (text or "").lower().strip()
     if not t or WEEKDAY_DATE.match(t) or any(k in t for k in RECUR):
         return None
+    years = [int(y) for y in re.findall(r"\b(20\d\d)\b", t)]
+    if years:                                    # a one-off with a stated year never comes back next year
+        y1, y2 = years[0], years[-1]
+        t = re.sub(r"\b20\d\d\b", " ", t)
     months = [MON[m[:3]] for m in re.findall(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b", t)]
     days = [int(n) for n in re.findall(r"\b(\d{1,2})\b", t) if 1 <= int(n) <= 31]
     try:
@@ -34,11 +38,11 @@ def window(text, year):
             if days:
                 d1, d2 = days[0], days[-1]
                 if m1 == m2: d1, d2 = min(days), max(days)
-                s, e = date(year, m1, d1), date(year, m2, d2)
+                s, e = date(years[0] if years else year, m1, d1), date(years[-1] if years else year, m2, d2)
             else:
                 s = date(year, m1, 1)
                 e = date(year + (m2 == 12), m2 % 12 + 1, 1) - timedelta(days=1)
-            if e < s: e = date(year + 1, e.month, e.day)
+            if e < s and not years: e = date(year + 1, e.month, e.day)
             return s, e
         for word, (a, b) in SEASONS.items():
             if word in t:
@@ -51,6 +55,9 @@ def status(text, today):
     """'recurring' | 'live' | 'ended' (next occurrence not close yet)."""
     if window(text, today.year) is None:
         return "recurring"
+    if re.search(r"\b20\d\d\b", text or ""):
+        s, e = window(text, today.year)
+        return "live" if s - timedelta(days=LEAD_DAYS) <= today <= e else "ended"
     for y in (today.year - 1, today.year, today.year + 1):
         s, e = window(text, y)
         if e >= today:

@@ -408,6 +408,29 @@ main { background: var(--bg); padding: 38px 0 56px; }
 .card-foot .price { font-weight: 700; color: var(--text-primary); text-transform: uppercase; letter-spacing: .12em; }
 .card-foot .price.free { color: var(--accent-gold-hover); }
 
+.hp-field { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.form-check label { display:flex; gap:10px; align-items:flex-start; font-weight:400; line-height:1.4; }
+.form-check input[type=checkbox] { width:18px; height:18px; margin-top:2px; flex:none; }
+[hidden] { display:none !important; }
+
+.form-section { border:1px solid var(--border-soft); margin:0 0 16px; padding:10px 14px 4px; min-width:0; }
+.form-section legend { font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-secondary); padding:0 6px; }
+.field-hint { display:block; font-size:11px; color:var(--text-secondary); margin-top:4px; }
+.opt { font-weight:400; color:var(--text-secondary); font-size:11px; }
+.form-group input:user-invalid, .form-group select:user-invalid, .form-group textarea:user-invalid { border-color:#9B2C2C; }
+
+/* ---- Pagination + show more ---- */
+.pager { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; margin:34px 0 8px; padding-top:18px; border-top:1px solid var(--border-soft); }
+.pager-info { font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-secondary); }
+.pager-nav { display:flex; flex-wrap:wrap; gap:6px; }
+.pager-btn { font-family:var(--sans); font-weight:600; font-size:12px; min-width:38px; height:38px; padding:0 12px; background:var(--surface); color:var(--text-primary); border:1px solid var(--border); cursor:pointer; }
+.pager-btn:hover:not([disabled]) { background:var(--accent-gold); }
+.pager-btn[aria-current="page"] { background:var(--text-primary); color:var(--surface); }
+.pager-btn[disabled] { opacity:.4; cursor:default; }
+.pager-gap { align-self:center; color:var(--text-secondary); padding:0 2px; }
+.show-more-btn { width:100%; margin-top:10px; font-family:var(--sans); font-weight:600; font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:11px 12px; background:var(--surface); color:var(--text-primary); border:1px solid var(--border); cursor:pointer; }
+.show-more-btn:hover { background:var(--accent-gold); }
+
 .no-results {
   grid-column: 1 / -1; padding: 60px 20px; text-align: center;
   font-family: var(--serif-alt); font-style: italic; font-size: 18px; color: var(--text-secondary);
@@ -836,6 +859,7 @@ footer {
       <span class="count" id="section-count">74 found</span>
     </h2>
     <div class="events-grid" id="event-grid" role="list" aria-label="All events"></div>
+    <nav class="pager" id="pager" aria-label="Event pages" hidden></nav>
   </div>
 </main>
 
@@ -939,32 +963,61 @@ footer {
       <button class="modal-close" onclick="closeSubmit()" aria-label="Close">✕</button>
     </div>
     <div class="modal-body">
-      <p class="form-note">Know of a free or community event in London? Tell us about it and we'll add it within 48 hours.</p>
-      <form id="submit-form" action="https://formspree.io/f/mgodklnd" method="POST">
-        <div class="form-row">
-          <div class="form-group"><label for="f-title">Event name *</label><input type="text" id="f-title" name="title" required placeholder="e.g. Crystal Palace Food Market"></div>
+      <p class="form-note">Know of a free or community event in London? Tell us about it. If it passes our automatic checks it appears within a couple of minutes. Otherwise we review it.</p>
+      <form id="submit-form" name="event-submission" method="POST" action="/" data-netlify="true" data-netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="event-submission">
+        <p class="hp-field" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+        <fieldset class="form-section"><legend>The event</legend>
+          <div class="form-group"><label for="f-title">Event name *</label><input type="text" id="f-title" name="title" required minlength="8" maxlength="90" placeholder="e.g. Crystal Palace Food Market"><span class="field-hint">Plain text, 8–90 characters. No capitals-only titles.</span></div>
           <div class="form-group"><label for="f-cat">Category *</label>
-            <select id="f-cat" name="category" required>
-              <option value="">Select…</option>
-              <option>Theatre</option><option>Music</option><option>Markets</option><option>Festivals</option>
-              <option>Art</option><option>Create</option><option>Wellness</option>
-              <option>Fitness</option><option>Eco</option>
-            </select>
+            <select id="f-cat" name="category" required><option value="">Select a category…</option><option value="art">Art – exhibitions, open studios, trails</option><option value="create">Create – workshops and classes</option><option value="eco">Eco – green and sustainability</option><option value="festivals">Festivals – multi-day events</option><option value="fitness">Fitness – sport and movement</option><option value="markets">Markets – food and makers</option><option value="music">Music – gigs and club nights</option><option value="theatre">Theatre – comedy and performance</option><option value="wellness">Wellness – mind and body</option></select></div>
+          <div class="form-group"><label for="f-desc">Description *</label><textarea id="f-desc" name="description" required minlength="20" maxlength="300" placeholder="One or two sentences about what happens."></textarea><span class="field-hint" id="desc-count">0 / 300</span></div>
+        </fieldset>
+
+        <fieldset class="form-section"><legend>Where</legend>
+          <div class="form-row">
+            <div class="form-group"><label for="f-area">Area *</label>
+              <select id="f-area" name="area" required><option value="">Select an area…</option><optgroup label="Central London"><option value="Central London">Central London</option><option value="City of London">City of London</option><option value="Hyde Park">Hyde Park</option><option value="Kensington Gardens">Kensington Gardens</option><option value="King&#x27;s Cross">King&#x27;s Cross</option><option value="Trafalgar Square">Trafalgar Square</option></optgroup><optgroup label="North London"><option value="Camden">Camden</option><option value="Enfield">Enfield</option><option value="Finsbury Park">Finsbury Park</option><option value="Hampstead">Hampstead</option><option value="Islington">Islington</option><option value="Wembley">Wembley</option></optgroup><optgroup label="South London"><option value="Battersea">Battersea</option><option value="Beckenham">Beckenham</option><option value="Bexleyheath">Bexleyheath</option><option value="Brixton">Brixton</option><option value="Brockley">Brockley</option><option value="Camberwell">Camberwell</option><option value="Clapham">Clapham</option><option value="Croydon">Croydon</option><option value="Crystal Palace">Crystal Palace</option><option value="Deptford">Deptford</option><option value="Dulwich">Dulwich</option><option value="Greenwich">Greenwich</option><option value="Herne Hill">Herne Hill</option><option value="Kingston upon Thames">Kingston upon Thames</option><option value="Peckham">Peckham</option><option value="South Bank">South Bank</option><option value="Sutton">Sutton</option><option value="Tooting">Tooting</option><option value="Wandsworth">Wandsworth</option><option value="Wimbledon">Wimbledon</option></optgroup><optgroup label="East London"><option value="Barking">Barking</option><option value="Bethnal Green">Bethnal Green</option><option value="Dalston">Dalston</option><option value="Hackney">Hackney</option><option value="Hackney Wick">Hackney Wick</option><option value="Hornchurch">Hornchurch</option><option value="Ilford">Ilford</option><option value="London Fields">London Fields</option><option value="Romford">Romford</option><option value="Stratford">Stratford</option><option value="Tottenham">Tottenham</option><option value="Walthamstow">Walthamstow</option><option value="Whitechapel">Whitechapel</option></optgroup><optgroup label="West London"><option value="Brentford">Brentford</option><option value="Chiswick">Chiswick</option><option value="Ealing">Ealing</option><option value="Richmond">Richmond</option><option value="Shepherd&#x27;s Bush">Shepherd&#x27;s Bush</option><option value="Uxbridge">Uxbridge</option></optgroup><option value="__other">Other (not listed)</option></select></div>
+            <div class="form-group"><label for="f-venue">Venue</label><input type="text" id="f-venue" name="venue" list="venue-list" maxlength="70" placeholder="Start typing, or enter your own" autocomplete="off"><datalist id="venue-list"><option value="Abbey Green"><option value="Aperture Hackney"><option value="Artspace Peckham"><option value="BFI Southbank"><option value="Battersea Park"><option value="Beckenham Padel Club"><option value="Beckenham Place Mansion"><option value="Bold Tendencies, Peckham"><option value="Brixton Art Studios"><option value="Brixton House"><option value="Brixton Recreation Centre"><option value="Brockwell Lido"><option value="Brockwell Park"><option value="Brockwell Park Tennis Courts"><option value="Bush Theatre"><option value="Bussey Building"><option value="Café OTO"><option value="Camden Art Centre"><option value="Chiswick Pier"><option value="Clapham Common"><option value="Clapham Common Tennis Courts"><option value="Clapham Common outdoor gym"><option value="Colne Valley Park"><option value="Columbia Road, E2"><option value="Crystal Palace NSC"><option value="Crystal Palace Park"><option value="Danson Stables"><option value="Deptford Creek"><option value="Finsbury Park"><option value="Forty Hall"><option value="Granary Square"><option value="Greenwich Park"><option value="Hackney Empire"><option value="Hackney Marshes"><option value="Hampstead Heath"><option value="Harrow Lodge Park"><option value="Haynes Lane, SE19"><option value="High Street, Sutton"><option value="Hoe Street, E17"><option value="Hungerford Bridge steps"><option value="Hyde Park"><option value="Lammas Park"><option value="Lewisham College, SE4"><option value="Market Place, Kingston"><option value="National Gallery"><option value="Paper Tiger, Peckham"><option value="Peckham Print Studios"><option value="Peckham Rye Park"><option value="Railton Road, SE24"><option value="Raphael Park"><option value="Robin Hood Gate"><option value="Serpentine Galleries"><option value="The Barbican"><option value="The Roundhouse"><option value="The Yard Theatre"><option value="Tooting Bec Lido"><option value="Tottenham Lock"><option value="Valentines Park"><option value="Various, Brentford"><option value="Various, Brockley"><option value="Various, Camberwell"><option value="Various, Central London"><option value="Various, Croydon"><option value="Various, Dulwich"><option value="Various, Hackney"><option value="Various, Newham"><option value="Various, Peckham"><option value="Wandsworth Common"><option value="Wembley Park"><option value="Westgate Street, E8"><option value="Whitechapel Gallery"><option value="Wimbledon Common"></datalist></div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label for="f-venue">Venue</label><input type="text" id="f-venue" name="venue" placeholder="e.g. Brockwell Park"></div>
-          <div class="form-group"><label for="f-area">Area / Borough</label><input type="text" id="f-area" name="area" placeholder="e.g. Herne Hill"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label for="f-date">Date / Schedule</label><input type="text" id="f-date" name="date" placeholder="e.g. Every Saturday"></div>
-          <div class="form-group"><label for="f-time">Time</label><input type="text" id="f-time" name="time" placeholder="e.g. 10am – 2pm"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label for="f-price">Price</label><input type="text" id="f-price" name="price" placeholder="e.g. Free or £5"></div>
-          <div class="form-group"><label for="f-link">Event URL</label><input type="url" id="f-link" name="url" placeholder="https://…"></div>
-        </div>
-        <div class="form-group"><label for="f-desc">Description</label><textarea id="f-desc" name="description" placeholder="Tell us about the event in 1–2 sentences…"></textarea></div>
+          <div class="form-group" id="f-area-other-wrap" hidden><label for="f-area-other">Your area *</label><input type="text" id="f-area-other" name="area_other" maxlength="40" placeholder="e.g. Kew"><span class="field-hint">New areas are checked by hand before the event goes live.</span></div>
+        </fieldset>
+
+        <fieldset class="form-section"><legend>When</legend>
+          <div class="form-row">
+            <div class="form-group"><label for="f-schedule">Pattern *</label>
+              <select id="f-schedule" name="schedule"><option value="once">One-off, or runs for several days</option><option value="weekly">Repeats every week</option><option value="monthly">Repeats every month</option></select></div>
+            <div class="form-group" data-sched="weekly monthly" hidden><label for="f-weekday">Day *</label><select id="f-weekday" name="weekday"><option value="">Select a day…</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option></select></div>
+            <div class="form-group" data-sched="monthly" hidden><label for="f-nth">Which one *</label><select id="f-nth" name="nth"><option value="">Select…</option><option value="1st">1st</option><option value="2nd">2nd</option><option value="3rd">3rd</option><option value="4th">4th</option><option value="last">Last</option></select></div>
+          </div>
+          <div class="form-row" data-sched="once">
+            <div class="form-group"><label for="f-start">Start date *</label><input type="date" id="f-start" name="start_date" required></div>
+            <div class="form-group"><label for="f-end">End date <span class="opt">(only if more than one day)</span></label><input type="date" id="f-end" name="end_date"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="f-stime">Starts</label><select id="f-stime" name="start_time"><option value="">Select…</option><option value="06:00">6am</option><option value="06:30">6:30am</option><option value="07:00">7am</option><option value="07:30">7:30am</option><option value="08:00">8am</option><option value="08:30">8:30am</option><option value="09:00">9am</option><option value="09:30">9:30am</option><option value="10:00">10am</option><option value="10:30">10:30am</option><option value="11:00">11am</option><option value="11:30">11:30am</option><option value="12:00">12pm</option><option value="12:30">12:30pm</option><option value="13:00">1pm</option><option value="13:30">1:30pm</option><option value="14:00">2pm</option><option value="14:30">2:30pm</option><option value="15:00">3pm</option><option value="15:30">3:30pm</option><option value="16:00">4pm</option><option value="16:30">4:30pm</option><option value="17:00">5pm</option><option value="17:30">5:30pm</option><option value="18:00">6pm</option><option value="18:30">6:30pm</option><option value="19:00">7pm</option><option value="19:30">7:30pm</option><option value="20:00">8pm</option><option value="20:30">8:30pm</option><option value="21:00">9pm</option><option value="21:30">9:30pm</option><option value="22:00">10pm</option><option value="22:30">10:30pm</option><option value="23:00">11pm</option><option value="23:30">11:30pm</option><option value="00:00">12am</option><option value="00:30">12:30am</option><option value="01:00">1am</option><option value="01:30">1:30am</option><option value="02:00">2am</option><option value="02:30">2:30am</option><option value="03:00">3am</option><option value="03:30">3:30am</option><option value="04:00">4am</option><option value="04:30">4:30am</option><option value="05:00">5am</option><option value="05:30">5:30am</option></select></div>
+            <div class="form-group"><label for="f-etime">Ends</label><select id="f-etime" name="end_time"><option value="">Select…</option><option value="06:00">6am</option><option value="06:30">6:30am</option><option value="07:00">7am</option><option value="07:30">7:30am</option><option value="08:00">8am</option><option value="08:30">8:30am</option><option value="09:00">9am</option><option value="09:30">9:30am</option><option value="10:00">10am</option><option value="10:30">10:30am</option><option value="11:00">11am</option><option value="11:30">11:30am</option><option value="12:00">12pm</option><option value="12:30">12:30pm</option><option value="13:00">1pm</option><option value="13:30">1:30pm</option><option value="14:00">2pm</option><option value="14:30">2:30pm</option><option value="15:00">3pm</option><option value="15:30">3:30pm</option><option value="16:00">4pm</option><option value="16:30">4:30pm</option><option value="17:00">5pm</option><option value="17:30">5:30pm</option><option value="18:00">6pm</option><option value="18:30">6:30pm</option><option value="19:00">7pm</option><option value="19:30">7:30pm</option><option value="20:00">8pm</option><option value="20:30">8:30pm</option><option value="21:00">9pm</option><option value="21:30">9:30pm</option><option value="22:00">10pm</option><option value="22:30">10:30pm</option><option value="23:00">11pm</option><option value="23:30">11:30pm</option><option value="00:00">12am</option><option value="00:30">12:30am</option><option value="01:00">1am</option><option value="01:30">1:30am</option><option value="02:00">2am</option><option value="02:30">2:30am</option><option value="03:00">3am</option><option value="03:30">3:30am</option><option value="04:00">4am</option><option value="04:30">4:30am</option><option value="05:00">5am</option><option value="05:30">5:30am</option></select></div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-section"><legend>Price and links</legend>
+          <div class="form-row">
+            <div class="form-group"><label for="f-ptype">Price *</label>
+              <select id="f-ptype" name="price_type" required><option value="">Select…</option><option value="free">Free</option><option value="pwyc">Pay what you can</option><option value="paid">Paid ticket</option></select></div>
+            <div class="form-group" data-price="paid" hidden><label for="f-pfrom">From (£) *</label><input type="number" id="f-pfrom" name="price_from" min="0.5" max="500" step="0.5" inputmode="decimal" placeholder="5"></div>
+            <div class="form-group" data-price="paid" hidden><label for="f-pto">Up to (£) <span class="opt">(optional)</span></label><input type="number" id="f-pto" name="price_to" min="0.5" max="500" step="0.5" inputmode="decimal" placeholder="12"></div>
+          </div>
+          <div class="form-group"><label for="f-link">Event web page *</label><input type="url" id="f-link" name="url" required pattern="https://.*" placeholder="https://…"><span class="field-hint">Must start with https://</span></div>
+          <div class="form-group"><label for="f-image">Image link <span class="opt">(optional)</span></label><input type="url" id="f-image" name="image" pattern="https://.*" placeholder="https://…"><span class="field-hint">Leave blank and we use the picture from your event page.</span></div>
+        </fieldset>
+
+        <fieldset class="form-section"><legend>You</legend>
+          <div class="form-group"><label for="f-email">Your email *</label><input type="email" id="f-email" name="email" required autocomplete="email" placeholder="you@example.com"></div>
+          <div class="form-group form-check"><label><input type="checkbox" name="consent" required> I run or represent this event and the details are correct. My email is only used to contact me about this listing.</label></div>
+        </fieldset>
+
+        <p class="form-note" id="submit-status" role="status" aria-live="polite"></p>
         <button class="btn-primary" type="submit" style="width:100%;margin-top:6px">Submit event ▸</button>
       </form>
     </div>
@@ -1591,7 +1644,11 @@ function filterCat(cat) {
   applyFilters();
 }
 
+const PAGE_SIZE = 10, LIST_STEP = 10;
+let currentPage = 1, listLimit = LIST_STEP;
+
 function applyFilters() {
+  currentPage = 1; listLimit = LIST_STEP;
   filteredEvents = EVENTS.filter(e => {
     if (currentCat !== 'all' && e.cat !== currentCat) return false;
     if (priceFilter === 'free' && !e.free) return false;
@@ -1634,11 +1691,17 @@ const CAT_EMOJI = {
 function renderGrid() {
   const grid = document.getElementById('event-grid');
   if (!grid) return;
+  const pager = document.getElementById('pager');
   if (!filteredEvents.length) {
     grid.innerHTML = `<div class="no-results">Nothing matches those filters. Try clearing a borough or category.</div>`;
+    if (pager) pager.hidden = true;
     return;
   }
-  grid.innerHTML = filteredEvents.map(e => {
+  const pages = Math.ceil(filteredEvents.length / PAGE_SIZE);
+  currentPage = Math.min(Math.max(currentPage, 1), pages);
+  const pageEvents = filteredEvents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  renderPager(pages);
+  grid.innerHTML = pageEvents.map(e => {
     const saved = bookmarks.includes(e.id);
     const emoji = CAT_EMOJI[e.cat] || '🗓️';
     const visStyle = e.image
@@ -1666,6 +1729,36 @@ function renderGrid() {
   }).join('');
 }
 
+
+function pageList(cur, total) {
+  if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
+  const s = new Set([1, total, cur - 1, cur, cur + 1]);
+  const out = []; let prev = 0;
+  [...s].filter(n => n >= 1 && n <= total).sort((a, b) => a - b).forEach(n => {
+    if (n - prev > 1) out.push('…'); out.push(n); prev = n;
+  });
+  return out;
+}
+function renderPager(pages) {
+  const el = document.getElementById('pager');
+  if (!el) return;
+  if (pages <= 1) { el.hidden = true; el.innerHTML = ''; return; }
+  const total = filteredEvents.length;
+  const from = (currentPage - 1) * PAGE_SIZE + 1, to = Math.min(currentPage * PAGE_SIZE, total);
+  el.hidden = false;
+  el.innerHTML = `<div class="pager-info">Showing ${from}–${to} of ${total}</div><div class="pager-nav">
+    <button class="pager-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''} aria-label="Previous page">‹ Prev</button>
+    ${pageList(currentPage, pages).map(n => n === '…' ? '<span class="pager-gap">…</span>'
+      : `<button class="pager-btn" data-page="${n}" ${n === currentPage ? 'aria-current="page"' : ''} aria-label="Page ${n}">${n}</button>`).join('')}
+    <button class="pager-btn" data-page="${currentPage + 1}" ${currentPage === pages ? 'disabled' : ''} aria-label="Next page">Next ›</button></div>`;
+  el.querySelectorAll('[data-page]').forEach(b => b.onclick = () => goToPage(+b.dataset.page));
+}
+function goToPage(n) {
+  currentPage = n; renderGrid();
+  const top = document.getElementById('main-content');
+  if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 /* ============================================================
    MINI LIST (right of map) + chips
    ============================================================ */
@@ -1676,7 +1769,9 @@ function renderMapList(){
     list.innerHTML = `<div class="chip-empty">No events match.</div>`;
     return;
   }
-  list.innerHTML = filteredEvents.slice(0, 30).map(e => `
+  const shown = filteredEvents.slice(0, listLimit);
+  const more = filteredEvents.length - shown.length;
+  list.innerHTML = shown.map(e => `
     <div class="mini-ev" onclick="openModal(${e.id})">
       <div>
         <div class="ev-meta">${e.cat.toUpperCase()} · ${e.date}</div>
@@ -1685,7 +1780,12 @@ function renderMapList(){
       </div>
       <div class="ev-price ${e.free?'free':''}">${e.price}</div>
     </div>
-  `).join('');
+  `).join('') + (more > 0
+      ? `<button class="show-more-btn" id="list-more">Show more (${Math.min(LIST_STEP, more)} more of ${more})</button>`
+      : (filteredEvents.length > LIST_STEP ? `<button class="show-more-btn" id="list-less">Show fewer</button>` : ''));
+  const mb = document.getElementById('list-more'), lb = document.getElementById('list-less');
+  if (mb) mb.onclick = () => { listLimit += LIST_STEP; renderMapList(); };
+  if (lb) lb.onclick = () => { listLimit = LIST_STEP; renderMapList(); list.scrollTop = 0; };
 }
 
 function renderMapChips(){
@@ -1818,15 +1918,39 @@ document.addEventListener('keydown', e => {
 
 const submitForm = document.getElementById('submit-form');
 if (submitForm) {
+  const $ = s => submitForm.querySelector(s);
+  const status = document.getElementById('submit-status');
+  const iso = d => d.toISOString().slice(0, 10);
+  const todayD = new Date(), maxD = new Date(Date.now() + 365 * 864e5);
+  $('#f-start').min = $('#f-end').min = iso(todayD);
+  $('#f-start').max = $('#f-end').max = iso(maxD);
+  function setRequired(el, on) { el.querySelectorAll('input,select').forEach(i => {
+    if (['start_date', 'weekday', 'nth', 'price_from'].includes(i.name)) i.required = on; }); }
+  function syncForm() {
+    const sv = $('#f-schedule').value, pv = $('#f-ptype').value;
+    submitForm.querySelectorAll('[data-sched]').forEach(el => { const on = el.dataset.sched.split(' ').includes(sv); el.hidden = !on; setRequired(el, on); });
+    submitForm.querySelectorAll('[data-price]').forEach(el => { const on = el.dataset.price === pv; el.hidden = !on; setRequired(el, on); });
+    const other = $('#f-area').value === '__other';
+    document.getElementById('f-area-other-wrap').hidden = !other; $('#f-area-other').required = other;
+    if ($('#f-start').value) $('#f-end').min = $('#f-start').value;
+    if ($('#f-end').value && $('#f-end').value < $('#f-start').value) $('#f-end').value = $('#f-start').value;
+  }
+  submitForm.addEventListener('change', syncForm);
+  $('#f-desc').addEventListener('input', e => { document.getElementById('desc-count').textContent = e.target.value.length + ' / 300'; });
+  syncForm();
   submitForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = this.querySelector('[type="submit"]');
-    btn.textContent = 'Sending…';
+    btn.textContent = 'Sending…'; btn.disabled = true; status.textContent = '';
     try {
-      const res = await fetch(this.action, { method:'POST', body: new FormData(this), headers:{'Accept':'application/json'} });
-      if (res.ok) { this.innerHTML = '<p style="font-family:var(--serif-alt);font-style:italic;font-size:15px;color:var(--text-primary);padding:12px 0;line-height:1.7">Thanks — we\'ll review and add your event within 48 hours.</p>'; }
-      else { btn.textContent = 'Try again'; }
-    } catch { btn.textContent = 'Try again'; }
+      const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(this)).toString() });
+      if (!res.ok) throw new Error('bad status');
+      this.innerHTML = '<p style="font-family:var(--serif-alt);font-style:italic;font-size:15px;color:var(--text-primary);padding:12px 0;line-height:1.7">Thanks. Your event is being checked now. If it passes, it appears on the site within a couple of minutes. Otherwise we will review it.</p>';
+    } catch (err) {
+      btn.textContent = 'Try again'; btn.disabled = false;
+      status.textContent = 'That did not send. Check your connection and try again.';
+    }
   });
 }
 
