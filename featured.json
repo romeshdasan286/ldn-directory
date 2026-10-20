@@ -1,13 +1,13 @@
 {
-  "id": 7,
-  "cat": "markets",
-  "title": "Crystal Palace Food Market",
-  "venue": "Haynes Lane, SE19",
-  "area": "Crystal Palace",
+  "id": 24,
+  "cat": "wellness",
+  "title": "Ecstatic Dance Peckham",
+  "venue": "Bussey Building",
+  "area": "Peckham",
   "date": "Every Saturday",
-  "time": "10am – 3pm",
-  "price": "Free",
-  "desc": "Brilliant weekly market with street food, artisan producers, fresh veg, baked goods and more. One of south London's best.",
-  "link": "https://www.cpfoodmarket.com",
+  "time": "10am – 1pm",
+  "price": "£12",
+  "desc": "Freeform conscious dance — no steps, no phones, no alcohol. DJ-led journey through world rhythms. Welcome to all.",
+  "link": "https://www.ecstaticdance.org.uk",
   "image": "featured_image.jpg"
 }
