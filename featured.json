@@ -1,13 +1,13 @@
 {
-  "id": 24,
-  "cat": "wellness",
-  "title": "Ecstatic Dance Peckham",
-  "venue": "Bussey Building",
-  "area": "Peckham",
-  "date": "Every Saturday",
-  "time": "10am – 1pm",
-  "price": "£12",
-  "desc": "Freeform conscious dance — no steps, no phones, no alcohol. DJ-led journey through world rhythms. Welcome to all.",
-  "link": "https://www.ecstaticdance.org.uk",
+  "id": 29,
+  "cat": "fitness",
+  "title": "Tooting Bec Runners",
+  "venue": "Tooting Bec Lido",
+  "area": "Tooting",
+  "date": "Every Thursday",
+  "time": "7pm",
+  "price": "Free",
+  "desc": "Community run club meeting at the lido. Routes from 5K to 10K, all paces welcome.",
+  "link": "https://www.slsc.org.uk",
   "image": "featured_image.jpg"
 }
