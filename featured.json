@@ -1,13 +1,13 @@
 {
-  "id": 29,
-  "cat": "fitness",
-  "title": "Tooting Bec Runners",
-  "venue": "Tooting Bec Lido",
-  "area": "Tooting",
-  "date": "Every Thursday",
-  "time": "7pm",
+  "id": 35,
+  "cat": "eco",
+  "title": "Deptford Creek Litter Pick",
+  "venue": "Deptford Creek",
+  "area": "Deptford",
+  "date": "Monthly – 3rd Sunday",
+  "time": "10am – 12pm",
   "price": "Free",
-  "desc": "Community run club meeting at the lido. Routes from 5K to 10K, all paces welcome.",
-  "link": "https://www.slsc.org.uk",
+  "desc": "Join the Deptford Creek Waterway Recovery team. Equipment provided. One of London's most biodiverse waterways.",
+  "link": "https://www.deptfordcreek.org.uk",
   "image": "featured_image.jpg"
 }
