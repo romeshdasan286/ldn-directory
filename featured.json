@@ -1,13 +1,13 @@
 {
-  "id": 29,
-  "cat": "fitness",
-  "title": "Tooting Bec Runners",
-  "venue": "Tooting Bec Lido",
-  "area": "Tooting",
-  "date": "Every Thursday",
-  "time": "7pm",
+  "id": 7,
+  "cat": "markets",
+  "title": "Crystal Palace Food Market",
+  "venue": "Haynes Lane, SE19",
+  "area": "Crystal Palace",
+  "date": "Every Saturday",
+  "time": "10am – 3pm",
   "price": "Free",
-  "desc": "Community run club meeting at the lido. Routes from 5K to 10K, all paces welcome.",
-  "link": "https://www.slsc.org.uk",
+  "desc": "Brilliant weekly market with street food, artisan producers, fresh veg, baked goods and more. One of south London's best.",
+  "link": "https://www.cpfoodmarket.com",
   "image": "featured_image.jpg"
 }
